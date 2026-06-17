@@ -294,7 +294,7 @@ section.tight { padding-block: clamp(48px, 6vw, 72px); }
 .hero__bg {
   position: absolute; inset: 0;
   z-index: -2;
-  background-image: url("../img/capitol-hero-web.png");
+  background-image: url("../img/capitol-hero-web.jpg");
   background-size: cover;
   background-position: center 38%;
   background-repeat: no-repeat;
