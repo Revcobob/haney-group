@@ -783,7 +783,8 @@ section.tight { padding-block: clamp(48px, 6vw, 72px); }
     radial-gradient(60% 55% at 80% 30%, rgba(201,137,42,0.18), transparent 60%),
     linear-gradient(180deg, rgba(11,18,40,0.0), rgba(6,9,26,0.55));
 }
-.pagehero__inner { position: relative; z-index: 1; max-width: 760px; }
+.pagehero__inner { position: relative; z-index: 1; }
+.pagehero__inner > * { max-width: 760px; }
 .pagehero__crumbs {
   font-size: 12.5px;
   letter-spacing: 0.04em;
