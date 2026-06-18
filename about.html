@@ -1234,9 +1234,10 @@ section.tight { padding-block: clamp(48px, 6vw, 72px); }
 @media (min-width: 720px) {
   .proofstrip__grid { grid-template-columns: repeat(3, 1fr); gap: 36px; }
 }
+.proofstrip__grid > div { text-align: center; }
 .proofstrip .stat__num {
   position: relative;
-  padding-top: 16px;
+  padding-top: 18px;
 }
 .proofstrip .stat__num::before {
   content: "";
@@ -1245,6 +1246,7 @@ section.tight { padding-block: clamp(48px, 6vw, 72px); }
   width: 36px; height: 3px;
   background: var(--amber-500);
 }
+.proofstrip .stat__label { margin-inline: auto; max-width: 32ch; }
 @media (max-width: 640px) {
   .founder { padding: 20px 20px 22px; }
 }
