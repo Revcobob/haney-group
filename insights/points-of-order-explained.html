@@ -3,13 +3,14 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>The Haney Group · Texas Government Relations &amp; Legislative Strategy</title>
-<meta name="description" content="A senior-led Austin government relations firm with deep Texas Capitol experience. Legislative strategy, appropriations, parliamentary procedure, and disciplined advocacy for associations, corporations, public entities, and policy organizations." />
+<title>Points Of Order, Explained &middot; The Haney Group</title>
+<meta name="description" content="How points of order work and why procedural challenges can reshape a bill's trajectory mid-floor." />
 <meta name="theme-color" content="#0B1228" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" />
 <style>
+
 /* =============================================================
    The Haney Group — Homepage (light, senior-advisory)
    ============================================================= */
@@ -305,9 +306,7 @@ section.tight { padding-block: clamp(48px, 6vw, 72px); }
 .hero__bg {
   position: absolute; inset: 0;
   z-index: -2;
-  background-image: url("assets/img/capitol-hero-web2.jpg");
-  background-size: cover;
-  background-position: center 38%;
+  background-image: none;
   background-repeat: no-repeat;
   transform: scale(1.02);
 }
@@ -460,72 +459,6 @@ section.tight { padding-block: clamp(48px, 6vw, 72px); }
 .cap p { color: var(--text-2); font-size: 14.5px; line-height: 1.55; margin: 0; max-width: 32ch; }
 .caps__foot { margin-top: 36px; }
 
-/* ---------- Process break (mid-page editorial banner) ---------- */
-.processbreak {
-  background: var(--paper-2);
-  border-bottom: 1px solid var(--line-1);
-  padding-block: clamp(56px, 7vw, 80px);
-}
-.processbreak__inner {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 36px;
-  align-items: center;
-}
-@media (min-width: 880px) {
-  .processbreak__inner { grid-template-columns: 1.35fr 1fr; gap: 56px; }
-}
-.processbreak__media {
-  position: relative;
-  border-radius: var(--radius-md);
-  overflow: hidden;
-  border: 1px solid var(--line-1);
-  box-shadow: 0 1px 2px rgba(11,18,40,0.05), 0 18px 40px -22px rgba(11,18,40,0.22);
-  aspect-ratio: 21 / 9;
-  background: var(--navy-900);
-}
-@media (max-width: 720px) {
-  .processbreak__media { aspect-ratio: 16 / 9; }
-}
-.processbreak__media img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center 42%;
-  display: block;
-}
-.processbreak__media::after {
-  /* Very subtle navy edge wash for visual consistency; image stays clear */
-  content: "";
-  position: absolute; inset: 0;
-  background:
-    linear-gradient(180deg, rgba(11,18,40,0.0) 70%, rgba(11,18,40,0.10) 100%),
-    linear-gradient(90deg,  rgba(11,18,40,0.06) 0%, rgba(11,18,40,0.0) 25%);
-  pointer-events: none;
-}
-.processbreak__copy { max-width: 44ch; }
-.processbreak__copy h2 {
-  font-size: clamp(24px, 2.6vw, 32px);
-  line-height: 1.18;
-  letter-spacing: -0.015em;
-  text-wrap: balance;
-  margin: 8px 0 18px;
-}
-.processbreak__copy p {
-  color: var(--text-2);
-  font-size: 16.5px;
-  line-height: 1.65;
-  margin: 0 0 24px;
-}
-.processbreak__cta { display: inline-flex; align-items: center; }
-.processbreak__note {
-  margin-top: 14px;
-  font-size: 12.5px;
-  line-height: 1.55;
-  color: var(--text-3);
-  max-width: 38ch;
-}
-
 /* ---------- Credibility / proof ---------- */
 .proof { background: var(--paper); border-bottom: 1px solid var(--line-1); }
 .proof__grid {
@@ -595,13 +528,14 @@ section.tight { padding-block: clamp(48px, 6vw, 72px); }
 /* ---------- Principals (senior-led firm) ---------- */
 .firm { background: var(--paper); border-bottom: 1px solid var(--line-1); }
 .firm__top {
-  max-width: 60ch;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
   margin-bottom: 56px;
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
 }
-.firm__top h2 { text-wrap: balance; }
+@media (min-width: 880px) {
+  .firm__top { grid-template-columns: 1fr 1fr; gap: 64px; align-items: end; }
+}
 .firm__top p.lede { margin: 0; }
 .principals__grid {
   display: grid;
@@ -829,6 +763,357 @@ section.tight { padding-block: clamp(48px, 6vw, 72px); }
   [data-reveal] { opacity: 1; transform: none; }
 }
 
+/* =============================================================
+   Sub-page chrome (extends the home design system for inner pages)
+   ============================================================= */
+
+/* ---------- Page hero (compact, navy with parchment overlay) ---------- */
+.pagehero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: var(--navy-900);
+  color: var(--paper);
+  padding-block: clamp(72px, 9vw, 120px);
+  border-bottom: 1px solid var(--ink-1000);
+}
+.pagehero::before {
+  /* subtle radial highlight in the upper-right */
+  content: "";
+  position: absolute; inset: 0; z-index: -1;
+  background:
+    radial-gradient(60% 55% at 80% 30%, rgba(201,137,42,0.18), transparent 60%),
+    linear-gradient(180deg, rgba(11,18,40,0.0), rgba(6,9,26,0.55));
+}
+.pagehero__inner { position: relative; z-index: 1; }
+.pagehero__inner > * { max-width: 760px; }
+.pagehero__crumbs {
+  font-size: 12.5px;
+  letter-spacing: 0.04em;
+  color: rgba(240,243,248,0.62);
+  margin: 0 0 18px;
+}
+.pagehero__crumbs a { color: rgba(240,243,248,0.85); border-bottom: 1px solid rgba(201,137,42,0.6); padding-bottom: 1px; }
+.pagehero__crumbs a:hover { color: var(--paper); }
+.pagehero__crumbs .sep { margin: 0 8px; color: rgba(240,243,248,0.4); }
+.pagehero .eyebrow { color: var(--amber-400); font-weight: 700; }
+.pagehero .eyebrow::before { background: var(--amber-400); }
+.pagehero h1 { color: var(--paper); max-width: 24ch; text-wrap: balance; }
+.pagehero p.lede {
+  margin-top: 22px;
+  color: rgba(240,243,248,0.86);
+  font-weight: 400;
+}
+
+/* ---------- Long-form content / prose ---------- */
+.prose {
+  max-width: 70ch;
+  color: var(--text-2);
+  font-size: 17px;
+  line-height: 1.7;
+}
+.prose p { margin: 0 0 1.1em; }
+.prose strong { color: var(--text-1); font-weight: 600; }
+.prose h2 {
+  margin: 56px 0 18px;
+  font-size: clamp(24px, 2.4vw, 30px);
+  font-weight: 700;
+  color: var(--text-1);
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+.prose h3 {
+  margin: 32px 0 12px;
+  font-size: 19px;
+  font-weight: 600;
+  color: var(--text-1);
+}
+.prose ul, .prose ol { padding-left: 1.25em; margin: 0 0 1.1em; }
+.prose ul li, .prose ol li { margin: 0 0 6px; }
+.prose blockquote {
+  margin: 28px 0;
+  padding: 22px 28px;
+  background: var(--paper-2);
+  border-left: 3px solid var(--amber-500);
+  border-radius: var(--radius-md);
+  color: var(--text-1);
+  font-size: 18px;
+  line-height: 1.55;
+}
+.prose blockquote cite {
+  display: block;
+  margin-top: 12px;
+  font-style: normal;
+  font-size: 12.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  font-weight: 600;
+}
+.prose a {
+  color: var(--navy-900);
+  border-bottom: 1px solid var(--amber-500);
+  padding-bottom: 1px;
+  font-weight: 500;
+}
+.prose a:hover { color: var(--amber-700); }
+
+/* ---------- Two-column "people" layout reused on About + Contact ---------- */
+.peoplelist {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 56px;
+}
+@media (min-width: 880px) { .peoplelist { grid-template-columns: 1fr 1fr; gap: 64px; } }
+.person {
+  display: grid;
+  grid-template-columns: clamp(180px, 22vw, 240px) 1fr;
+  gap: 24px;
+}
+@media (max-width: 640px) {
+  .person { grid-template-columns: 1fr; }
+}
+.person__portrait {
+  aspect-ratio: 4 / 5;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--paper-2);
+  border: 1px solid var(--line-1);
+  position: relative;
+}
+.person__portrait img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: center 18%;
+}
+.person__name { font-size: 22px; font-weight: 700; letter-spacing: -0.01em; margin: 0; color: var(--text-1); }
+.person__role {
+  color: var(--amber-600);
+  font-size: 11.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin: 4px 0 14px;
+}
+.person__bio { color: var(--text-2); font-size: 15.5px; line-height: 1.65; margin: 0 0 12px; }
+.person__quote {
+  margin: 16px 0 12px;
+  padding: 14px 18px;
+  border-left: 3px solid var(--amber-500);
+  background: var(--paper-2);
+  border-radius: var(--radius-sm);
+  font-size: 15.5px;
+  color: var(--text-1);
+  line-height: 1.55;
+}
+
+/* ---------- Generic two-column grid for service / industry pages ---------- */
+.colgrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 56px;
+}
+@media (min-width: 880px) { .colgrid { grid-template-columns: 0.9fr 1.1fr; gap: 80px; } }
+
+/* ---------- Tile (used on industries, experience) ---------- */
+.tilegrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 18px;
+}
+@media (min-width: 720px) { .tilegrid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1024px) { .tilegrid { grid-template-columns: repeat(3, 1fr); } }
+.tile {
+  background: var(--paper);
+  border: 1px solid var(--line-1);
+  border-radius: var(--radius-md);
+  padding: 26px 26px 28px;
+  display: flex; flex-direction: column;
+  gap: 10px;
+  transition: border-color .22s var(--ease), background .22s var(--ease);
+}
+.tile:hover { border-color: var(--navy-900); }
+.tile__num {
+  font-size: 11px; letter-spacing: 0.24em; text-transform: uppercase;
+  color: var(--amber-600); font-weight: 700;
+}
+.tile h3 { font-size: 17px; font-weight: 600; margin: 0; }
+.tile p { color: var(--text-2); font-size: 14.5px; line-height: 1.55; margin: 0; }
+
+/* ---------- Contact form (Contact page) ---------- */
+.form {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 18px;
+}
+@media (min-width: 720px) { .form { grid-template-columns: 1fr 1fr; } }
+.form__row { display: flex; flex-direction: column; gap: 6px; }
+.form__row--full { grid-column: 1 / -1; }
+.form label {
+  font-size: 12.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  font-weight: 600;
+}
+.form input, .form textarea, .form select {
+  font: inherit;
+  background: var(--paper);
+  color: var(--text-1);
+  border: 1px solid var(--line-2);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  font-size: 15.5px;
+  transition: border-color .2s var(--ease), background .2s var(--ease);
+}
+.form input:focus, .form textarea:focus, .form select:focus {
+  outline: none;
+  border-color: var(--navy-900);
+  background: var(--paper-2);
+}
+.form textarea { min-height: 180px; resize: vertical; }
+.form__submit { display: flex; justify-content: flex-start; margin-top: 8px; }
+.form__consent {
+  grid-column: 1 / -1;
+  font-size: 13px;
+  color: var(--text-3);
+  display: flex; align-items: flex-start; gap: 10px;
+}
+.form__consent input { margin-top: 4px; }
+
+/* ---------- Insights index list ---------- */
+.postlist {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+  border-top: 1px solid var(--line-1);
+}
+.postlist__item {
+  padding: 28px 0;
+  border-bottom: 1px solid var(--line-1);
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+@media (min-width: 720px) {
+  .postlist__item { grid-template-columns: 220px 1fr; gap: 32px; align-items: start; }
+}
+.postlist__meta {
+  font-size: 11.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  font-weight: 700;
+}
+.postlist__title {
+  font-size: 21px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--text-1);
+  margin: 0 0 8px;
+  line-height: 1.25;
+}
+.postlist__title a { color: inherit; }
+.postlist__title a:hover { color: var(--amber-700); }
+.postlist__excerpt { color: var(--text-2); font-size: 15px; line-height: 1.6; margin: 0; }
+
+/* ---------- Pagehero with background photo variant ---------- */
+.pagehero--photo .pagehero__bg {
+  position: absolute; inset: 0; z-index: -2;
+  background-size: cover;
+  background-position: center 42%;
+}
+.pagehero--photo::before {
+  /* Stronger wash because the photo carries texture beneath */
+  background:
+    linear-gradient(180deg, rgba(6,9,26,0.55) 0%, rgba(6,9,26,0.35) 40%, rgba(6,9,26,0.70) 100%),
+    linear-gradient(90deg, rgba(6,9,26,0.78) 0%, rgba(6,9,26,0.45) 40%, rgba(6,9,26,0.10) 100%);
+}
+
+/* ---------- Inline thematic illustration (used inside .prose) ---------- */
+.illoblock {
+  display: flex;
+  gap: 28px;
+  align-items: center;
+  margin: 28px 0;
+  padding: 24px;
+  background: var(--paper-2);
+  border: 1px solid var(--line-1);
+  border-radius: var(--radius-md);
+}
+.illoblock__img {
+  width: 120px; height: 120px;
+  flex-shrink: 0;
+  object-fit: contain;
+}
+.illoblock__text { color: var(--text-2); font-size: 15.5px; line-height: 1.6; margin: 0; }
+.illoblock__text strong { color: var(--text-1); font-weight: 600; display: block; margin-bottom: 4px; font-size: 16px; }
+
+/* ---------- Capability card mini-banner variant (services page) ---------- */
+.cap--photo { overflow: hidden; padding: 0; }
+.cap--photo .cap__banner {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-bottom: 1px solid var(--line-1);
+  background: var(--paper-3);
+}
+.cap--photo .cap__banner img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform .6s var(--ease);
+}
+.cap--photo:hover .cap__banner img { transform: scale(1.035); }
+.cap--photo .cap__body {
+  padding: 24px 26px 28px;
+  display: flex; flex-direction: column;
+  gap: 12px;
+  flex: 1;
+}
+
+/* ---------- "By the numbers" stat strip ---------- */
+.stats {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 28px;
+  padding: 36px 0 0;
+}
+@media (min-width: 720px) { .stats { grid-template-columns: repeat(3, 1fr); } }
+.stat__num {
+  font-size: clamp(36px, 4vw, 48px);
+  font-weight: 700;
+  color: var(--navy-900);
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+.stat__label {
+  margin-top: 8px;
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  color: var(--text-2);
+  line-height: 1.5;
+}
+
+/* ---------- Post-list optional thumbnail ---------- */
+.postlist__item--thumb { grid-template-columns: 1fr; }
+@media (min-width: 720px) {
+  .postlist__item--thumb { grid-template-columns: 220px 1fr; gap: 32px; }
+}
+.postlist__thumb {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--paper-3);
+}
+.postlist__thumb img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+}
+
+
 /* ---------- Mobile polish (<=640px) ---------- */
 @media (max-width: 640px) {
   /* Belt-and-suspenders against horizontal scroll caused by oversized photos */
@@ -999,17 +1284,105 @@ section.tight { padding-block: clamp(48px, 6vw, 72px); }
   }
   .nav__foot-link:hover { border-color: var(--navy-900); background: var(--paper-3); }
 }
+
+/* ---------- Article (insights detail) ---------- */
+.article__meta {
+  display: flex; flex-wrap: wrap; gap: 14px 22px;
+  align-items: center;
+  padding: 16px 0;
+  border-top: 1px solid var(--line-1);
+  border-bottom: 1px solid var(--line-1);
+  margin: 0 0 36px;
+  font-size: 13px;
+  color: var(--text-3);
+  letter-spacing: 0.02em;
+}
+.article__meta-group { display: inline-flex; align-items: center; gap: 8px; }
+.article__meta-group svg { color: var(--amber-600); flex-shrink: 0; }
+.article__meta-sep { width: 1px; height: 14px; background: var(--line-2); }
+.article__email {
+  margin-left: auto;
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 8px 14px;
+  border: 1px solid var(--line-2);
+  border-radius: var(--radius-sm);
+  color: var(--navy-900);
+  font-weight: 600;
+  font-size: 13.5px;
+  letter-spacing: 0;
+  text-transform: none;
+  transition: border-color .22s var(--ease), background .22s var(--ease), color .22s var(--ease);
+}
+.article__email svg { color: var(--amber-600); }
+.article__email:hover { border-color: var(--navy-900); background: var(--paper-3); }
+.article__email:hover svg { color: var(--amber-700); }
+.article__keypoints {
+  background: var(--paper-2);
+  border-left: 3px solid var(--amber-500);
+  padding: 22px 26px 24px;
+  margin: 0 0 36px;
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+}
+.article__keypoints h2 {
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--amber-600);
+  margin: 0 0 12px;
+  font-weight: 700;
+}
+.article__keypoints ul { padding-left: 1.1em; margin: 0; color: var(--text-1); }
+.article__keypoints li { margin: 0 0 8px; font-size: 15.5px; line-height: 1.5; }
+.article__keypoints li:last-child { margin-bottom: 0; }
+.article__keypoints li strong { color: var(--text-1); }
+.article__lead p:first-child::first-letter {
+  font-size: 3.2em;
+  float: left;
+  line-height: 0.95;
+  padding: 4px 12px 0 0;
+  color: var(--navy-900);
+  font-weight: 700;
+}
+.article__close {
+  margin-top: 48px;
+  padding: 28px 28px 30px;
+  background: var(--paper-2);
+  border: 1px solid var(--line-1);
+  border-radius: var(--radius-md);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.article__close p { margin: 0; color: var(--text-2); font-size: 15px; line-height: 1.55; }
+.article__close .article__email { margin-left: 0; align-self: flex-start; }
+@media (max-width: 640px) {
+  .article__meta { gap: 10px 14px; font-size: 12.5px; }
+  .article__email { margin-left: 0; }
+  .article__keypoints { padding: 20px 22px; }
+}
+
+/* ---------- Article (insights detail) tweaks ---------- */
+section.article-section { padding-top: clamp(28px, 3.5vw, 48px); padding-bottom: clamp(48px, 6vw, 80px); }
+.article__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--navy-900);
+  margin: 0 0 22px;
+  transition: color .22s var(--ease), gap .22s var(--ease);
+  text-decoration: none;
+}
+.article__back svg { color: var(--amber-600); transition: transform .22s var(--ease), color .22s var(--ease); }
+.article__back:hover { color: var(--amber-700); gap: 11px; }
+.article__back:hover svg { color: var(--amber-700); transform: translateX(-2px); }
+.article__byline { font-weight: 600; color: var(--text-1); }
 </style>
-<meta property="og:title" content="The Haney Group · Texas Government Relations" />
-<meta property="og:description" content="Senior-led legislative strategy, appropriations, and procedural expertise for organizations whose Texas priorities cannot afford to be misunderstood." />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://www.haney-group.com/" />
-<link rel="canonical" href="https://www.haney-group.com/" />
 </head>
 <body>
 
 <a class="skip" href="#main">Skip to content</a>
-
 <!-- ===================== Utility bar ===================== -->
 <div class="utility">
   <div class="container utility__inner">
@@ -1021,7 +1394,7 @@ section.tight { padding-block: clamp(48px, 6vw, 72px); }
       <a class="util util--mail" href="mailto:info@haney-group.com" aria-label="Email info@haney-group.com"><svg class="util__icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg><span class="util__label">info@haney-group.com</span></a>
     </div>
     <div class="utility__group">
-      <a class="util" href="insights/"><svg class="util__icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h13a2 2 0 0 1 2 2v14H6a2 2 0 0 1-2-2V4z"/><path d="M19 6h2v14a2 2 0 0 1-2 2"/><path d="M8 8h7M8 12h7M8 16h4"/></svg><span class="util__label">The Session Briefing</span></a>
+      <a class="util" href="../insights/"><svg class="util__icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h13a2 2 0 0 1 2 2v14H6a2 2 0 0 1-2-2V4z"/><path d="M19 6h2v14a2 2 0 0 1-2 2"/><path d="M8 8h7M8 12h7M8 16h4"/></svg><span class="util__label">The Session Briefing</span></a>
       <span class="dot">·</span>
       <a class="util" href="https://www.linkedin.com/" rel="noopener" aria-label="LinkedIn"><svg class="util__icon util__icon--brand" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 0H5C2.24 0 0 2.24 0 5v14c0 2.76 2.24 5 5 5h14c2.76 0 5-2.24 5-5V5c0-2.76-2.24-5-5-5zM8 19H5V8h3v11zM6.5 6.73c-.97 0-1.75-.79-1.75-1.76S5.53 3.22 6.5 3.22s1.75.79 1.75 1.75-.78 1.76-1.75 1.76zM20 19h-3v-5.6c0-3.37-4-3.11-4 0V19h-3V8h3v1.77c1.4-2.59 7-2.78 7 2.47V19z"/></svg><span class="util__label">LinkedIn</span></a>
     </div>
@@ -1032,8 +1405,8 @@ section.tight { padding-block: clamp(48px, 6vw, 72px); }
 <!-- ===================== Header ===================== -->
 <header class="header">
   <div class="container header__inner">
-    <a class="brand" href="index.html" aria-label="The Haney Group, Home">
-      <img class="brand__logo" src="assets/img/inline-e9e661e302.png" alt="The Haney Group" width="384" height="157" />
+    <a class="brand" href="../index.html" aria-label="The Haney Group, Home">
+      <img class="brand__logo" src="../assets/img/inline-e9e661e302.png" alt="The Haney Group" width="384" height="157" />
     </a>
 
     <button class="nav__toggle" aria-label="Open menu" aria-expanded="false" aria-controls="primary-nav">
@@ -1042,20 +1415,20 @@ section.tight { padding-block: clamp(48px, 6vw, 72px); }
 
     <nav class="nav" id="primary-nav" aria-label="Primary">
       <div class="nav__head">
-        <a class="nav__brand" href="index.html" aria-label="The Haney Group, Home">
-          <img src="assets/img/inline-e9e661e302.png" alt="The Haney Group" />
+        <a class="nav__brand" href="../index.html" aria-label="The Haney Group, Home">
+          <img src="../assets/img/inline-e9e661e302.png" alt="The Haney Group" />
         </a>
         <button class="nav__close" aria-label="Close menu" type="button">✕</button>
       </div>
       <ul class="nav__list">
-        <li><a class="nav__link" href="about.html">About</a></li>
-        <li><a class="nav__link" href="services.html">Services</a></li>
-        <li><a class="nav__link" href="experience.html">Experience</a></li>
-        <li><a class="nav__link" href="industries.html">Clients</a></li>
-        <li><a class="nav__link" href="insights/">Insights</a></li>
-        <li><a class="nav__link" href="contact.html">Contact</a></li>
+        <li><a class="nav__link" href="../about.html">About</a></li>
+        <li><a class="nav__link" href="../services.html">Services</a></li>
+        <li><a class="nav__link" href="../experience.html">Experience</a></li>
+        <li><a class="nav__link" href="../industries.html">Clients</a></li>
+        <li><a class="nav__link is-active" href="../insights/">Insights</a></li>
+        <li><a class="nav__link" href="../contact.html">Contact</a></li>
       </ul>
-      <a class="btn btn--primary nav__cta" href="contact.html">
+      <a class="btn btn--primary nav__cta" href="../contact.html">
         Schedule a Consultation
         <span class="arrow" aria-hidden="true">→</span>
       </a>
@@ -1070,375 +1443,111 @@ section.tight { padding-block: clamp(48px, 6vw, 72px); }
 
 <main id="main">
 
-<!-- ===================== Hero ===================== -->
-<section class="hero" aria-labelledby="hero-h1">
-  <div class="hero__bg" aria-hidden="true"></div>
-  <div class="container">
-    <div class="hero__inner" data-reveal>
-      <div class="hero__copy">
-        <p class="eyebrow" style="margin-bottom:22px">Texas Government Relations · Est. Austin</p>
-        <h1 class="h1" id="hero-h1">Strategic government relations for complex Texas policy challenges.</h1>
-        <p class="lede hero__sub">
-          The Haney Group helps clients navigate the Texas Capitol with legislative strategy, procedural expertise, appropriations knowledge, and disciplined advocacy. Senior-led representation for the priorities that cannot afford to be misunderstood.
-        </p>
-        <div class="hero__ctas">
-          <a class="btn btn--primary" href="contact.html">
-            Schedule a Consultation
-            <span class="arrow" aria-hidden="true">→</span>
-          </a>
-          <a class="btn btn--ghost" href="services.html">
-            Explore Our Services
-            <span class="arrow" aria-hidden="true">→</span>
-          </a>
-        </div>
-
-        <div class="hero__meta">
-          <div class="bar" aria-hidden="true"></div>
-          <p>
-            Led by <strong>Robert Haney</strong>, former Chief Clerk of the Texas House of Representatives, and <strong>Julie Freeman Haney</strong>, senior appropriations and communications strategist. <a class="linkarrow" href="about.html" style="margin-left:4px">Meet the principals <span class="arrow" aria-hidden="true">→</span></a>
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
-  <span class="hero__credit" aria-hidden="true">Texas State Capitol · Austin</span>
-
-</section>
-
-<!-- ===================== Problem framing ===================== -->
-<section class="problem" data-reveal>
-  <div class="container">
-    <div class="problem__inner">
-      <div>
-        <p class="eyebrow eyebrow--plain" style="margin-bottom:18px">The Challenge</p>
-        <h2 class="h2">The legislative process is complex. Your strategy should not be.</h2>
-      </div>
-      <div>
-        <p class="body">
-          Clients come to The Haney Group when the stakes are high, the process is complicated, and timing matters. We help organizations understand the legislative landscape, prepare a defensible policy position, identify the right path forward, and execute with discipline from interim planning through session deadlines.
-        </p>
-        <p class="body">
-          We do not promise access. We deliver judgment, preparation, and clear communication, grounded in decades of work inside the Texas Capitol.
-        </p>
-      </div>
-    </div>
+<section class="pagehero pagehero--photo" aria-labelledby="ph-h1">
+  <div class="pagehero__bg" style="background-image:url('../assets/img/inline-1367b1c67c.jpg')" aria-hidden="true"></div>
+  <div class="container pagehero__inner">
+    <p class="pagehero__crumbs"><a href="../index.html">Home</a><span class="sep">/</span><a href="../insights/">Insights</a><span class="sep">/</span><span>Points Of Order</span></p>
+    <p class="eyebrow" style="margin-bottom:22px">The Session Briefing &middot; Article</p>
+    <h1 class="h1" id="ph-h1">Points Of Order, Explained</h1>
+    <p class="lede">A point of order is one of the quietest but most consequential tools in the legislative process. It is a formal objection that, once sustained, can stop a bill midstream and change the political perception of the proposal itself.</p>
   </div>
 </section>
 
-<!-- ===================== Capabilities / services ===================== -->
-<section class="caps" data-reveal>
+<section class="article-section" data-reveal>
   <div class="container">
-    <div class="section__head">
-      <p class="eyebrow">What We Do</p>
-      <h2 class="h2">Six capabilities, organized around how Texas policy actually gets made.</h2>
-    </div>
+    <div class="prose article__lead">
 
-    <div class="caps__grid">
-      <article class="cap">
-        <img class="cap__icon" src="assets/img/icon-legislative-strategy.png" alt="" loading="lazy" width="480" height="480" />
-        <h3>Legislative Strategy</h3>
-        <p>Translate a policy objective into a practical, member-by-member path through committee, calendar, floor, and conference.</p>
-      </article>
-      <article class="cap">
-        <img class="cap__icon" src="assets/img/icon-lobbying-advocacy.png" alt="" loading="lazy" width="480" height="480" />
-        <h3>Lobbying &amp; Advocacy</h3>
-        <p>Represent client interests at the Capitol with preparation, credibility, and direct communication grounded in long-standing member relationships.</p>
-      </article>
-      <article class="cap">
-        <img class="cap__icon" src="assets/img/icon-bill-drafting.png" alt="" loading="lazy" width="480" height="480" />
-        <h3>Bill Drafting &amp; Analysis</h3>
-        <p>Review, draft, and refine legislative language with close attention to process, timing, germaneness, and downstream risk.</p>
-      </article>
-      <article class="cap">
-        <img class="cap__icon" src="assets/img/icon-appropriations.png" alt="" loading="lazy" width="480" height="480" />
-        <h3>Appropriations &amp; Budget Riders</h3>
-        <p>Article and rider strategy, LBB engagement, agency coordination, and interim work where the state budget is actually decided.</p>
-      </article>
-      <article class="cap">
-        <img class="cap__icon" src="assets/img/icon-procedural-2.png" alt="" loading="lazy" width="480" height="480" />
-        <h3>Parliamentary Procedure</h3>
-        <p>House Rules, points of order, amendments, germaneness, and floor process, advised by the firm&rsquo;s former Chief Clerk of the Texas House.</p>
-      </article>
-      <article class="cap">
-        <img class="cap__icon" src="assets/img/icon-coalitions.png" alt="" loading="lazy" width="480" height="480" />
-        <h3>Coalition &amp; Stakeholder Management</h3>
-        <p>Build durable support, manage organized opposition, and align boards, members, and partners around achievable outcomes.</p>
-      </article>
-    </div>
+      <a class="article__back" href="../insights/" aria-label="Back to Insights"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg><span>Back to Insights</span></a>
 
-    <div class="caps__foot">
-      <a class="linkarrow" href="services.html">View all services <span class="arrow" aria-hidden="true">→</span></a>
-    </div>
-  </div>
-</section>
-
-<!-- ===================== Process break (mid-page editorial banner) ===================== -->
-<section class="processbreak" aria-labelledby="processbreak-h2" data-reveal>
-  <div class="container processbreak__inner">
-    <div class="processbreak__media">
-      <img src="assets/img/inline-d0832550da.jpg" alt="Professionals in conversation inside a Capitol-style hallway" loading="lazy" />
-    </div>
-    <div class="processbreak__copy">
-      <p class="eyebrow">Inside The Process</p>
-      <h2 id="processbreak-h2">Strategy is built before the vote is taken.</h2>
-      <p>From bill drafting and budget riders to author strategy, committee movement, and floor procedure, The Haney Group helps clients prepare for the moments when timing, judgment, and process matter most.</p>
-      <a class="btn btn--primary processbreak__cta" href="contact.html">
-        Discuss Your Legislative Strategy
-        <span class="arrow" aria-hidden="true">→</span>
-      </a>
-    </div>
-  </div>
-</section>
-
-<!-- ===================== Credibility / proof ===================== -->
-<section class="proof" data-reveal>
-  <div class="container">
-    <div class="section__head">
-      <p class="eyebrow">Why Clients Choose Us</p>
-      <h2 class="h2">Experience matters when the process moves quickly.</h2>
-    </div>
-
-    <div class="proof__grid">
-      <div class="proof__item">
-        <img class="proof__illo" src="assets/img/inline-7589971e7e.png" alt="" width="320" height="320" loading="lazy" />
-        <h3>Texas Capitol Experience</h3>
-        <p>Decades of hands-on legislative experience inside and around the Texas Capitol, across multiple sessions and Speakers.</p>
+      <div class="article__meta">
+        <span class="article__meta-group"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>By <strong class="article__byline">Robert Haney</strong></span></span>
+        <span class="article__meta-sep"></span>
+        <span class="article__meta-group"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg><span>Interim 2026</span></span>
+        <span class="article__meta-sep"></span>
+        <span class="article__meta-group"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>5 min read</span></span>
+        <span class="article__meta-sep"></span>
+        <span class="article__meta-group"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.59 13.41 13 21l-9-9V3h9l7.59 7.59a2 2 0 0 1 0 2.82z"/><circle cx="8" cy="8" r="1.5"/></svg><span>Procedure &middot; Floor Work</span></span>
+        <a class="article__email" href="mailto:?subject=From%20The%20Haney%20Group%3A%20Points%20Of%20Order%2C%20Explained&body=Points%20Of%20Order%2C%20Explained%0A%0AA%20point%20of%20order%20is%20one%20of%20the%20quietest%20but%20most%20consequential%20tools%20in%20the%20legislative%20process.%20How%20a%20procedural%20challenge%20can%20stop%20a%20bill%20midstream%2C%20force%20a%20rewrite%2C%20and%20change%20the%20political%20perception%20of%20the%20proposal%20itself.%0A%0ARead%20the%20full%20article%3A%0Ahttps%3A//www.haney-group.com/insights/points-of-order-explained.html%0A%0A--%20The%20Haney%20Group%0AAustin%2C%20Texas%0A%28512%29%20925-5000%0Awww.haney-group.com" aria-label="Email this article to myself"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg><span>Email me this article</span></a>
       </div>
 
-      <div class="proof__item">
-        <img class="proof__illo" src="assets/img/inline-86b56cc282.png" alt="" width="320" height="320" loading="lazy" />
-        <h3>Procedural Judgment</h3>
-        <p>Practical understanding of House Rules, committee process, amendments, deadlines, and the floor procedure that decides outcomes.</p>
+      <p>A point of order is one of the quietest but most consequential tools in the legislative process. It is a <strong>formal objection that says a chamber rule has been violated</strong>, and once it is sustained, the chamber must stop treating the bill or amendment as if it can proceed in its current form.</p>
+
+      <div class="article__keypoints" aria-labelledby="article-keypoints-label">
+        <h2 id="article-keypoints-label">What this article covers</h2>
+        <ul>
+          <li><strong>What a point of order does</strong> &mdash; a procedural challenge, not a policy debate.</li>
+          <li><strong>When they matter most</strong> &mdash; the floor and deadline moments where procedure becomes strategy.</li>
+          <li><strong>Why the floor changes</strong> &mdash; the practical shift once one is sustained.</li>
+          <li><strong>Why drafting matters</strong> &mdash; the interim work that prevents most points of order.</li>
+          <li><strong>Procedural power</strong> &mdash; how rules shape outcomes as much as votes do.</li>
+        </ul>
       </div>
 
-      <div class="proof__item">
-        <img class="proof__illo" src="assets/img/inline-425e9a13a6.png" alt="" width="320" height="320" loading="lazy" />
-        <h3>Appropriations Knowledge</h3>
-        <p>Strategic guidance on budget riders, funding requests, and the realities of how Article II and Article III actually move.</p>
+      <h2>What A Point Of Order Does</h2>
+      <p>At its core, a point of order is a challenge to procedure, not a debate over policy. It asks whether the chamber has followed the rules governing notice, germaneness, timing, drafting, or another required step.</p>
+      <p><strong>When one is raised and sustained:</strong></p>
+      <ul>
+        <li>The bill or amendment may be delayed, amended, or removed from consideration.</li>
+        <li>The chamber&rsquo;s attention shifts from substance to procedure.</li>
+        <li>The operative language on the floor can change immediately.</li>
+      </ul>
+      <p>That is why a point of order can alter the trajectory of a bill even when the underlying policy still has support.</p>
+
+      <h2>When They Matter Most</h2>
+      <p>Points of order matter most when a bill is moving quickly and the margins are thin. They are especially important during floor debate, during amendment consideration, and at moments when the chamber is trying to move multiple items under pressure.</p>
+      <p><strong>They also matter when:</strong></p>
+      <ul>
+        <li>A bill has not been drafted carefully enough to comply with chamber rules.</li>
+        <li>An amendment reaches beyond the bill&rsquo;s scope.</li>
+        <li>Timing rules or notice requirements have not been satisfied.</li>
+        <li>The chamber is close to a deadline and cannot easily recover lost time.</li>
+      </ul>
+      <p>In those moments, procedure becomes strategy.</p>
+
+      <h2>Why The Floor Changes</h2>
+      <p>The moment a point of order is sustained, the chamber is no longer operating in ordinary debate mode. Members shift from discussing whether they like the proposal to deciding what the rules allow.</p>
+      <p><strong>That change matters because it can:</strong></p>
+      <ul>
+        <li>Stop a bill midstream.</li>
+        <li>Force a rewrite or substitute.</li>
+        <li>Expose weaknesses that were not obvious during earlier stages.</li>
+        <li>Signal to other members that the proposal may not be as ready as it appeared.</li>
+      </ul>
+      <p>A sustained point of order can do more than defeat a technical flaw. It can also change the political perception of the bill itself.</p>
+
+      <h2>Why Drafting Matters</h2>
+      <p>Most points of order are not surprises to people who have worked closely on the bill. They often arise from issues that could have been identified earlier through careful drafting and review.</p>
+      <p><strong>Good interim preparation reduces risk by:</strong></p>
+      <ul>
+        <li>Keeping language tightly tied to the bill&rsquo;s purpose.</li>
+        <li>Checking for conflicts with chamber rules.</li>
+        <li>Reviewing amendments before they reach the floor.</li>
+        <li>Thinking ahead to likely objections rather than reacting to them later.</li>
+      </ul>
+      <p>A clean bill is not one that avoids scrutiny entirely. It is one that can survive scrutiny when it comes.</p>
+
+      <h2>Procedural Power</h2>
+      <p>Points of order are procedural, but their effect is practical and immediate. They can reshape the floor debate, influence negotiations, and determine whether a proposal advances at all.</p>
+      <p>That is why they deserve attention long before the floor vote. Understanding them early helps clients and advocates appreciate that in a legislative session, <strong>the rules are not background material &mdash; they are part of the substance of the outcome.</strong></p>
+
+      <div class="article__close">
+        <p><strong>Want to read this later?</strong> Send this article to your inbox with a one-click email. We will not subscribe you to anything &mdash; this is a private, plain link from your own mail client.</p>
+        <a class="article__email" href="mailto:?subject=From%20The%20Haney%20Group%3A%20Points%20Of%20Order%2C%20Explained&body=Points%20Of%20Order%2C%20Explained%0A%0AA%20point%20of%20order%20is%20one%20of%20the%20quietest%20but%20most%20consequential%20tools%20in%20the%20legislative%20process.%20How%20a%20procedural%20challenge%20can%20stop%20a%20bill%20midstream%2C%20force%20a%20rewrite%2C%20and%20change%20the%20political%20perception%20of%20the%20proposal%20itself.%0A%0ARead%20the%20full%20article%3A%0Ahttps%3A//www.haney-group.com/insights/points-of-order-explained.html%0A%0A--%20The%20Haney%20Group%0AAustin%2C%20Texas%0A%28512%29%20925-5000%0Awww.haney-group.com" aria-label="Email this article to myself"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg><span>Email me this article</span></a>
       </div>
 
-      <div class="proof__item">
-        <img class="proof__illo" src="assets/img/inline-1ec1420b3e.png" alt="" width="320" height="320" loading="lazy" />
-        <h3>Client-Focused Execution</h3>
-        <p>Clear communication, preparation, and follow-through from interim planning to sine die, briefed for boards and members alike.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ===================== Approach ===================== -->
-<section class="approach" data-reveal>
-  <div class="container">
-    <div class="section__head">
-      <p class="eyebrow">How We Work</p>
-      <h2 class="h2">A disciplined approach to legislative strategy.</h2>
-    </div>
-
-    <div class="approach__grid">
-      <article class="step">
-        <img class="step__illo" src="assets/img/inline-835345f38e.png" alt="Step 1" width="320" height="320" loading="lazy" />
-        <h3>Understand the Objective</h3>
-        <p>Clarify the client’s policy, funding, regulatory, or legislative goal, and the constraints that surround it.</p>
-      </article>
-
-      <article class="step">
-        <img class="step__illo" src="assets/img/inline-abdda0b7c7.png" alt="Step 2" width="320" height="320" loading="lazy" />
-        <h3>Map the Process</h3>
-        <p>Identify deadlines, committees, authors, stakeholders, procedural risks, and the viable paths forward.</p>
-      </article>
-
-      <article class="step">
-        <img class="step__illo" src="assets/img/inline-73a36ce4aa.png" alt="Step 3" width="320" height="320" loading="lazy" />
-        <h3>Build the Strategy</h3>
-        <p>Prepare messaging, bill language, budget posture, coalition support, and an engagement plan tied to the calendar.</p>
-      </article>
-
-      <article class="step">
-        <img class="step__illo" src="assets/img/inline-1c2fbe3ffe.png" alt="Step 4" width="320" height="320" loading="lazy" />
-        <h3>Execute with Discipline</h3>
-        <p>Track movement, communicate clearly, adjust quickly, and stay focused on the result the client engaged us to deliver.</p>
-      </article>
-    </div>
-  </div>
-</section>
-
-<!-- ===================== Senior-led firm / principals ===================== -->
-<section class="firm" data-reveal>
-  <div class="container">
-    <div class="firm__top">
-      <p class="eyebrow">The Principals</p>
-      <h2 class="h2">Proven expertise. Focused results. Unmatched influence.</h2>
-      <p class="lede">
-        The Haney Group is intentionally senior-led. Clients work directly with principals who bring more than 40 years of combined Texas Capitol experience to legislative strategy, parliamentary procedure, and disciplined communication.
-      </p>
-    </div>
-
-    <div class="principals__grid">
-
-      <article class="principal">
-        <div class="principal__portrait">
-          <img src="assets/img/inline-634aab4058.jpg" alt="Portrait of Robert Haney" width="768" height="768" loading="lazy" />
-        </div>
-        <h3 class="principal__name">Robert Haney</h3>
-        <p class="principal__role">Principal · Former Chief Clerk, Texas House</p>
-        <p class="principal__bio">
-          Twenty-five years inside the Texas House of Representatives, including service as Chief Clerk under five Speakers. From the rostrum he managed calendars, certified votes, and oversaw the procedural backbone that thousands of bills moved through. Past President of the American Society of Legislative Clerks and Secretaries and a nationally recognized parliamentary expert.
-        </p>
-        <a class="linkarrow principal__link" href="about.html#robert">Read Robert’s full biography <span class="arrow" aria-hidden="true">→</span></a>
-      </article>
-
-      <article class="principal">
-        <div class="principal__portrait">
-          <img src="assets/img/inline-fab1dc790d.jpg" alt="Portrait of Julie Freeman Haney" width="531" height="531" loading="lazy" />
-        </div>
-        <h3 class="principal__name">Julie Freeman Haney</h3>
-        <p class="principal__role">Principal · Appropriations &amp; Communications</p>
-        <p class="principal__bio">
-          Two decades of Texas legislative and public-relations experience, built as an aide to the House Appropriations Chair, as chief of staff to a state legislator, and across communications engagements where client priorities had to land at the Capitol and at the board table in the same week. Specializes in message development and legislative communication.
-        </p>
-        <a class="linkarrow principal__link" href="about.html#julie">Read Julie’s full biography <span class="arrow" aria-hidden="true">→</span></a>
-      </article>
-
-    </div>
-  </div>
-</section>
-
-<!-- ===================== Issues / client experience ===================== -->
-<section class="issues" data-reveal>
-  <div class="container">
-    <div class="section__head">
-      <p class="eyebrow">Experience</p>
-      <h2 class="h2">Experience across the issues that shape Texas.</h2>
-      <p class="lede" style="margin-top:0">
-        Our work spans the sectors where Texas policy is most actively contested, for corporate clients, statewide associations, public entities, and policy organizations.
-      </p>
-    </div>
-
-    <div class="issues__grid">
-      <a class="issue" href="industries.html">
-        <span class="issue__mark" aria-hidden="true"></span>
-        <div><h3>Healthcare</h3><p>Managed care, hospitals, physician groups, and Medicaid policy.</p></div>
-      </a>
-      <a class="issue" href="industries.html">
-        <span class="issue__mark" aria-hidden="true"></span>
-        <div><h3>Local Government</h3><p>Cities, counties, special districts, and preemption defense.</p></div>
-      </a>
-      <a class="issue" href="industries.html">
-        <span class="issue__mark" aria-hidden="true"></span>
-        <div><h3>Infrastructure &amp; Water</h3><p>Capital appropriations, permitting, and the regulators of the next decade.</p></div>
-      </a>
-      <a class="issue" href="industries.html">
-        <span class="issue__mark" aria-hidden="true"></span>
-        <div><h3>Real Estate &amp; Land Use</h3><p>Property rights, housing policy, and association-led advocacy.</p></div>
-      </a>
-      <a class="issue" href="industries.html">
-        <span class="issue__mark" aria-hidden="true"></span>
-        <div><h3>Economic Development</h3><p>Incentive programs, regional priorities, and statewide growth policy.</p></div>
-      </a>
-      <a class="issue" href="industries.html">
-        <span class="issue__mark" aria-hidden="true"></span>
-        <div><h3>Regulated Industries</h3><p>High-visibility issues that turn on member relationships and disciplined communications.</p></div>
-      </a>
-      <a class="issue" href="industries.html">
-        <span class="issue__mark" aria-hidden="true"></span>
-        <div><h3>Appropriations</h3><p>Article and rider strategy across state agency budgets and interim charges.</p></div>
-      </a>
-      <a class="issue" href="industries.html">
-        <span class="issue__mark" aria-hidden="true"></span>
-        <div><h3>Public Policy &amp; Procedure</h3><p>Associations, coalitions, and policy organizations preparing for session.</p></div>
-      </a>
-    </div>
-
-    <blockquote class="issues__quote">
-      <p>“When the calendar tightened and the bill we had been working on for a year was suddenly in play, The Haney Group did not flinch. They told us what to do, who to call, and what to say. And they were right on every count.”</p>
-      <cite>General Counsel · Statewide Trade Association</cite>
-    </blockquote>
-  </div>
-</section>
-
-<!-- ===================== Insights ===================== -->
-<section class="insights" data-reveal>
-  <div class="container">
-    <div class="section__head">
-      <p class="eyebrow">Insights</p>
-      <h2 class="h2">Legislative perspective for clients preparing ahead.</h2>
-      <p class="lede" style="margin-top:0">
-        The Session Briefing is a candid read on what moved at the Texas Capitol, written by the firm during session and monthly during interim.
-      </p>
-    </div>
-
-    <div class="insights__grid">
-      <a class="insight" href="insights/">
-        <div class="insight__band" aria-hidden="true">
-          <img src="assets/img/inline-9e9828773d.jpg" alt="" width="768" height="768" loading="lazy" />
-        </div>
-        <div class="insight__body">
-          <p class="insight__meta">Article · Interim</p>
-          <h3>Preparing Early for the Next Legislative Session</h3>
-          <p>The work that decides session outcomes happens long before opening day. A practical framework for interim preparation.</p>
-        </div>
-      </a>
-      <a class="insight" href="insights/">
-        <div class="insight__band" aria-hidden="true">
-          <img src="assets/img/inline-1367b1c67c.jpg" alt="" width="768" height="768" loading="lazy" />
-        </div>
-        <div class="insight__body">
-          <p class="insight__meta">Article · Appropriations</p>
-          <h3>What Makes a Budget Rider Viable</h3>
-          <p>Most riders that survive conference look obvious in retrospect. A close read of what distinguishes durable language from short-lived language.</p>
-        </div>
-      </a>
-      <a class="insight" href="insights/">
-        <div class="insight__band" aria-hidden="true">
-          <img src="assets/img/inline-e97cb4df21.jpg" alt="" width="349" height="349" loading="lazy" />
-        </div>
-        <div class="insight__body">
-          <p class="insight__meta">Article · Procedure</p>
-          <h3>Why Legislative Timing Matters</h3>
-          <p>Calendars, deadlines, and the difference between a bill that moves and a bill that waits.</p>
-        </div>
-      </a>
-    </div>
-
-    <div class="insights__foot">
-      <a class="linkarrow" href="insights/">See all insights <span class="arrow" aria-hidden="true">→</span></a>
-    </div>
-  </div>
-</section>
-
-<!-- ===================== Closing CTA ===================== -->
-<section class="closing" data-reveal>
-  <div class="container">
-    <div class="closing__inner">
-      <div>
-        <p class="eyebrow" style="margin-bottom:18px">Contact</p>
-        <h2 class="h2">Preparing for the next legislative session?</h2>
-      </div>
-      <div>
-        <p>Start early, with a strategy grounded in experience, timing, and practical knowledge of the Texas legislative process. Every engagement begins with a short, confidential conversation.</p>
-        <div class="closing__ctas" style="margin-top:28px">
-          <a class="btn btn--primary" href="contact.html">
-            Contact The Haney Group <span class="arrow" aria-hidden="true">→</span>
-          </a>
-          <a class="btn btn--ghost" href="tel:+15129255000">
-            Or call (512) 925-5000
-          </a>
-        </div>
-      </div>
     </div>
   </div>
 </section>
 
 </main>
 
-<!-- ===================== Footer ===================== -->
 <footer class="footer">
   <div class="container">
     <div class="footer__grid">
 
       <div class="footer__brand">
-        <a class="brand" href="index.html" aria-label="The Haney Group, Home">
-          <img class="brand__logo brand__logo--footer" src="assets/img/inline-1c87817066.png" alt="The Haney Group" width="911" height="690" loading="lazy" />
+        <a class="brand" href="../index.html" aria-label="The Haney Group, Home">
+          <img class="brand__logo brand__logo--footer" src="../assets/img/inline-1c87817066.png" alt="The Haney Group" width="911" height="690" loading="lazy" />
         </a>
         <p><em>Proven expertise. Focused results. Unmatched influence.</em> A senior-led Austin government relations firm — Texas legislative strategy, appropriations, and procedural expertise for organizations with priorities at the Capitol.</p>
         <div class="footer__social">
@@ -1454,22 +1563,22 @@ section.tight { padding-block: clamp(48px, 6vw, 72px); }
       <div class="footer__col">
         <h4>Services</h4>
         <ul>
-          <li><a href="services/legislative-strategy.html">Legislative Strategy</a></li>
-          <li><a href="services/appropriations.html">Appropriations &amp; Riders</a></li>
-          <li><a href="services/public-affairs.html">Public Affairs</a></li>
-          <li><a href="services/parliamentary.html">Parliamentary Procedure</a></li>
-          <li><a href="services.html">All services</a></li>
+          <li><a href="../services/legislative-strategy.html">Legislative Strategy</a></li>
+          <li><a href="../services/appropriations.html">Appropriations &amp; Riders</a></li>
+          <li><a href="../services/public-affairs.html">Public Affairs</a></li>
+          <li><a href="../services/parliamentary.html">Parliamentary Procedure</a></li>
+          <li><a href="../services.html">All services</a></li>
         </ul>
       </div>
 
       <div class="footer__col">
         <h4>The Firm</h4>
         <ul>
-          <li><a href="about.html">About</a></li>
-          <li><a href="experience.html">Experience</a></li>
-          <li><a href="industries.html">Clients</a></li>
-          <li><a href="insights/">Insights</a></li>
-          <li><a href="contact.html">Contact</a></li>
+          <li><a href="../about.html">About</a></li>
+          <li><a href="../experience.html">Experience</a></li>
+          <li><a href="../industries.html">Clients</a></li>
+          <li><a href="../insights/">Insights</a></li>
+          <li><a href="../contact.html">Contact</a></li>
         </ul>
       </div>
 
@@ -1489,9 +1598,9 @@ section.tight { padding-block: clamp(48px, 6vw, 72px); }
     </div>
 
     <div class="footer__bottom">
-      <span>© <span data-year>2026</span> Haney Group LLC. All rights reserved.</span>
+      <span>&copy; <span data-year>2026</span> Haney Group LLC. All rights reserved.</span>
       <span>
-        <a href="#">Privacy</a> · <a href="#">Texas Ethics Commission Lobby Registration</a> · <a href="#">Accessibility</a>
+        <a href="#">Privacy</a> &middot; <a href="#">Texas Ethics Commission Lobby Registration</a> &middot; <a href="#">Accessibility</a>
       </span>
     </div>
   </div>
@@ -1569,6 +1678,7 @@ section.tight { padding-block: clamp(48px, 6vw, 72px); }
     el.textContent = new Date().getFullYear();
   });
 })();
+
 </script>
 </body>
 </html>
