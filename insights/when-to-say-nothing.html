@@ -1378,6 +1378,18 @@ section.article-section { padding-top: clamp(14px, 2vw, 28px); padding-bottom: c
 .article__back:hover { color: var(--amber-700); gap: 11px; }
 .article__back:hover svg { color: var(--amber-700); transform: translateX(-2px); }
 .article__byline { font-weight: 600; color: var(--text-1); }
+
+/* ---------- Article topbar: back link + email-me on one row ---------- */
+.article__topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 0 0 22px;
+}
+.article__topbar .article__back { margin: 0; }
+.article__topbar .article__email { margin-left: 0; }
 </style>
 </head>
 <body>
@@ -1457,7 +1469,10 @@ section.article-section { padding-top: clamp(14px, 2vw, 28px); padding-bottom: c
   <div class="container">
     <div class="prose article__lead">
 
-      <a class="article__back" href="../insights/" aria-label="Back to Insights"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg><span>Back to Insights</span></a>
+      <div class="article__topbar">
+        <a class="article__back" href="../insights/" aria-label="Back to Insights"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg><span>Back to Insights</span></a>
+        <a class="article__email" href="mailto:?subject=From%20The%20Haney%20Group%3A%20When%20To%20Say%20Nothing&body=When%20To%20Say%20Nothing%0A%0AIn%20a%20legislative%20session%2C%20not%20every%20moment%20calls%20for%20a%20statement.%20Sometimes%20the%20most%20effective%20move%20is%20restraint.%20Why%20disciplined%20silence%20preserves%20leverage%2C%20avoids%20opposition%2C%20and%20keeps%20the%20legislative%20record%20clean.%0A%0ARead%20the%20full%20article%3A%0Ahttps%3A//www.haney-group.com/insights/when-to-say-nothing.html%0A%0A--%20The%20Haney%20Group%0AAustin%2C%20Texas%0A%28512%29%20925-5000%0Awww.haney-group.com" aria-label="Email this article to myself"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg><span>Email me this article</span></a>
+      </div>
 
       <div class="article__meta">
         <span class="article__meta-group"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>By <strong class="article__byline">Robert Haney</strong></span></span>
@@ -1467,7 +1482,6 @@ section.article-section { padding-top: clamp(14px, 2vw, 28px); padding-bottom: c
         <span class="article__meta-group"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>6 min read</span></span>
         <span class="article__meta-sep"></span>
         <span class="article__meta-group"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.59 13.41 13 21l-9-9V3h9l7.59 7.59a2 2 0 0 1 0 2.82z"/><circle cx="8" cy="8" r="1.5"/></svg><span>Communications &middot; Discipline</span></span>
-        <a class="article__email" href="mailto:?subject=From%20The%20Haney%20Group%3A%20When%20To%20Say%20Nothing&body=When%20To%20Say%20Nothing%0A%0AIn%20a%20legislative%20session%2C%20not%20every%20moment%20calls%20for%20a%20statement.%20Sometimes%20the%20most%20effective%20move%20is%20restraint.%20Why%20disciplined%20silence%20preserves%20leverage%2C%20avoids%20opposition%2C%20and%20keeps%20the%20legislative%20record%20clean.%0A%0ARead%20the%20full%20article%3A%0Ahttps%3A//www.haney-group.com/insights/when-to-say-nothing.html%0A%0A--%20The%20Haney%20Group%0AAustin%2C%20Texas%0A%28512%29%20925-5000%0Awww.haney-group.com" aria-label="Email this article to myself"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg><span>Email me this article</span></a>
       </div>
 
       <p>In a legislative session, not every moment calls for a statement. Sometimes the most effective move is <strong>restraint</strong> &mdash; especially when a bill is moving, a draft is circulating, or a negotiation is still delicate. Silence can preserve leverage, avoid unnecessary opposition, and keep a proposal from being defined by someone else.</p>
