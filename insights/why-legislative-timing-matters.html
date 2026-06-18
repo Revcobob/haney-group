@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Insights &middot; The Session Briefing &middot; The Haney Group</title>
-<meta name="description" content="The Session Briefing, a candid read on what moved at the Texas Capitol, written by The Haney Group during session and monthly during interim." />
+<title>Why Legislative Timing Matters &middot; The Haney Group</title>
+<meta name="description" content="How the Texas legislative calendar  filing, hearings, committee reports, and floor deadlines  quietly decides which bills move and which wait." />
 <meta name="theme-color" content="#0B1228" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -435,26 +435,28 @@ section.tight { padding-block: clamp(48px, 6vw, 72px); }
 @media (min-width: 640px) { .caps__grid { grid-template-columns: repeat(2, 1fr); } }
 @media (min-width: 1024px) { .caps__grid { grid-template-columns: repeat(3, 1fr); } }
 .cap {
-  padding: 32px 28px;
+  padding: 44px 28px 36px;
   border-right: 1px solid var(--line-1);
   border-bottom: 1px solid var(--line-1);
   display: flex; flex-direction: column;
-  gap: 12px;
+  align-items: center;
+  text-align: center;
+  gap: 14px;
   background: var(--paper);
   transition: background .22s var(--ease);
-  position: relative;
 }
 .cap:hover { background: var(--paper-2); }
-.cap__num {
-  font-size: 11px;
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
-  color: var(--amber-600);
-  font-weight: 700;
+.cap__icon {
+  width: clamp(120px, 12vw, 156px);
+  height: auto;
+  aspect-ratio: 1 / 1;
+  display: block;
   margin-bottom: 4px;
+  user-select: none;
+  -webkit-user-drag: none;
 }
-.cap h3 { font-size: 19px; font-weight: 600; }
-.cap p { color: var(--text-2); font-size: 14.5px; line-height: 1.55; margin: 0; }
+.cap h3 { font-size: 17px; font-weight: 600; max-width: 22ch; margin: 0; }
+.cap p { color: var(--text-2); font-size: 14.5px; line-height: 1.55; margin: 0; max-width: 32ch; }
 .caps__foot { margin-top: 36px; }
 
 /* ---------- Credibility / proof ---------- */
@@ -1282,6 +1284,150 @@ section.tight { padding-block: clamp(48px, 6vw, 72px); }
   }
   .nav__foot-link:hover { border-color: var(--navy-900); background: var(--paper-3); }
 }
+
+/* ---------- Article (insights detail) ---------- */
+.article__meta {
+  display: flex; flex-wrap: wrap; gap: 14px 22px;
+  align-items: center;
+  padding: 16px 0;
+  border-top: 1px solid var(--line-1);
+  border-bottom: 1px solid var(--line-1);
+  margin: 0 0 36px;
+  font-size: 13px;
+  color: var(--text-3);
+  letter-spacing: 0.02em;
+}
+.article__meta-group { display: inline-flex; align-items: center; gap: 8px; }
+.article__meta-group svg { color: var(--amber-600); flex-shrink: 0; }
+.article__meta-sep { width: 1px; height: 14px; background: var(--line-2); }
+.article__email {
+  margin-left: auto;
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 8px 14px;
+  border: 1px solid var(--line-2);
+  border-radius: var(--radius-sm);
+  color: var(--navy-900);
+  font-weight: 600;
+  font-size: 13.5px;
+  letter-spacing: 0;
+  text-transform: none;
+  transition: border-color .22s var(--ease), background .22s var(--ease), color .22s var(--ease);
+}
+.article__email svg { color: var(--amber-600); }
+.article__email:hover { border-color: var(--navy-900); background: var(--paper-3); }
+.article__email:hover svg { color: var(--amber-700); }
+.article__keypoints {
+  background: var(--paper-2);
+  border-left: 3px solid var(--amber-500);
+  padding: 22px 26px 24px;
+  margin: 0 0 36px;
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+}
+.article__keypoints h2 {
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--amber-600);
+  margin: 0 0 12px;
+  font-weight: 700;
+}
+.article__keypoints ul { padding-left: 1.1em; margin: 0; color: var(--text-1); }
+.article__keypoints li { margin: 0 0 8px; font-size: 15.5px; line-height: 1.5; }
+.article__keypoints li:last-child { margin-bottom: 0; }
+.article__keypoints li strong { color: var(--text-1); }
+.article__lead p:first-child::first-letter {
+  font-size: 3.2em;
+  float: left;
+  line-height: 0.95;
+  padding: 4px 12px 0 0;
+  color: var(--navy-900);
+  font-weight: 700;
+}
+.article__close {
+  margin-top: 48px;
+  padding: 28px 28px 30px;
+  background: var(--paper-2);
+  border: 1px solid var(--line-1);
+  border-radius: var(--radius-md);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.article__close p { margin: 0; color: var(--text-2); font-size: 15px; line-height: 1.55; }
+.article__close .article__email { margin-left: 0; align-self: flex-start; }
+@media (max-width: 640px) {
+  .article__meta { gap: 10px 14px; font-size: 12.5px; }
+  .article__email { margin-left: 0; }
+  .article__keypoints { padding: 20px 22px; }
+}
+
+.article__timeline {
+  margin: 28px 0 36px;
+  padding: 26px 28px 28px;
+  background: var(--paper-2);
+  border: 1px solid var(--line-1);
+  border-radius: var(--radius-md);
+}
+.article__timeline-eyebrow {
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--amber-600);
+  font-weight: 700;
+  margin: 0 0 4px;
+}
+.article__timeline-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text-1);
+  margin: 0 0 18px;
+  letter-spacing: -0.005em;
+}
+.article__timeline ol {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  position: relative;
+}
+.article__timeline ol::before {
+  content: "";
+  position: absolute;
+  left: 7px;
+  top: 4px;
+  bottom: 6px;
+  width: 2px;
+  background: linear-gradient(to bottom, var(--amber-500), rgba(201,137,42,0.25));
+  border-radius: 1px;
+}
+.article__timeline li {
+  position: relative;
+  padding: 4px 0 16px 30px;
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: var(--text-2);
+}
+.article__timeline li:last-child { padding-bottom: 0; }
+.article__timeline li::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 8px;
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  background: var(--paper);
+  border: 3px solid var(--amber-500);
+  box-sizing: border-box;
+}
+.article__timeline li strong {
+  display: block;
+  color: var(--navy-900);
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.01em;
+  margin-bottom: 2px;
+}
+@media (max-width: 640px) {
+  .article__timeline { padding: 22px 22px 24px; }
+}
 </style>
 </head>
 <body>
@@ -1350,86 +1496,134 @@ section.tight { padding-block: clamp(48px, 6vw, 72px); }
 <section class="pagehero pagehero--photo" aria-labelledby="ph-h1">
   <div class="pagehero__bg" style="background-image:url('../assets/img/insights-hero-web.jpg')" aria-hidden="true"></div>
   <div class="container pagehero__inner">
-    <p class="pagehero__crumbs"><a href="../index.html">Home</a><span class="sep">/</span><span>Insights</span></p>
-    <p class="eyebrow" style="margin-bottom:22px">Insights</p>
-    <h1 class="h1" id="ph-h1">The Session Briefing.</h1>
-    <p class="lede">A candid read on what moved at the Texas Capitol, written by the firm during session and monthly during interim.</p>
+    <p class="pagehero__crumbs"><a href="../index.html">Home</a><span class="sep">/</span><a href="../insights/">Insights</a><span class="sep">/</span><span>Legislative Timing</span></p>
+    <p class="eyebrow" style="margin-bottom:22px">The Session Briefing &middot; Article</p>
+    <h1 class="h1" id="ph-h1">Why Legislative Timing Matters</h1>
+    <p class="lede">Substantive ideas compete within a fixed calendar. The procedural milestones that govern bill movement quietly determine which proposals receive hearings, advance to calendars, or never surface at all.</p>
   </div>
 </section>
 
 <section data-reveal>
   <div class="container">
-    <div class="postlist">
-      <article class="postlist__item postlist__item--thumb">
-        <div class="postlist__thumb"><img src="../assets/img/inline-82599cc6b6.jpg" alt="" loading="lazy" /></div>
-        <div>
-          <div class="postlist__meta">Article &middot; Interim</div>
-          <h3 class="postlist__title"><a href="preparing-early-for-the-next-legislative-session.html">Preparing Early for the Next Legislative Session</a></h3>
-          <p class="postlist__excerpt">The work that decides session outcomes happens long before opening day. A practical framework for interim preparation &mdash; calendar review, member mapping, message work, and LBB engagement that has to start in the spring.</p>
-        </div>
-      </article>
-      <article class="postlist__item postlist__item--thumb">
-        <div class="postlist__thumb"><img src="../assets/img/inline-e97cb4df21.jpg" alt="" loading="lazy" /></div>
-        <div>
-          <div class="postlist__meta">Article &middot; Appropriations</div>
-          <h3 class="postlist__title"><a href="what-makes-a-budget-rider-viable.html">What Makes a Budget Rider Viable</a></h3>
-          <p class="postlist__excerpt">Most riders that survive conference look obvious in retrospect. A close read of what distinguishes durable rider language from short-lived language, and why the work begins in interim.</p>
-        </div>
-      </article>
-      <article class="postlist__item postlist__item--thumb">
-        <div class="postlist__thumb"><img src="../assets/img/inline-3c9842e389.jpg" alt="" loading="lazy" /></div>
-        <div>
-          <div class="postlist__meta">Article &middot; Procedure</div>
-          <h3 class="postlist__title"><a href="why-legislative-timing-matters.html">Why Legislative Timing Matters</a></h3>
-          <p class="postlist__excerpt">Calendars, deadlines, and the difference between a bill that moves and a bill that waits. The procedural milestones that quietly decide what gets a hearing.</p>
-        </div>
-      </article>
-      <article class="postlist__item postlist__item--thumb">
-        <div class="postlist__thumb"><img src="../assets/img/inline-4ac60ed839.jpg" alt="" loading="lazy" /></div>
-        <div>
-          <div class="postlist__meta">Article &middot; Communications</div>
-          <h3 class="postlist__title"><a href="#">When To Say Nothing</a></h3>
-          <p class="postlist__excerpt">Message discipline during a moving bill. The handful of moments in a session when the right move is silence &mdash; and how to know which moments those are.</p>
-        </div>
-      </article>
-      <article class="postlist__item postlist__item--thumb">
-        <div class="postlist__thumb"><img src="../assets/img/inline-9e9828773d.jpg" alt="" loading="lazy" /></div>
-        <div>
-          <div class="postlist__meta">Article &middot; Lobbying</div>
-          <h3 class="postlist__title"><a href="#">Member Meetings That Move A Bill</a></h3>
-          <p class="postlist__excerpt">Preparation for a member meeting. What to bring, what to leave out, and how a fifteen-minute conversation can quietly change the trajectory of a bill.</p>
-        </div>
-      </article>
-      <article class="postlist__item postlist__item--thumb">
-        <div class="postlist__thumb"><img src="../assets/img/inline-1367b1c67c.jpg" alt="" loading="lazy" /></div>
-        <div>
-          <div class="postlist__meta">Article &middot; Procedure</div>
-          <h3 class="postlist__title"><a href="#">Points Of Order, Explained</a></h3>
-          <p class="postlist__excerpt">A non-procedural guide to points of order &mdash; what they are, when they matter, and why the moment one is sustained on the floor it changes what the chamber is doing.</p>
-        </div>
-      </article>
-    </div>
-  </div>
-</section>
+    <div class="prose article__lead">
 
-<section class="closing" data-reveal>
-  <div class="container">
-    <div class="closing__inner">
-      <div>
-        <p class="eyebrow" style="margin-bottom:18px">Contact</p>
-        <h2 class="h2">Ready to start a conversation?</h2>
+      <div class="article__meta">
+        <span class="article__meta-group"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg><span>Interim 2026</span></span>
+        <span class="article__meta-sep"></span>
+        <span class="article__meta-group"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>7 min read</span></span>
+        <span class="article__meta-sep"></span>
+        <span class="article__meta-group"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.59 13.41 13 21l-9-9V3h9l7.59 7.59a2 2 0 0 1 0 2.82z"/><circle cx="8" cy="8" r="1.5"/></svg><span>Procedure &middot; Timing</span></span>
+        <a class="article__email" href="mailto:?subject=From%20The%20Haney%20Group%3A%20Why%20Legislative%20Timing%20Matters&body=Why%20Legislative%20Timing%20Matters%0A%0AIn%20the%20Texas%20Legislature%2C%20timing%20is%20often%20the%20difference%20between%20progress%20and%20stagnation.%20How%20the%20calendar%20--%20filing%2C%20hearings%2C%20committee%20reports%2C%20calendars%2C%20and%20floor%20access%20--%20quietly%20decides%20what%20moves%20and%20what%20waits%2C%20with%20a%20milestone-by-milestone%20look%20at%20the%2090th%20session%20timeline.%0A%0ARead%20the%20full%20article%3A%0Ahttps%3A//www.haney-group.com/insights/why-legislative-timing-matters.html%0A%0A--%20The%20Haney%20Group%0AAustin%2C%20Texas%0A%28512%29%20925-5000%0Awww.haney-group.com" aria-label="Email this article to myself"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg><span>Email me this article</span></a>
       </div>
-      <div>
-        <p>Every engagement begins with a short, confidential discussion of the issue, the timing, and what success would look like. Reach us in Austin to talk it through.</p>
-        <div class="closing__ctas" style="margin-top:28px">
-          <a class="btn btn--primary" href="../contact.html">
-            Contact The Haney Group <span class="arrow" aria-hidden="true">→</span>
-          </a>
-          <a class="btn btn--ghost" href="tel:+15129255000">
-            Or call (512) 925-5000
-          </a>
-        </div>
+
+      <p>In the Texas Legislature, timing is often the difference between progress and stagnation. Substantive ideas compete within a fixed calendar, and the procedural milestones that govern bill movement quietly determine which proposals receive hearings, advance to calendars, or never surface at all. Success is not just about <strong>what a bill does</strong>, but <strong>when and how it moves</strong>.</p>
+
+      <div class="article__keypoints" aria-labelledby="article-keypoints-label">
+        <h2 id="article-keypoints-label">What this article covers</h2>
+        <ul>
+          <li><strong>Structural scarcity</strong> &mdash; what a 140-day session actually means for bill volume and hearing time.</li>
+          <li><strong>Procedural milestones</strong> &mdash; the gates that quietly decide what moves and what waits.</li>
+          <li><strong>The 90th session timeline</strong> &mdash; the dates every interim plan should be built around.</li>
+          <li><strong>Hearing &amp; calendar bottlenecks</strong> &mdash; why early-filed bills move and late ones stall.</li>
+          <li><strong>Timing as substance</strong> &mdash; how a bill&rsquo;s position in the calendar shapes its content.</li>
+        </ul>
       </div>
+
+      <h2>The Reality of a Compressed Session</h2>
+      <p>Texas&rsquo; 140-day regular session creates structural scarcity. Committees face high bill volume, limited hearing time, and competing priorities set by leadership.</p>
+      <p><strong>As a result:</strong></p>
+      <ul>
+        <li>Not all filed bills will receive a hearing.</li>
+        <li>Committee chairs exercise significant discretion over agenda setting.</li>
+        <li>Early momentum often determines whether a bill remains viable as deadlines approach.</li>
+      </ul>
+      <p>A bill that misses early windows may still be technically alive, but practically sidelined.</p>
+
+      <h2>Key Procedural Milestones</h2>
+      <p>Understanding the calendar is essential, but effective advocacy requires understanding how those dates function in practice.</p>
+      <p><strong>Critical milestones include:</strong></p>
+      <ul>
+        <li>Bill filing deadlines and the early pre-filing period.</li>
+        <li>Committee hearing windows, which narrow quickly after the first weeks of session.</li>
+        <li>Committee report deadlines, after which bills cannot advance out of committee.</li>
+        <li>Calendars Committee scheduling in the House and intent calendar practices in the Senate.</li>
+        <li>Floor deadlines and &ldquo;last days&rdquo; for consideration of various bill categories.</li>
+      </ul>
+      <p>Each milestone creates a gate. Missing one often ends a bill&rsquo;s path, regardless of support.</p>
+
+      <aside class="article__timeline" aria-labelledby="timeline-label">
+        <p class="article__timeline-eyebrow">Reference Timeline</p>
+        <p class="article__timeline-title" id="timeline-label">Texas 90th Legislature &mdash; key dates</p>
+        <ol>
+          <li><strong>Nov. 9, 2026</strong>Bill filing begins.</li>
+          <li><strong>Jan. 12, 2027</strong>Regular session convenes at noon.</li>
+          <li><strong>Mar. 12, 2027</strong>Last day to file bills.</li>
+          <li><strong>May 14, 2027</strong>House last day to consider House bills on third reading.</li>
+          <li><strong>May 26, 2027</strong>House last day to consider Senate bills on third reading.</li>
+          <li><strong>May 30, 2027</strong>Last day for either chamber to consider conference committee reports.</li>
+          <li><strong>May 31, 2027</strong>Sine die.</li>
+        </ol>
+      </aside>
+
+      <h2>The Hearing Bottleneck</h2>
+      <p>For most bills, the decisive moment is whether &mdash; and when &mdash; they receive a committee hearing.</p>
+      <p>Timing affects hearings in several ways:</p>
+      <ul>
+        <li>Early-filed bills are more likely to be noticed and scheduled while calendars are still flexible.</li>
+        <li>Bills with identified authorship priorities or leadership support move to the front of the line.</li>
+        <li>Late-emerging issues must compete against a backlog of already-positioned legislation.</li>
+        <li>Committee bandwidth tightens as deadlines approach, reducing opportunities for new hearings.</li>
+      </ul>
+      <p>In practice, a bill without a hearing early enough to be voted out of committee before deadlines is unlikely to advance.</p>
+
+      <h2>Calendars and Floor Access</h2>
+      <p>Even after a bill leaves committee, timing continues to shape outcomes.</p>
+      <p><strong>In the House:</strong></p>
+      <ul>
+        <li>Placement on a calendar is selective and influenced by deadline pressure and political priority.</li>
+        <li>Bills reported later in the process compete for diminishing floor time.</li>
+      </ul>
+      <p><strong>In the Senate:</strong></p>
+      <ul>
+        <li>The intent calendar and floor recognition practices create similar constraints.</li>
+        <li>Timing affects whether a bill is brought up individually or left pending.</li>
+      </ul>
+      <p>Late-moving bills face higher hurdles, including increased scrutiny and reduced flexibility for amendments.</p>
+
+      <h2>Strategic Use of the Interim</h2>
+      <p>The most reliable way to manage timing constraints is to begin before session.</p>
+      <p><strong>Effective interim preparation:</strong></p>
+      <ul>
+        <li>Secures authors and co-authors early, increasing the likelihood of prompt referral and attention.</li>
+        <li>Aligns stakeholders to minimize delays once a bill is filed.</li>
+        <li>Develops committee-specific strategies based on anticipated jurisdiction and workload.</li>
+        <li>Identifies potential bottlenecks and builds contingency plans.</li>
+      </ul>
+      <p>By the time session begins, well-prepared bills are positioned to move quickly through early stages, when opportunities are greatest.</p>
+
+      <h2>Timing as a Substantive Advantage</h2>
+      <p>Timing is not merely procedural &mdash; it can shape the substance of a bill.</p>
+      <p><strong>Early-moving legislation:</strong></p>
+      <ul>
+        <li>Has greater flexibility to absorb amendments and negotiate terms.</li>
+        <li>Faces less competition for attention from members and staff.</li>
+        <li>Is more likely to influence related proposals moving through the process.</li>
+      </ul>
+      <p><strong>Late-moving legislation:</strong></p>
+      <ul>
+        <li>Is often forced into narrower pathways, including amendments or omnibus vehicles.</li>
+        <li>May be reshaped significantly to fit available opportunities.</li>
+      </ul>
+      <p>Understanding this dynamic allows clients to decide whether to advance a standalone bill, pursue a rider, or position language for amendment.</p>
+
+      <h2>Closing Perspective</h2>
+      <p>Legislative success in Texas is governed as much by the calendar as by policy. The milestones that structure the session &mdash; filing, hearings, reporting, and floor access &mdash; quietly determine what moves and what waits. Clients who treat timing as a core strategic element, rather than an afterthought, are far more likely to see their priorities advance.</p>
+
+      <div class="article__close">
+        <p><strong>Want to read this later?</strong> Send this article to your inbox with a one-click email. We will not subscribe you to anything &mdash; this is a private, plain link from your own mail client.</p>
+        <a class="article__email" href="mailto:?subject=From%20The%20Haney%20Group%3A%20Why%20Legislative%20Timing%20Matters&body=Why%20Legislative%20Timing%20Matters%0A%0AIn%20the%20Texas%20Legislature%2C%20timing%20is%20often%20the%20difference%20between%20progress%20and%20stagnation.%20How%20the%20calendar%20--%20filing%2C%20hearings%2C%20committee%20reports%2C%20calendars%2C%20and%20floor%20access%20--%20quietly%20decides%20what%20moves%20and%20what%20waits%2C%20with%20a%20milestone-by-milestone%20look%20at%20the%2090th%20session%20timeline.%0A%0ARead%20the%20full%20article%3A%0Ahttps%3A//www.haney-group.com/insights/why-legislative-timing-matters.html%0A%0A--%20The%20Haney%20Group%0AAustin%2C%20Texas%0A%28512%29%20925-5000%0Awww.haney-group.com" aria-label="Email this article to myself"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg><span>Email me this article</span></a>
+      </div>
+
     </div>
   </div>
 </section>
