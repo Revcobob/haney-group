@@ -1242,8 +1242,9 @@ section.tight { padding-block: clamp(48px, 6vw, 72px); }
 .proofstrip .stat__num::before {
   content: "";
   position: absolute;
-  top: 0; left: 0;
-  width: 36px; height: 3px;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 40px; height: 3px;
   background: var(--amber-500);
 }
 .proofstrip .stat__label { margin-inline: auto; max-width: 32ch; }
