@@ -1194,6 +1194,61 @@ section.tight { padding-block: clamp(48px, 6vw, 72px); }
   .nav__close { display: inline-flex; }
 }
 
+/* ---------- About: firm intro + proof strip ---------- */
+.firmintro__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+  margin-top: 40px;
+}
+@media (min-width: 880px) {
+  .firmintro__grid { grid-template-columns: 1.1fr 0.9fr; gap: 64px; align-items: start; }
+}
+.firmintro__copy { color: var(--text-2); font-size: 17px; line-height: 1.7; }
+.firmintro__copy p { margin: 0 0 1.1em; }
+.firmintro__copy p:last-child { margin-bottom: 0; }
+.firmintro__copy strong { color: var(--text-1); font-weight: 600; }
+
+.founders { display: grid; gap: 18px; }
+.founder {
+  background: var(--paper);
+  border: 1px solid var(--line-1);
+  border-left: 3px solid var(--amber-500);
+  border-radius: var(--radius-md);
+  padding: 22px 24px 24px;
+  transition: border-color .22s var(--ease), box-shadow .22s var(--ease);
+}
+.founder:hover { box-shadow: 0 8px 24px rgba(11,18,40,0.05); }
+.founder__name { font-size: 17px; font-weight: 700; color: var(--text-1); margin: 0; letter-spacing: -0.005em; }
+.founder__role { font-size: 12px; letter-spacing: 0.14em; color: var(--amber-600); margin: 6px 0 12px; text-transform: uppercase; font-weight: 700; }
+.founder__bio { font-size: 14.5px; line-height: 1.6; color: var(--text-2); margin: 0; }
+
+/* Stats band sitting between intro and How We Work */
+.proofstrip { background: var(--paper-2); border-top: 1px solid var(--line-1); border-bottom: 1px solid var(--line-1); padding-block: clamp(48px, 6vw, 72px); }
+.proofstrip__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+  align-items: start;
+}
+@media (min-width: 720px) {
+  .proofstrip__grid { grid-template-columns: repeat(3, 1fr); gap: 36px; }
+}
+.proofstrip .stat__num {
+  position: relative;
+  padding-top: 16px;
+}
+.proofstrip .stat__num::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 36px; height: 3px;
+  background: var(--amber-500);
+}
+@media (max-width: 640px) {
+  .founder { padding: 20px 20px 22px; }
+}
+
 /* ---------- How we work ---------- */
 .howwework { background: var(--paper-2); border-top: 1px solid var(--line-1); border-bottom: 1px solid var(--line-1); }
 .howwework .section__head { max-width: 56ch; }
@@ -1309,26 +1364,46 @@ section.tight { padding-block: clamp(48px, 6vw, 72px); }
 
 <section data-reveal>
   <div class="container">
-    <div class="prose">
-      <p>The Haney Group is a senior-led Austin government relations firm. The firm represents statewide associations, regulated companies, local governments, health care organizations, and policy nonprofits at the Texas Legislature and across the executive agencies that interpret what the Legislature passes.</p>
-      <p>The firm was founded around a deliberate combination. <strong>Robert Haney</strong> spent more than twenty-five years inside the Texas House of Representatives, including service as Chief Clerk under five Speakers. <strong>Julie Freeman Haney</strong> built two decades of appropriations, communications, and chief-of-staff experience on the legislative side.</p>
-      <p>The combination is purposeful: the firm pairs procedural and budgetary fluency with the message discipline that decides how a bill is received, covered, and remembered.</p>
-
-      <div class="stats">
-        <div>
-          <div class="stat__num">40+ yrs</div>
-          <div class="stat__label">Combined Texas Capitol experience.</div>
-        </div>
-        <div>
-          <div class="stat__num">5</div>
-          <div class="stat__label">Speakers under whom Robert served as Chief Clerk of the Texas House.</div>
-        </div>
-        <div>
-          <div class="stat__num">20+ yrs</div>
-          <div class="stat__label">Julie's record in appropriations, chief-of-staff, and communications work.</div>
-        </div>
+    <div class="section__head">
+      <p class="eyebrow">The Firm</p>
+      <h2 class="h2">A senior-led firm built around a deliberate combination.</h2>
+    </div>
+    <div class="firmintro__grid">
+      <div class="firmintro__copy">
+        <p>The Haney Group is a senior-led Austin government relations firm. We represent statewide associations, regulated companies, local governments, health care organizations, and policy nonprofits at the Texas Legislature and across the executive agencies that interpret what the Legislature passes.</p>
+        <p>The combination is purposeful: the firm pairs <strong>procedural and budgetary fluency</strong> with the <strong>message discipline</strong> that decides how a bill is received, covered, and remembered.</p>
       </div>
+      <div class="founders">
+        <article class="founder">
+          <h3 class="founder__name">Robert Haney</h3>
+          <p class="founder__role">Former Chief Clerk, Texas House</p>
+          <p class="founder__bio">More than twenty-five years inside the Texas House of Representatives, including service as Chief Clerk under five Speakers across both parties.</p>
+        </article>
+        <article class="founder">
+          <h3 class="founder__name">Julie Freeman Haney</h3>
+          <p class="founder__role">Appropriations &amp; Communications</p>
+          <p class="founder__bio">Two decades of appropriations, communications, and chief-of-staff experience on the legislative side, both in member offices and senior committee roles.</p>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
 
+<section class="proofstrip" data-reveal aria-label="By the numbers">
+  <div class="container">
+    <div class="proofstrip__grid">
+      <div>
+        <div class="stat__num">40+ yrs</div>
+        <div class="stat__label">Combined Texas Capitol experience.</div>
+      </div>
+      <div>
+        <div class="stat__num">5</div>
+        <div class="stat__label">Speakers under whom Robert served as Chief Clerk of the Texas House.</div>
+      </div>
+      <div>
+        <div class="stat__num">20+ yrs</div>
+        <div class="stat__label">Julie's record in appropriations, chief-of-staff, and communications work.</div>
+      </div>
     </div>
   </div>
 </section>
