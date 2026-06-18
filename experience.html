@@ -1394,6 +1394,23 @@ section.tight { padding-block: clamp(48px, 6vw, 72px); }
 
   const toggle = document.querySelector('.nav__toggle');
   const nav = document.querySelector('.nav');
+  // At mobile widths, reparent the nav out of <header> so position:fixed
+  // can escape the backdrop-filter containing block iOS Safari builds on
+  // the header. On desktop the nav stays inline inside the header.
+  const reparentNav = () => {
+    if (!nav) return;
+    const inHeader = nav.parentElement && nav.parentElement.closest('.header');
+    const mobile = window.matchMedia('(max-width: 1024px)').matches;
+    if (mobile && inHeader) {
+      nav._originalParent = nav.parentElement;
+      nav._originalNext = nav.nextSibling;
+      document.body.appendChild(nav);
+    } else if (!mobile && nav._originalParent && nav.parentElement === document.body) {
+      nav._originalParent.insertBefore(nav, nav._originalNext);
+    }
+  };
+  reparentNav();
+  window.addEventListener('resize', reparentNav);
   const closeBtn = document.querySelector('.nav__close');
   const setMenu = (open) => {
     if (!nav) return;
