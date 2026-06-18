@@ -1213,6 +1213,75 @@ section.tight { padding-block: clamp(48px, 6vw, 72px); }
   .util--loc { display: none; }                /* hide Austin, Texas on phones */
   .util--mail .util__label { display: none; }  /* mail link becomes icon-only */
 }
+
+/* ---------- Mobile nav polish (added) ---------- */
+.nav__head, .nav__foot, .nav__brand { display: none; }
+@media (max-width: 1024px) {
+  .nav {
+    background: var(--paper-2);
+    background-image: radial-gradient(80% 55% at 100% 0%, rgba(201,137,42,0.10), transparent 62%);
+    padding: 0;
+    align-items: stretch;
+    gap: 0;
+  }
+  .nav__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px var(--gutter);
+    background: var(--paper);
+    border-bottom: 1px solid var(--line-1);
+    flex-shrink: 0;
+  }
+  .nav__brand { display: inline-flex; align-items: center; color: var(--navy-900); }
+  .nav__brand img { height: 46px; width: auto; display: block; }
+  .nav .nav__close { position: static; top: auto; right: auto; }
+  .nav__list { padding: 14px var(--gutter) 6px; gap: 0; }
+  .nav__list li { border-bottom: 1px solid rgba(11,18,40,0.06); width: 100%; }
+  .nav__list li:last-child { border-bottom: 0; }
+  .nav__link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 0;
+    font-size: 20px;
+    letter-spacing: -0.005em;
+    color: var(--navy-900);
+    width: 100%;
+  }
+  .nav__link::after {
+    content: "→";
+    color: var(--amber-500);
+    opacity: 0.34;
+    font-weight: 500;
+    transition: opacity .22s var(--ease), transform .22s var(--ease);
+  }
+  .nav__link:hover::after,
+  .nav__link.is-active::after { opacity: 1; transform: translateX(3px); }
+  .nav__link.is-active { color: var(--amber-700); background: transparent; }
+  .nav__cta { margin: 22px var(--gutter) 0; justify-content: center; width: calc(100% - 2 * var(--gutter)); }
+  .nav__foot {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    padding: 26px var(--gutter) 32px;
+    margin-top: auto;
+    border-top: 1px solid var(--line-1);
+    background: var(--paper);
+  }
+  .nav__foot-link {
+    width: 44px; height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--line-2);
+    border-radius: 50%;
+    color: var(--navy-900);
+    transition: border-color .22s var(--ease), background .22s var(--ease), color .22s var(--ease);
+  }
+  .nav__foot-link:hover { border-color: var(--navy-900); background: var(--paper-3); }
+}
 </style>
 </head>
 <body>
@@ -1249,7 +1318,12 @@ section.tight { padding-block: clamp(48px, 6vw, 72px); }
     </button>
 
     <nav class="nav" id="primary-nav" aria-label="Primary">
-      <button class="nav__close" aria-label="Close menu" type="button">✕</button>
+      <div class="nav__head">
+        <a class="nav__brand" href="../index.html" aria-label="The Haney Group, Home">
+          <img src="../assets/img/inline-e9e661e302.png" alt="The Haney Group" />
+        </a>
+        <button class="nav__close" aria-label="Close menu" type="button">✕</button>
+      </div>
       <ul class="nav__list">
         <li><a class="nav__link" href="../about.html">About</a></li>
         <li><a class="nav__link is-active" href="../services.html">Services</a></li>
@@ -1262,6 +1336,11 @@ section.tight { padding-block: clamp(48px, 6vw, 72px); }
         Schedule a Consultation
         <span class="arrow" aria-hidden="true">→</span>
       </a>
+      <div class="nav__foot">
+        <a class="nav__foot-link" href="tel:+15129255000" aria-label="Call (512) 925-5000"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg></a>
+        <a class="nav__foot-link" href="mailto:info@haney-group.com" aria-label="Email info@haney-group.com"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg></a>
+        <a class="nav__foot-link" href="https://www.linkedin.com/" rel="noopener" aria-label="LinkedIn"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 0H5C2.24 0 0 2.24 0 5v14c0 2.76 2.24 5 5 5h14c2.76 0 5-2.24 5-5V5c0-2.76-2.24-5-5-5zM8 19H5V8h3v11zM6.5 6.73c-.97 0-1.75-.79-1.75-1.76S5.53 3.22 6.5 3.22s1.75.79 1.75 1.75-.78 1.76-1.75 1.76zM20 19h-3v-5.6c0-3.37-4-3.11-4 0V19h-3V8h3v1.77c1.4-2.59 7-2.78 7 2.47V19z"/></svg></a>
+      </div>
     </nav>
   </div>
 </header>
