@@ -934,16 +934,12 @@ section.tight { padding-block: clamp(48px, 6vw, 72px); }
 }
 .tile:hover { border-color: var(--navy-900); box-shadow: 0 10px 28px rgba(11,18,40,0.06); transform: translateY(-2px); }
 .tile__banner {
-  background: var(--paper-2);
-  border-bottom: 1px solid var(--line-1);
-  aspect-ratio: 4 / 3;
-  display: flex; align-items: center; justify-content: center;
-  overflow: hidden;
+  background: transparent;
+  display: block;
 }
 .tile__banner img {
-  width: 78%;
-  height: 78%;
-  object-fit: contain;
+  width: 100%;
+  height: auto;
   display: block;
 }
 .tile__body { padding: 22px 26px 26px; display: flex; flex-direction: column; gap: 10px; }
