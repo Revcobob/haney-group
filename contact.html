@@ -1167,6 +1167,32 @@ section.tight { padding-block: clamp(48px, 6vw, 72px); }
   /* Footer rhythm */
   .footer { padding-block: 48px; }
 }
+
+/* ---------- Mobile nav overlay fix + close button ---------- */
+.nav__close {
+  position: absolute;
+  top: 18px;
+  right: var(--gutter);
+  width: 42px; height: 42px;
+  background: transparent;
+  border: 1px solid var(--line-2);
+  border-radius: var(--radius-sm);
+  color: var(--navy-900);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+}
+@media (max-width: 1024px) {
+  body.menu-open .header {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+  .nav { z-index: 100; }
+  .nav__close { display: inline-flex; }
+}
 </style>
 </head>
 <body>
@@ -1202,6 +1228,7 @@ section.tight { padding-block: clamp(48px, 6vw, 72px); }
     </button>
 
     <nav class="nav" id="primary-nav" aria-label="Primary">
+      <button class="nav__close" aria-label="Close menu" type="button">✕</button>
       <ul class="nav__list">
         <li><a class="nav__link" href="about.html">About</a></li>
         <li><a class="nav__link" href="services.html">Services</a></li>
@@ -1374,19 +1401,35 @@ section.tight { padding-block: clamp(48px, 6vw, 72px); }
 
   const toggle = document.querySelector('.nav__toggle');
   const nav = document.querySelector('.nav');
+  const closeBtn = document.querySelector('.nav__close');
+  const setMenu = (open) => {
+    if (!nav) return;
+    nav.classList.toggle('is-open', open);
+    document.body.classList.toggle('menu-open', open);
+    document.body.style.overflow = open ? 'hidden' : '';
+    if (toggle) toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  };
   if (toggle && nav) {
-    toggle.addEventListener('click', () => {
-      const open = nav.classList.toggle('is-open');
-      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-      document.body.style.overflow = open ? 'hidden' : '';
+    toggle.addEventListener('click', () => setMenu(!nav.classList.contains('is-open')));
+    nav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setMenu(false)));
+    if (closeBtn) closeBtn.addEventListener('click', () => setMenu(false));
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && nav.classList.contains('is-open')) setMenu(false);
     });
-    nav.querySelectorAll('a').forEach(a => {
-      a.addEventListener('click', () => {
-        nav.classList.remove('is-open');
-        toggle.setAttribute('aria-expanded', 'false');
-        document.body.style.overflow = '';
-      });
-    });
+    // Swipe right to close (from anywhere inside the open menu)
+    let sx = null, sy = null;
+    nav.addEventListener('touchstart', (e) => {
+      if (!nav.classList.contains('is-open')) return;
+      const t = e.touches[0]; sx = t.clientX; sy = t.clientY;
+    }, { passive: true });
+    nav.addEventListener('touchend', (e) => {
+      if (sx == null) return;
+      const t = e.changedTouches[0];
+      const dx = t.clientX - sx;
+      const dy = Math.abs(t.clientY - sy);
+      if (dx > 60 && dy < 60) setMenu(false);
+      sx = sy = null;
+    }, { passive: true });
   }
 
   if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
