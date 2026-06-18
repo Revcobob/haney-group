@@ -1282,6 +1282,9 @@ section.tight { padding-block: clamp(48px, 6vw, 72px); }
   }
   .nav__foot-link:hover { border-color: var(--navy-900); background: var(--paper-3); }
 }
+
+/* ---------- Tighter hero-to-content rhythm ---------- */
+section.article-section { padding-top: clamp(14px, 2vw, 28px); padding-bottom: clamp(48px, 6vw, 80px); }
 </style>
 </head>
 <body>
@@ -1357,7 +1360,7 @@ section.tight { padding-block: clamp(48px, 6vw, 72px); }
   </div>
 </section>
 
-<section data-reveal>
+<section class="article-section" data-reveal>
   <div class="container">
     <div class="postlist">
       <article class="postlist__item postlist__item--thumb">
