@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Points Of Order, Explained &middot; The Haney Group</title>
-<meta name="description" content="How points of order work and why procedural challenges can reshape a bill's trajectory mid-floor." />
+<title>Privacy &amp; Legal Notice &middot; The Haney Group</title>
+<meta name="description" content="The Haney Group privacy policy and legal notice. How we handle information collected through our site and the terms governing your use of haney-group.com." />
 <meta name="theme-color" content="#0B1228" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -12,7 +12,7 @@
 <style>
 
 /* =============================================================
-   The Haney Group, Homepage (light, senior-advisory)
+   The Haney Group — Homepage (light, senior-advisory)
    ============================================================= */
 
 /* ---------- Tokens ---------- */
@@ -435,28 +435,26 @@ section.tight { padding-block: clamp(48px, 6vw, 72px); }
 @media (min-width: 640px) { .caps__grid { grid-template-columns: repeat(2, 1fr); } }
 @media (min-width: 1024px) { .caps__grid { grid-template-columns: repeat(3, 1fr); } }
 .cap {
-  padding: 44px 28px 36px;
+  padding: 32px 28px;
   border-right: 1px solid var(--line-1);
   border-bottom: 1px solid var(--line-1);
   display: flex; flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: 14px;
+  gap: 12px;
   background: var(--paper);
   transition: background .22s var(--ease);
+  position: relative;
 }
 .cap:hover { background: var(--paper-2); }
-.cap__icon {
-  width: clamp(120px, 12vw, 156px);
-  height: auto;
-  aspect-ratio: 1 / 1;
-  display: block;
+.cap__num {
+  font-size: 11px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--amber-600);
+  font-weight: 700;
   margin-bottom: 4px;
-  user-select: none;
-  -webkit-user-drag: none;
 }
-.cap h3 { font-size: 17px; font-weight: 600; max-width: 22ch; margin: 0; }
-.cap p { color: var(--text-2); font-size: 14.5px; line-height: 1.55; margin: 0; max-width: 32ch; }
+.cap h3 { font-size: 19px; font-weight: 600; }
+.cap p { color: var(--text-2); font-size: 14.5px; line-height: 1.55; margin: 0; }
 .caps__foot { margin-top: 36px; }
 
 /* ---------- Credibility / proof ---------- */
@@ -1285,111 +1283,60 @@ section.tight { padding-block: clamp(48px, 6vw, 72px); }
   .nav__foot-link:hover { border-color: var(--navy-900); background: var(--paper-3); }
 }
 
-/* ---------- Article (insights detail) ---------- */
-.article__meta {
-  display: flex; flex-wrap: wrap; gap: 14px 22px;
-  align-items: center;
-  padding: 16px 0;
-  border-top: 1px solid var(--line-1);
-  border-bottom: 1px solid var(--line-1);
-  margin: 0 0 36px;
-  font-size: 13px;
-  color: var(--text-3);
-  letter-spacing: 0.02em;
-}
-.article__meta-group { display: inline-flex; align-items: center; gap: 8px; }
-.article__meta-group svg { color: var(--amber-600); flex-shrink: 0; }
-.article__meta-sep { width: 1px; height: 14px; background: var(--line-2); }
-.article__email {
-  margin-left: auto;
-  display: inline-flex; align-items: center; gap: 8px;
-  padding: 8px 14px;
-  border: 1px solid var(--line-2);
-  border-radius: var(--radius-sm);
-  color: var(--navy-900);
-  font-weight: 600;
-  font-size: 13.5px;
-  letter-spacing: 0;
-  text-transform: none;
-  transition: border-color .22s var(--ease), background .22s var(--ease), color .22s var(--ease);
-}
-.article__email svg { color: var(--amber-600); }
-.article__email:hover { border-color: var(--navy-900); background: var(--paper-3); }
-.article__email:hover svg { color: var(--amber-700); }
-.article__keypoints {
+/* ---------- Privacy / Legal page ---------- */
+.legal__toc {
   background: var(--paper-2);
-  border-left: 3px solid var(--amber-500);
+  border: 1px solid var(--line-1);
+  border-radius: var(--radius-md);
   padding: 22px 26px 24px;
   margin: 0 0 36px;
-  border-radius: 0 var(--radius-md) var(--radius-md) 0;
 }
-.article__keypoints h2 {
+.legal__toc-eyebrow {
   font-size: 12px;
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--amber-600);
+  font-weight: 700;
   margin: 0 0 12px;
-  font-weight: 700;
 }
-.article__keypoints ul { padding-left: 1.1em; margin: 0; color: var(--text-1); }
-.article__keypoints li { margin: 0 0 8px; font-size: 15.5px; line-height: 1.5; }
-.article__keypoints li:last-child { margin-bottom: 0; }
-.article__keypoints li strong { color: var(--text-1); }
-.article__lead p:first-child::first-letter {
-  font-size: 3.2em;
-  float: left;
-  line-height: 0.95;
-  padding: 4px 12px 0 0;
-  color: var(--navy-900);
-  font-weight: 700;
+.legal__toc-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 6px 28px;
 }
-.article__close {
-  margin-top: 48px;
-  padding: 28px 28px 30px;
-  background: var(--paper-2);
-  border: 1px solid var(--line-1);
-  border-radius: var(--radius-md);
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
+@media (min-width: 720px) { .legal__toc-grid { grid-template-columns: 1fr 1fr; } }
+.legal__toc-grid a {
+  display: block;
+  padding: 4px 0;
+  color: var(--text-1);
+  font-size: 14.5px;
+  border-bottom: 1px solid transparent;
 }
-.article__close p { margin: 0; color: var(--text-2); font-size: 15px; line-height: 1.55; }
-.article__close .article__email { margin-left: 0; align-self: flex-start; }
-@media (max-width: 640px) {
-  .article__meta { gap: 10px 14px; font-size: 12.5px; }
-  .article__email { margin-left: 0; }
-  .article__keypoints { padding: 20px 22px; }
-}
-
-/* ---------- Article (insights detail) tweaks ---------- */
-section.article-section { padding-top: clamp(14px, 2vw, 28px); padding-bottom: clamp(48px, 6vw, 80px); }
-.article__back {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 14px;
+.legal__toc-grid a:hover { color: var(--amber-700); }
+.legal__effective {
+  display: inline-block;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-3);
   font-weight: 600;
-  color: var(--navy-900);
-  margin: 0 0 22px;
-  transition: color .22s var(--ease), gap .22s var(--ease);
-  text-decoration: none;
+  margin: 0 0 8px;
 }
-.article__back svg { color: var(--amber-600); transition: transform .22s var(--ease), color .22s var(--ease); }
-.article__back:hover { color: var(--amber-700); gap: 11px; }
-.article__back:hover svg { color: var(--amber-700); transform: translateX(-2px); }
-.article__byline { font-weight: 600; color: var(--text-1); }
-
-/* ---------- Article topbar: back link + email-me on one row ---------- */
-.article__topbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  flex-wrap: wrap;
-  margin: 0 0 22px;
+.legal__divider {
+  border: 0;
+  border-top: 1px solid var(--line-1);
+  margin: 56px 0 40px;
 }
-.article__topbar .article__back { margin: 0; }
-.article__topbar .article__email { margin-left: 0; }
+.legal__doc h2 { scroll-margin-top: 96px; }
+.legal__contact {
+  background: var(--paper-2);
+  border-left: 3px solid var(--amber-500);
+  padding: 20px 24px;
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  margin: 0;
+}
+.legal__contact p { margin: 0; line-height: 1.6; }
+.legal__contact strong { color: var(--text-1); display: block; margin-bottom: 4px; }
 </style>
 </head>
 <body>
@@ -1406,7 +1353,7 @@ section.article-section { padding-top: clamp(14px, 2vw, 28px); padding-bottom: c
       <a class="util util--mail" href="mailto:info@haney-group.com" aria-label="Email info@haney-group.com"><svg class="util__icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg><span class="util__label">info@haney-group.com</span></a>
     </div>
     <div class="utility__group">
-      <a class="util" href="../insights/"><svg class="util__icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h13a2 2 0 0 1 2 2v14H6a2 2 0 0 1-2-2V4z"/><path d="M19 6h2v14a2 2 0 0 1-2 2"/><path d="M8 8h7M8 12h7M8 16h4"/></svg><span class="util__label">The Session Briefing</span></a>
+      <a class="util" href="insights/"><svg class="util__icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h13a2 2 0 0 1 2 2v14H6a2 2 0 0 1-2-2V4z"/><path d="M19 6h2v14a2 2 0 0 1-2 2"/><path d="M8 8h7M8 12h7M8 16h4"/></svg><span class="util__label">The Session Briefing</span></a>
       <span class="dot">·</span>
       <a class="util" href="https://www.linkedin.com/" rel="noopener" aria-label="LinkedIn"><svg class="util__icon util__icon--brand" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 0H5C2.24 0 0 2.24 0 5v14c0 2.76 2.24 5 5 5h14c2.76 0 5-2.24 5-5V5c0-2.76-2.24-5-5-5zM8 19H5V8h3v11zM6.5 6.73c-.97 0-1.75-.79-1.75-1.76S5.53 3.22 6.5 3.22s1.75.79 1.75 1.75-.78 1.76-1.75 1.76zM20 19h-3v-5.6c0-3.37-4-3.11-4 0V19h-3V8h3v1.77c1.4-2.59 7-2.78 7 2.47V19z"/></svg><span class="util__label">LinkedIn</span></a>
     </div>
@@ -1417,8 +1364,8 @@ section.article-section { padding-top: clamp(14px, 2vw, 28px); padding-bottom: c
 <!-- ===================== Header ===================== -->
 <header class="header">
   <div class="container header__inner">
-    <a class="brand" href="../index.html" aria-label="The Haney Group, Home">
-      <img class="brand__logo" src="../assets/img/inline-e9e661e302.png" alt="The Haney Group" width="384" height="157" />
+    <a class="brand" href="index.html" aria-label="The Haney Group, Home">
+      <img class="brand__logo" src="assets/img/inline-e9e661e302.png" alt="The Haney Group" width="384" height="157" />
     </a>
 
     <button class="nav__toggle" aria-label="Open menu" aria-expanded="false" aria-controls="primary-nav">
@@ -1427,20 +1374,20 @@ section.article-section { padding-top: clamp(14px, 2vw, 28px); padding-bottom: c
 
     <nav class="nav" id="primary-nav" aria-label="Primary">
       <div class="nav__head">
-        <a class="nav__brand" href="../index.html" aria-label="The Haney Group, Home">
-          <img src="../assets/img/inline-e9e661e302.png" alt="The Haney Group" />
+        <a class="nav__brand" href="index.html" aria-label="The Haney Group, Home">
+          <img src="assets/img/inline-e9e661e302.png" alt="The Haney Group" />
         </a>
         <button class="nav__close" aria-label="Close menu" type="button">✕</button>
       </div>
       <ul class="nav__list">
-        <li><a class="nav__link" href="../about.html">About</a></li>
-        <li><a class="nav__link" href="../services.html">Services</a></li>
-        <li><a class="nav__link" href="../experience.html">Experience</a></li>
-        <li><a class="nav__link" href="../industries.html">Clients</a></li>
-        <li><a class="nav__link is-active" href="../insights/">Insights</a></li>
-        <li><a class="nav__link" href="../contact.html">Contact</a></li>
+        <li><a class="nav__link" href="about.html">About</a></li>
+        <li><a class="nav__link" href="services.html">Services</a></li>
+        <li><a class="nav__link" href="experience.html">Experience</a></li>
+        <li><a class="nav__link" href="industries.html">Clients</a></li>
+        <li><a class="nav__link" href="insights/">Insights</a></li>
+        <li><a class="nav__link" href="contact.html">Contact</a></li>
       </ul>
-      <a class="btn btn--primary nav__cta" href="../contact.html">
+      <a class="btn btn--primary nav__cta" href="contact.html">
         Schedule a Consultation
         <span class="arrow" aria-hidden="true">→</span>
       </a>
@@ -1456,98 +1403,140 @@ section.article-section { padding-top: clamp(14px, 2vw, 28px); padding-bottom: c
 <main id="main">
 
 <section class="pagehero pagehero--photo" aria-labelledby="ph-h1">
-  <div class="pagehero__bg" style="background-image:url('../assets/img/article-points-of-order.jpg')" aria-hidden="true"></div>
+  <div class="pagehero__bg" style="background-image:url('assets/img/privacy-hero-web.jpg')" aria-hidden="true"></div>
   <div class="container pagehero__inner">
-    <p class="pagehero__crumbs"><a href="../index.html">Home</a><span class="sep">/</span><a href="../insights/">Insights</a><span class="sep">/</span><span>Points Of Order</span></p>
-    <p class="eyebrow" style="margin-bottom:22px">The Session Briefing &middot; Article</p>
-    <h1 class="h1" id="ph-h1">Points Of Order, Explained</h1>
-    <p class="lede">A point of order is one of the quietest but most consequential tools in the legislative process. It is a formal objection that, once sustained, can stop a bill midstream and change the political perception of the proposal itself.</p>
+    <p class="pagehero__crumbs"><a href="index.html">Home</a><span class="sep">/</span><span>Privacy &amp; Legal</span></p>
+    <p class="eyebrow" style="margin-bottom:22px">Privacy &amp; Legal Notice</p>
+    <h1 class="h1" id="ph-h1">Privacy and legal notice.</h1>
+    <p class="lede">How The Haney Group handles information collected through our website, and the terms that govern your use of haney-group.com.</p>
   </div>
 </section>
 
 <section class="article-section" data-reveal>
   <div class="container">
-    <div class="prose article__lead">
+    <div class="prose">
 
-      <div class="article__topbar">
-        <a class="article__back" href="../insights/" aria-label="Back to Insights"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg><span>Back to Insights</span></a>
-        <a class="article__email" href="mailto:?subject=From%20The%20Haney%20Group%3A%20Points%20Of%20Order%2C%20Explained&body=Points%20Of%20Order%2C%20Explained%0A%0AA%20point%20of%20order%20is%20one%20of%20the%20quietest%20but%20most%20consequential%20tools%20in%20the%20legislative%20process.%20How%20a%20procedural%20challenge%20can%20stop%20a%20bill%20midstream%2C%20force%20a%20rewrite%2C%20and%20change%20the%20political%20perception%20of%20the%20proposal%20itself.%0A%0ARead%20the%20full%20article%3A%0Ahttps%3A//www.haney-group.com/insights/points-of-order-explained.html%0A%0A--%20The%20Haney%20Group%0AAustin%2C%20Texas%0A%28512%29%20925-5000%0Awww.haney-group.com" aria-label="Email this article to myself"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg><span>Email me this article</span></a>
+      <div class="legal__toc" aria-label="On this page">
+        <p class="legal__toc-eyebrow">On this page</p>
+        <div class="legal__toc-grid">
+          <a href="#privacy-policy"><strong>Privacy Policy</strong></a>
+          <a href="#legal-notice"><strong>Legal Notice</strong></a>
+          <a href="#privacy-information-we-collect">Information we collect</a>
+          <a href="#legal-intellectual-property">Intellectual property</a>
+          <a href="#privacy-how-we-use">How we use information</a>
+          <a href="#legal-disclaimers">Disclaimers</a>
+          <a href="#privacy-sharing">Information sharing</a>
+          <a href="#legal-liability">Limitation of liability</a>
+          <a href="#privacy-cookies">Cookies</a>
+          <a href="#legal-governing-law">Governing law</a>
+          <a href="#privacy-rights">Your rights</a>
+          <a href="#legal-contact">Contact us</a>
+        </div>
       </div>
 
-      <div class="article__meta">
-        <span class="article__meta-group"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>By <strong class="article__byline">Robert Haney</strong></span></span>
-        <span class="article__meta-sep"></span>
-        <span class="article__meta-group"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg><span>Interim 2026</span></span>
-        <span class="article__meta-sep"></span>
-        <span class="article__meta-group"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>5 min read</span></span>
-        <span class="article__meta-sep"></span>
-        <span class="article__meta-group"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.59 13.41 13 21l-9-9V3h9l7.59 7.59a2 2 0 0 1 0 2.82z"/><circle cx="8" cy="8" r="1.5"/></svg><span>Procedure &middot; Floor Work</span></span>
-      </div>
+      <article class="legal__doc" id="privacy-policy">
+        <p class="legal__effective">Effective Date &middot; June 18, 2026</p>
+        <h2>Privacy Policy</h2>
 
-      <p>A point of order is one of the quietest but most consequential tools in the legislative process. It is a <strong>formal objection that says a chamber rule has been violated</strong>, and once it is sustained, the chamber must stop treating the bill or amendment as if it can proceed in its current form.</p>
+        <h3>1. Introduction</h3>
+        <p>At The Haney Group, we are committed to protecting your privacy. This Privacy Policy outlines how we collect, use, disclose, and protect your information when you visit <a href="https://www.haney-group.com">www.haney-group.com</a> or engage with our services.</p>
 
-      <div class="article__keypoints" aria-labelledby="article-keypoints-label">
-        <h2 id="article-keypoints-label">What this article covers</h2>
+        <h3 id="privacy-information-we-collect">2. Information We Collect</h3>
+        <p>We may collect personal information that you provide to us directly, such as:</p>
         <ul>
-          <li><strong>What a point of order does.</strong> A procedural challenge, not a policy debate.</li>
-          <li><strong>When they matter most.</strong> The floor and deadline moments where procedure becomes strategy.</li>
-          <li><strong>Why the floor changes.</strong> The practical shift once one is sustained.</li>
-          <li><strong>Why drafting matters.</strong> The interim work that prevents most points of order.</li>
-          <li><strong>Procedural power.</strong> How rules shape outcomes as much as votes do.</li>
+          <li>Name</li>
+          <li>Email address</li>
+          <li>Phone number</li>
+          <li>Company name</li>
+          <li>Any other information you choose to provide</li>
         </ul>
-      </div>
+        <p>We also collect non-personal information automatically when you visit our website, including:</p>
+        <ul>
+          <li>IP address</li>
+          <li>Browser type</li>
+          <li>Operating system</li>
+          <li>Pages viewed</li>
+          <li>Time spent on the site</li>
+          <li>Referring website</li>
+        </ul>
 
-      <h2>What A Point Of Order Does</h2>
-      <p>At its core, a point of order is a challenge to procedure, not a debate over policy. It asks whether the chamber has followed the rules governing notice, germaneness, timing, drafting, or another required step.</p>
-      <p><strong>When one is raised and sustained:</strong></p>
-      <ul>
-        <li>The bill or amendment may be delayed, amended, or removed from consideration.</li>
-        <li>The chamber&rsquo;s attention shifts from substance to procedure.</li>
-        <li>The operative language on the floor can change immediately.</li>
-      </ul>
-      <p>That is why a point of order can alter the trajectory of a bill even when the underlying policy still has support.</p>
+        <h3 id="privacy-how-we-use">3. How We Use Your Information</h3>
+        <p>We may use the information we collect for various purposes, including:</p>
+        <ul>
+          <li>To respond to your inquiries and provide services</li>
+          <li>To improve our website and services</li>
+          <li>To send you newsletters, marketing communications, or other information that may interest you</li>
+          <li>To analyze website usage and enhance user experience</li>
+          <li>To comply with legal obligations and protect our rights</li>
+        </ul>
 
-      <h2>When They Matter Most</h2>
-      <p>Points of order matter most when a bill is moving quickly and the margins are thin. They are especially important during floor debate, during amendment consideration, and at moments when the chamber is trying to move multiple items under pressure.</p>
-      <p><strong>They also matter when:</strong></p>
-      <ul>
-        <li>A bill has not been drafted carefully enough to comply with chamber rules.</li>
-        <li>An amendment reaches beyond the bill&rsquo;s scope.</li>
-        <li>Timing rules or notice requirements have not been satisfied.</li>
-        <li>The chamber is close to a deadline and cannot easily recover lost time.</li>
-      </ul>
-      <p>In those moments, procedure becomes strategy.</p>
+        <h3 id="privacy-sharing">4. Information Sharing</h3>
+        <p>We do not sell, trade, or otherwise transfer your personal information to third parties without your consent, except as required by law or to provide our services. We may share your information with trusted service providers who assist us in operating our website and conducting our business.</p>
 
-      <h2>Why The Floor Changes</h2>
-      <p>The moment a point of order is sustained, the chamber is no longer operating in ordinary debate mode. Members shift from discussing whether they like the proposal to deciding what the rules allow.</p>
-      <p><strong>That change matters because it can:</strong></p>
-      <ul>
-        <li>Stop a bill midstream.</li>
-        <li>Force a rewrite or substitute.</li>
-        <li>Expose weaknesses that were not obvious during earlier stages.</li>
-        <li>Signal to other members that the proposal may not be as ready as it appeared.</li>
-      </ul>
-      <p>A sustained point of order can do more than defeat a technical flaw. It can also change the political perception of the bill itself.</p>
+        <h3>5. Data Security</h3>
+        <p>We implement a variety of security measures to protect your personal information. However, no method of transmission over the Internet or electronic storage is 100% secure. While we strive to protect your information, we cannot guarantee its absolute security.</p>
 
-      <h2>Why Drafting Matters</h2>
-      <p>Most points of order are not surprises to people who have worked closely on the bill. They often arise from issues that could have been identified earlier through careful drafting and review.</p>
-      <p><strong>Good interim preparation reduces risk by:</strong></p>
-      <ul>
-        <li>Keeping language tightly tied to the bill&rsquo;s purpose.</li>
-        <li>Checking for conflicts with chamber rules.</li>
-        <li>Reviewing amendments before they reach the floor.</li>
-        <li>Thinking ahead to likely objections rather than reacting to them later.</li>
-      </ul>
-      <p>A clean bill is not one that avoids scrutiny entirely. It is one that can survive scrutiny when it comes.</p>
+        <h3 id="privacy-cookies">6. Cookies</h3>
+        <p>Our website may use cookies to enhance user experience. You can choose to accept or decline cookies. Most web browsers automatically accept cookies, but you can modify your browser settings to decline cookies if you prefer.</p>
 
-      <h2>Procedural Power</h2>
-      <p>Points of order are procedural, but their effect is practical and immediate. They can reshape the floor debate, influence negotiations, and determine whether a proposal advances at all.</p>
-      <p>That is why they deserve attention long before the floor vote. Understanding them early helps clients and advocates appreciate that in a legislative session, <strong>the rules are not background material, they are part of the substance of the outcome.</strong></p>
+        <h3>7. Third-Party Links</h3>
+        <p>Our website may contain links to third-party websites. We do not have control over the content and practices of these websites and are not responsible for their privacy policies. We encourage you to review the privacy policies of any third-party sites you visit.</p>
 
-      <div class="article__close">
-        <p><strong>Want to read this later?</strong> Send this article to your inbox with a one-click email. We will not subscribe you to anything, this is a private, plain link from your own mail client.</p>
-        <a class="article__email" href="mailto:?subject=From%20The%20Haney%20Group%3A%20Points%20Of%20Order%2C%20Explained&body=Points%20Of%20Order%2C%20Explained%0A%0AA%20point%20of%20order%20is%20one%20of%20the%20quietest%20but%20most%20consequential%20tools%20in%20the%20legislative%20process.%20How%20a%20procedural%20challenge%20can%20stop%20a%20bill%20midstream%2C%20force%20a%20rewrite%2C%20and%20change%20the%20political%20perception%20of%20the%20proposal%20itself.%0A%0ARead%20the%20full%20article%3A%0Ahttps%3A//www.haney-group.com/insights/points-of-order-explained.html%0A%0A--%20The%20Haney%20Group%0AAustin%2C%20Texas%0A%28512%29%20925-5000%0Awww.haney-group.com" aria-label="Email this article to myself"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg><span>Email me this article</span></a>
-      </div>
+        <h3 id="privacy-rights">8. Your Rights</h3>
+        <p>You have the right to request access to the personal information we hold about you and to request correction or deletion of that information. To exercise these rights, please contact us using the information provided below.</p>
+
+        <h3>9. Changes to This Privacy Policy</h3>
+        <p>We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on our website with an updated effective date.</p>
+
+        <h3>10. Contact Us</h3>
+        <p>If you have any questions about this Privacy Policy, please contact us at:</p>
+        <div class="legal__contact">
+          <p><strong>The Haney Group</strong>
+          P.O. Box 521, Austin, TX 78767<br/>
+          <a href="tel:+15129255000">(512) 925-5000</a><br/>
+          <a href="mailto:info@haney-group.com">info@haney-group.com</a></p>
+        </div>
+      </article>
+
+      <hr class="legal__divider" aria-hidden="true" />
+
+      <article class="legal__doc" id="legal-notice">
+        <p class="legal__effective">Effective Date &middot; June 18, 2026</p>
+        <h2>Legal Notice</h2>
+
+        <h3>1. Introduction</h3>
+        <p>This legal notice governs your use of the website <a href="https://www.haney-group.com">www.haney-group.com</a> (the &ldquo;Site&rdquo;) operated by Haney Group LLC (&ldquo;we,&rdquo; &ldquo;us,&rdquo; or &ldquo;our&rdquo;). By accessing or using our Site, you agree to comply with and be bound by this legal notice. If you do not agree with these terms, please do not use our Site.</p>
+
+        <h3 id="legal-intellectual-property">2. Intellectual Property</h3>
+        <p>All content, materials, and information on the Site, including but not limited to text, graphics, logos, images, and software, are the property of Haney Group LLC or our content suppliers and are protected by applicable copyright, trademark, and other intellectual property laws. You may not reproduce, distribute, or create derivative works from any content on the Site without our prior written consent.</p>
+
+        <h3>3. Use of the Site</h3>
+        <p>You may use the Site for lawful purposes only. You agree not to use the Site in any way that violates any applicable federal, state, or local law or regulation. You may not use the Site to transmit or send any advertising or promotional material without our prior written consent.</p>
+
+        <h3 id="legal-disclaimers">4. Disclaimers</h3>
+        <p>The information provided on this Site is for general informational purposes only and should not be considered legal advice. We make no representations or warranties of any kind, express or implied, about the completeness, accuracy, reliability, or availability of the information on the Site. Any reliance you place on such information is strictly at your own risk.</p>
+
+        <h3 id="legal-liability">5. Limitation of Liability</h3>
+        <p>In no event shall Haney Group LLC, its directors, employees, or agents be liable for any direct, indirect, incidental, special, consequential, or punitive damages arising out of or in connection with your use of the Site or inability to use the Site, even if we have been advised of the possibility of such damages.</p>
+
+        <h3>6. Links to Third-Party Websites</h3>
+        <p>Our Site may contain links to third-party websites. We do not control and are not responsible for the content or practices of these websites. The inclusion of any link does not imply endorsement by us of the website or the information contained therein. We encourage you to review the terms and conditions and privacy policies of any third-party websites you visit.</p>
+
+        <h3 id="legal-governing-law">7. Governing Law</h3>
+        <p>This legal notice shall be governed by and construed in accordance with the laws of the State of Texas, without regard to its conflict of law principles. Any disputes arising from or related to this legal notice shall be resolved in the state or federal courts located in Texas.</p>
+
+        <h3>8. Changes to This Legal Notice</h3>
+        <p>We reserve the right to update or modify this legal notice at any time without prior notice. Your continued use of the Site following the posting of any changes constitutes your acceptance of those changes.</p>
+
+        <h3 id="legal-contact">9. Contact Us</h3>
+        <p>If you have any questions about this legal notice, please contact us at:</p>
+        <div class="legal__contact">
+          <p><strong>Haney Group LLC</strong>
+          P.O. Box 521, Austin, TX 78767<br/>
+          <a href="tel:+15129255000">(512) 925-5000</a><br/>
+          <a href="mailto:info@haney-group.com">info@haney-group.com</a></p>
+        </div>
+      </article>
 
     </div>
   </div>
@@ -1560,10 +1549,10 @@ section.article-section { padding-top: clamp(14px, 2vw, 28px); padding-bottom: c
     <div class="footer__grid">
 
       <div class="footer__brand">
-        <a class="brand" href="../index.html" aria-label="The Haney Group, Home">
-          <img class="brand__logo brand__logo--footer" src="../assets/img/inline-1c87817066.png" alt="The Haney Group" width="911" height="690" loading="lazy" />
+        <a class="brand" href="index.html" aria-label="The Haney Group, Home">
+          <img class="brand__logo brand__logo--footer" src="assets/img/inline-1c87817066.png" alt="The Haney Group" width="911" height="690" loading="lazy" />
         </a>
-        <p><em>Proven expertise. Focused results. Unmatched influence.</em> A senior-led Austin government relations firm, Texas legislative strategy, appropriations, and procedural expertise for organizations with priorities at the Capitol.</p>
+        <p><em>Proven expertise. Focused results. Unmatched influence.</em> A senior-led Austin government relations firm — Texas legislative strategy, appropriations, and procedural expertise for organizations with priorities at the Capitol.</p>
         <div class="footer__social">
           <a href="https://www.linkedin.com/" aria-label="LinkedIn" rel="noopener">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 11.02 5 2.5 2.5 0 01-.02-5zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V21H18.6v-5.4c0-1.29-.02-2.95-1.8-2.95-1.8 0-2.07 1.4-2.07 2.86V21H10z"/></svg>
@@ -1577,22 +1566,22 @@ section.article-section { padding-top: clamp(14px, 2vw, 28px); padding-bottom: c
       <div class="footer__col">
         <h4>Services</h4>
         <ul>
-          <li><a href="../services/legislative-strategy.html">Legislative Strategy</a></li>
-          <li><a href="../services/appropriations.html">Appropriations &amp; Riders</a></li>
-          <li><a href="../services/public-affairs.html">Public Affairs</a></li>
-          <li><a href="../services/parliamentary.html">Parliamentary Procedure</a></li>
-          <li><a href="../services.html">All services</a></li>
+          <li><a href="services/legislative-strategy.html">Legislative Strategy</a></li>
+          <li><a href="services/appropriations.html">Appropriations &amp; Riders</a></li>
+          <li><a href="services/public-affairs.html">Public Affairs</a></li>
+          <li><a href="services/parliamentary.html">Parliamentary Procedure</a></li>
+          <li><a href="services.html">All services</a></li>
         </ul>
       </div>
 
       <div class="footer__col">
         <h4>The Firm</h4>
         <ul>
-          <li><a href="../about.html">About</a></li>
-          <li><a href="../experience.html">Experience</a></li>
-          <li><a href="../industries.html">Clients</a></li>
-          <li><a href="../insights/">Insights</a></li>
-          <li><a href="../contact.html">Contact</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="experience.html">Experience</a></li>
+          <li><a href="industries.html">Clients</a></li>
+          <li><a href="insights/">Insights</a></li>
+          <li><a href="contact.html">Contact</a></li>
         </ul>
       </div>
 
@@ -1614,7 +1603,7 @@ section.article-section { padding-top: clamp(14px, 2vw, 28px); padding-bottom: c
     <div class="footer__bottom">
       <span>&copy; <span data-year>2026</span> Haney Group LLC. All rights reserved.</span>
       <span>
-        <a href="../privacy.html">Privacy</a> &middot; <a href="#">Texas Ethics Commission Lobby Registration</a> &middot; <a href="#">Accessibility</a>
+        <a href="#">Privacy</a> &middot; <a href="#">Texas Ethics Commission Lobby Registration</a> &middot; <a href="#">Accessibility</a>
       </span>
     </div>
   </div>
