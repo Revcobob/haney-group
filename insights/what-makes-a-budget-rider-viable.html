@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Insights &middot; The Session Briefing &middot; The Haney Group</title>
-<meta name="description" content="The Session Briefing, a candid read on what moved at the Texas Capitol, written by The Haney Group during session and monthly during interim." />
+<title>What Makes a Budget Rider Viable &middot; The Haney Group</title>
+<meta name="description" content="Durable rider language is the product of early design, disciplined drafting, and alignment with both policy and fiscal constraints. A practical framework for building viable Texas budget riders during the interim." />
 <meta name="theme-color" content="#0B1228" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -435,26 +435,28 @@ section.tight { padding-block: clamp(48px, 6vw, 72px); }
 @media (min-width: 640px) { .caps__grid { grid-template-columns: repeat(2, 1fr); } }
 @media (min-width: 1024px) { .caps__grid { grid-template-columns: repeat(3, 1fr); } }
 .cap {
-  padding: 32px 28px;
+  padding: 44px 28px 36px;
   border-right: 1px solid var(--line-1);
   border-bottom: 1px solid var(--line-1);
   display: flex; flex-direction: column;
-  gap: 12px;
+  align-items: center;
+  text-align: center;
+  gap: 14px;
   background: var(--paper);
   transition: background .22s var(--ease);
-  position: relative;
 }
 .cap:hover { background: var(--paper-2); }
-.cap__num {
-  font-size: 11px;
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
-  color: var(--amber-600);
-  font-weight: 700;
+.cap__icon {
+  width: clamp(120px, 12vw, 156px);
+  height: auto;
+  aspect-ratio: 1 / 1;
+  display: block;
   margin-bottom: 4px;
+  user-select: none;
+  -webkit-user-drag: none;
 }
-.cap h3 { font-size: 19px; font-weight: 600; }
-.cap p { color: var(--text-2); font-size: 14.5px; line-height: 1.55; margin: 0; }
+.cap h3 { font-size: 17px; font-weight: 600; max-width: 22ch; margin: 0; }
+.cap p { color: var(--text-2); font-size: 14.5px; line-height: 1.55; margin: 0; max-width: 32ch; }
 .caps__foot { margin-top: 36px; }
 
 /* ---------- Credibility / proof ---------- */
@@ -1282,6 +1284,82 @@ section.tight { padding-block: clamp(48px, 6vw, 72px); }
   }
   .nav__foot-link:hover { border-color: var(--navy-900); background: var(--paper-3); }
 }
+
+/* ---------- Article (insights detail) ---------- */
+.article__meta {
+  display: flex; flex-wrap: wrap; gap: 14px 22px;
+  align-items: center;
+  padding: 16px 0;
+  border-top: 1px solid var(--line-1);
+  border-bottom: 1px solid var(--line-1);
+  margin: 0 0 36px;
+  font-size: 13px;
+  color: var(--text-3);
+  letter-spacing: 0.02em;
+}
+.article__meta-group { display: inline-flex; align-items: center; gap: 8px; }
+.article__meta-group svg { color: var(--amber-600); flex-shrink: 0; }
+.article__meta-sep { width: 1px; height: 14px; background: var(--line-2); }
+.article__email {
+  margin-left: auto;
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 8px 14px;
+  border: 1px solid var(--line-2);
+  border-radius: var(--radius-sm);
+  color: var(--navy-900);
+  font-weight: 600;
+  font-size: 13.5px;
+  letter-spacing: 0;
+  text-transform: none;
+  transition: border-color .22s var(--ease), background .22s var(--ease), color .22s var(--ease);
+}
+.article__email svg { color: var(--amber-600); }
+.article__email:hover { border-color: var(--navy-900); background: var(--paper-3); }
+.article__email:hover svg { color: var(--amber-700); }
+.article__keypoints {
+  background: var(--paper-2);
+  border-left: 3px solid var(--amber-500);
+  padding: 22px 26px 24px;
+  margin: 0 0 36px;
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+}
+.article__keypoints h2 {
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--amber-600);
+  margin: 0 0 12px;
+  font-weight: 700;
+}
+.article__keypoints ul { padding-left: 1.1em; margin: 0; color: var(--text-1); }
+.article__keypoints li { margin: 0 0 8px; font-size: 15.5px; line-height: 1.5; }
+.article__keypoints li:last-child { margin-bottom: 0; }
+.article__keypoints li strong { color: var(--text-1); }
+.article__lead p:first-child::first-letter {
+  font-size: 3.2em;
+  float: left;
+  line-height: 0.95;
+  padding: 4px 12px 0 0;
+  color: var(--navy-900);
+  font-weight: 700;
+}
+.article__close {
+  margin-top: 48px;
+  padding: 28px 28px 30px;
+  background: var(--paper-2);
+  border: 1px solid var(--line-1);
+  border-radius: var(--radius-md);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.article__close p { margin: 0; color: var(--text-2); font-size: 15px; line-height: 1.55; }
+.article__close .article__email { margin-left: 0; align-self: flex-start; }
+@media (max-width: 640px) {
+  .article__meta { gap: 10px 14px; font-size: 12.5px; }
+  .article__email { margin-left: 0; }
+  .article__keypoints { padding: 20px 22px; }
+}
 </style>
 </head>
 <body>
@@ -1350,86 +1428,167 @@ section.tight { padding-block: clamp(48px, 6vw, 72px); }
 <section class="pagehero pagehero--photo" aria-labelledby="ph-h1">
   <div class="pagehero__bg" style="background-image:url('../assets/img/insights-hero-web.jpg')" aria-hidden="true"></div>
   <div class="container pagehero__inner">
-    <p class="pagehero__crumbs"><a href="../index.html">Home</a><span class="sep">/</span><span>Insights</span></p>
-    <p class="eyebrow" style="margin-bottom:22px">Insights</p>
-    <h1 class="h1" id="ph-h1">The Session Briefing.</h1>
-    <p class="lede">A candid read on what moved at the Texas Capitol, written by the firm during session and monthly during interim.</p>
+    <p class="pagehero__crumbs"><a href="../index.html">Home</a><span class="sep">/</span><a href="../insights/">Insights</a><span class="sep">/</span><span>Budget Riders</span></p>
+    <p class="eyebrow" style="margin-bottom:22px">The Session Briefing &middot; Article</p>
+    <h1 class="h1" id="ph-h1">What Makes a Budget Rider Viable</h1>
+    <p class="lede">Durable rider language is the product of early design, disciplined drafting, and alignment with both policy and fiscal constraints. The interim is where viable riders are built.</p>
   </div>
 </section>
 
 <section data-reveal>
   <div class="container">
-    <div class="postlist">
-      <article class="postlist__item postlist__item--thumb">
-        <div class="postlist__thumb"><img src="../assets/img/inline-82599cc6b6.jpg" alt="" loading="lazy" /></div>
-        <div>
-          <div class="postlist__meta">Article &middot; Interim</div>
-          <h3 class="postlist__title"><a href="preparing-early-for-the-next-legislative-session.html">Preparing Early for the Next Legislative Session</a></h3>
-          <p class="postlist__excerpt">The work that decides session outcomes happens long before opening day. A practical framework for interim preparation &mdash; calendar review, member mapping, message work, and LBB engagement that has to start in the spring.</p>
-        </div>
-      </article>
-      <article class="postlist__item postlist__item--thumb">
-        <div class="postlist__thumb"><img src="../assets/img/inline-e97cb4df21.jpg" alt="" loading="lazy" /></div>
-        <div>
-          <div class="postlist__meta">Article &middot; Appropriations</div>
-          <h3 class="postlist__title"><a href="what-makes-a-budget-rider-viable.html">What Makes a Budget Rider Viable</a></h3>
-          <p class="postlist__excerpt">Most riders that survive conference look obvious in retrospect. A close read of what distinguishes durable rider language from short-lived language, and why the work begins in interim.</p>
-        </div>
-      </article>
-      <article class="postlist__item postlist__item--thumb">
-        <div class="postlist__thumb"><img src="../assets/img/inline-3c9842e389.jpg" alt="" loading="lazy" /></div>
-        <div>
-          <div class="postlist__meta">Article &middot; Procedure</div>
-          <h3 class="postlist__title"><a href="#">Why Legislative Timing Matters</a></h3>
-          <p class="postlist__excerpt">Calendars, deadlines, and the difference between a bill that moves and a bill that waits. The procedural milestones that quietly decide what gets a hearing.</p>
-        </div>
-      </article>
-      <article class="postlist__item postlist__item--thumb">
-        <div class="postlist__thumb"><img src="../assets/img/inline-4ac60ed839.jpg" alt="" loading="lazy" /></div>
-        <div>
-          <div class="postlist__meta">Article &middot; Communications</div>
-          <h3 class="postlist__title"><a href="#">When To Say Nothing</a></h3>
-          <p class="postlist__excerpt">Message discipline during a moving bill. The handful of moments in a session when the right move is silence &mdash; and how to know which moments those are.</p>
-        </div>
-      </article>
-      <article class="postlist__item postlist__item--thumb">
-        <div class="postlist__thumb"><img src="../assets/img/inline-9e9828773d.jpg" alt="" loading="lazy" /></div>
-        <div>
-          <div class="postlist__meta">Article &middot; Lobbying</div>
-          <h3 class="postlist__title"><a href="#">Member Meetings That Move A Bill</a></h3>
-          <p class="postlist__excerpt">Preparation for a member meeting. What to bring, what to leave out, and how a fifteen-minute conversation can quietly change the trajectory of a bill.</p>
-        </div>
-      </article>
-      <article class="postlist__item postlist__item--thumb">
-        <div class="postlist__thumb"><img src="../assets/img/inline-1367b1c67c.jpg" alt="" loading="lazy" /></div>
-        <div>
-          <div class="postlist__meta">Article &middot; Procedure</div>
-          <h3 class="postlist__title"><a href="#">Points Of Order, Explained</a></h3>
-          <p class="postlist__excerpt">A non-procedural guide to points of order &mdash; what they are, when they matter, and why the moment one is sustained on the floor it changes what the chamber is doing.</p>
-        </div>
-      </article>
-    </div>
-  </div>
-</section>
+    <div class="prose article__lead">
 
-<section class="closing" data-reveal>
-  <div class="container">
-    <div class="closing__inner">
-      <div>
-        <p class="eyebrow" style="margin-bottom:18px">Contact</p>
-        <h2 class="h2">Ready to start a conversation?</h2>
+      <div class="article__meta">
+        <span class="article__meta-group"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg><span>Interim 2026</span></span>
+        <span class="article__meta-sep"></span>
+        <span class="article__meta-group"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>9 min read</span></span>
+        <span class="article__meta-sep"></span>
+        <span class="article__meta-group"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.59 13.41 13 21l-9-9V3h9l7.59 7.59a2 2 0 0 1 0 2.82z"/><circle cx="8" cy="8" r="1.5"/></svg><span>Appropriations &middot; Strategy</span></span>
+        <a class="article__email" href="mailto:?subject=From%20The%20Haney%20Group%3A%20What%20Makes%20a%20Budget%20Rider%20Viable&body=What%20Makes%20a%20Budget%20Rider%20Viable%0A%0ADurable%20rider%20language%20is%20the%20product%20of%20early%20design%2C%20disciplined%20drafting%2C%20and%20alignment%20with%20both%20policy%20and%20fiscal%20constraints.%20A%20practical%20framework%20for%20building%20viable%20Texas%20budget%20riders%20during%20the%20interim%2C%20with%20an%20article-by-article%20look%20at%20where%20riders%20live%20in%20the%20General%20Appropriations%20Act%20and%20how%20that%20affects%20drafting%20strategy.%0A%0ARead%20the%20full%20article%3A%0Ahttps%3A//www.haney-group.com/insights/what-makes-a-budget-rider-viable.html%0A%0A%E2%80%94%20The%20Haney%20Group%0AAustin%2C%20Texas%0A%28512%29%20925-5000%0Awww.haney-group.com" aria-label="Email this article to myself"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg><span>Email me this article</span></a>
       </div>
-      <div>
-        <p>Every engagement begins with a short, confidential discussion of the issue, the timing, and what success would look like. Reach us in Austin to talk it through.</p>
-        <div class="closing__ctas" style="margin-top:28px">
-          <a class="btn btn--primary" href="../contact.html">
-            Contact The Haney Group <span class="arrow" aria-hidden="true">→</span>
-          </a>
-          <a class="btn btn--ghost" href="tel:+15129255000">
-            Or call (512) 925-5000
-          </a>
-        </div>
+
+      <p>By the time a budget rider survives conference, it often appears inevitable. In reality, durable rider language is the product of <strong>early design</strong>, <strong>disciplined drafting</strong>, and <strong>alignment with both policy and fiscal constraints</strong>. Most riders fail not because the idea lacks merit, but because the groundwork was incomplete or mistimed. The interim is where viable riders are built.</p>
+
+      <div class="article__keypoints" aria-labelledby="article-keypoints-label">
+        <h2 id="article-keypoints-label">What this article covers</h2>
+        <ul>
+          <li><strong>Structural fit</strong> &mdash; tying a rider cleanly to existing appropriations and authority.</li>
+          <li><strong>Drafting durability</strong> &mdash; precise, defensible language that survives procedural review.</li>
+          <li><strong>Agency execution reality</strong> &mdash; aligning language with how the agency actually operates.</li>
+          <li><strong>Fiscal credibility</strong> &mdash; cost story, funding source, and stress-testing against scenarios.</li>
+          <li><strong>Champions and conference design</strong> &mdash; positioning for negotiation from the start.</li>
+          <li><strong>Article-by-article norms</strong> &mdash; how Articles II, III, V, VI, VII, and IX each shape what works.</li>
+        </ul>
       </div>
+
+      <h2>Start with Fit, Not Just Need</h2>
+      <p>A rider must do more than address a problem &mdash; it must fit cleanly within the structure and purpose of the General Appropriations Act.</p>
+      <p><strong>Viable riders typically:</strong></p>
+      <ul>
+        <li>Tie directly to an existing appropriation, strategy, or agency function.</li>
+        <li>Avoid creating new programs that lack a clear budgetary anchor.</li>
+        <li>Operate within, or clearly relate to, the authority already granted to the agency.</li>
+        <li>Respect limitations on general law, steering clear of language that reads as standalone statutory change.</li>
+      </ul>
+      <p>Early evaluation of &ldquo;fit&rdquo; forces refinement. If a proposal cannot be expressed as a natural extension of an existing appropriation, it is less likely to survive points of order or conference scrutiny.</p>
+
+      <h2>Draft for Durability</h2>
+      <p>Rider language must be precise, limited, and defensible under procedural review.</p>
+      <p><strong>Durable drafting tends to:</strong></p>
+      <ul>
+        <li>Use clear, directive language tied to specific line items or strategies.</li>
+        <li>Define scope narrowly enough to avoid unintended expansion.</li>
+        <li>Anticipate procedural challenges, particularly under rules restricting riders that attempt to legislate.</li>
+        <li>Align terminology with existing statute and agency usage.</li>
+      </ul>
+      <p>Ambiguity is often fatal. Language that invites interpretation can trigger objections from budget writers, agencies, or opposing stakeholders &mdash; any of which can stall or strip a rider late in the process.</p>
+
+      <h2>Align with Agency Reality</h2>
+      <p>A rider that cannot be implemented in practice will not last long in negotiations.</p>
+      <p>During the interim, viable proposals:</p>
+      <ul>
+        <li>Account for how the agency actually operates, including administrative constraints.</li>
+        <li>Reflect input from agency staff where appropriate, even if informally obtained.</li>
+        <li>Avoid imposing requirements that are operationally infeasible within the biennium.</li>
+        <li>Consider reporting, oversight, or performance measures that are realistic and measurable.</li>
+      </ul>
+      <p>This alignment reduces friction when the rider is reviewed by budget staff and conferees, who are often focused on execution as much as policy intent.</p>
+
+      <h2>Build Fiscal Credibility Early</h2>
+      <p>Even modest riders carry fiscal implications, and those implications must be understood in advance.</p>
+      <p><strong>Strong interim preparation includes:</strong></p>
+      <ul>
+        <li>Developing credible cost estimates or confirming cost neutrality where applicable.</li>
+        <li>Identifying the funding source within the bill, including relevant strategies or methods of finance.</li>
+        <li>Anticipating how the rider interacts with base appropriations and exceptional items.</li>
+        <li>Stress-testing assumptions against different budget scenarios.</li>
+      </ul>
+      <p>Riders that arrive without a clear fiscal story are more likely to be sidelined as the budget tightens and priorities compete.</p>
+
+      <h2>Identify Champions and Pressure Points</h2>
+      <p>No rider moves on drafting quality alone. Viability depends on who supports it and where it sits in the process.</p>
+      <p><strong>Effective interim work includes:</strong></p>
+      <ul>
+        <li>Securing interest from members with jurisdiction over the relevant article of the budget.</li>
+        <li>Understanding the perspectives of key budget writers and staff.</li>
+        <li>Identifying potential opposition early and narrowing points of disagreement.</li>
+        <li>Positioning the rider within broader negotiations, where it may serve as leverage or compromise.</li>
+      </ul>
+      <p>By the time conference begins, the most successful riders already have advocates in both chambers and a defined path through competing priorities.</p>
+
+      <h2>Design for Conference from the Start</h2>
+      <p>Conference committee is where many riders are narrowed, merged, or eliminated. Viable riders are drafted with that stage in mind.</p>
+      <p><strong>This means:</strong></p>
+      <ul>
+        <li>Keeping language concise enough to be easily defended and explained.</li>
+        <li>Avoiding unnecessary complexity that invites revision.</li>
+        <li>Ensuring the rider can withstand reconciliation between House and Senate versions.</li>
+        <li>Preparing fallback positions or scaled versions if compromise is required.</li>
+      </ul>
+      <p>Riders that depend on perfect conditions rarely survive. Those that are adaptable, without losing their core purpose, are far more likely to remain intact.</p>
+
+      <h2>Technical Breakdown by Budget Article</h2>
+      <p>Understanding where a rider lives in the General Appropriations Act &mdash; and how that article is typically treated &mdash; can materially affect drafting strategy and survival.</p>
+
+      <h3>Article II &mdash; Health and Human Services</h3>
+      <ul>
+        <li>Largest and most complex article; high scrutiny from both policy and fiscal perspectives.</li>
+        <li>Riders often focus on eligibility, service delivery, reporting, or program limitations.</li>
+        <li>Viability hinges on tight alignment with federal requirements and existing program structures (e.g., Medicaid constraints).</li>
+        <li>Broad or policy-heavy riders are more likely to be challenged as attempts to legislate.</li>
+      </ul>
+
+      <h3>Article III &mdash; Education (TEA and Higher Education)</h3>
+      <ul>
+        <li>Riders frequently address formula funding, grant conditions, or institutional accountability.</li>
+        <li>Successful riders tend to be data-driven and tied to performance or reporting metrics.</li>
+        <li>Political sensitivity is high; even small funding directives can trigger statewide stakeholder response.</li>
+        <li>Drafting must account for interaction with formulas and avoid unintended redistribution effects.</li>
+      </ul>
+
+      <h3>Article V &mdash; Public Safety and Criminal Justice</h3>
+      <ul>
+        <li>Riders often relate to operational directives, grant programs, or interagency coordination.</li>
+        <li>Agencies in this article are typically execution-focused, so feasibility and clarity are critical.</li>
+        <li>Riders that impose new duties without corresponding resources face resistance.</li>
+        <li>Coordination with existing statutory authority (e.g., Code of Criminal Procedure) is closely examined.</li>
+      </ul>
+
+      <h3>Article VI &mdash; Natural Resources</h3>
+      <ul>
+        <li>Common rider subjects include water, energy, and environmental programs.</li>
+        <li>Viability often depends on alignment with existing funds (e.g., dedicated accounts) and long-term planning frameworks.</li>
+        <li>Riders may intersect with quasi-independent entities or boards, requiring careful jurisdictional drafting.</li>
+        <li>Technical precision matters, particularly where federal or environmental standards are implicated.</li>
+      </ul>
+
+      <h3>Article VII &mdash; Business, Economic Development, and Transportation</h3>
+      <ul>
+        <li>Riders frequently address project prioritization, funding allocation, or reporting for large-scale infrastructure programs.</li>
+        <li>Coordination with TxDOT planning documents and federal funding streams is essential.</li>
+        <li>Riders that attempt to earmark specific projects face higher scrutiny unless clearly justified within existing frameworks.</li>
+        <li>Timing matters &mdash; alignment with planning and funding cycles can determine practicality.</li>
+      </ul>
+
+      <h3>Article IX &mdash; General Provisions</h3>
+      <ul>
+        <li>Houses statewide riders that apply across agencies.</li>
+        <li>Highly scrutinized for attempts to enact broad policy through appropriations language.</li>
+        <li>Viable riders here are typically administrative, procedural, or clarifying in nature.</li>
+        <li>Overreach in Article IX is a common source of points of order and conference removal.</li>
+      </ul>
+
+      <p>Each article has its own norms, pressure points, and drafting expectations. Tailoring rider language to those conditions during the interim significantly improves the likelihood that it will move cleanly through both chambers and survive conference.</p>
+
+      <h2>Closing Perspective</h2>
+      <p>What appears &ldquo;obvious&rdquo; at the end of session is usually the result of deliberate interim work &mdash; aligning policy goals with budget structure, drafting with precision, and building support before the process accelerates. A viable rider is not just a good idea; it is an idea that fits, functions, and can withstand the pressures of the appropriations process.</p>
+
+      <div class="article__close">
+        <p><strong>Want to read this later?</strong> Send this article to your inbox with a one-click email. We will not subscribe you to anything &mdash; this is a private, plain link from your own mail client.</p>
+        <a class="article__email" href="mailto:?subject=From%20The%20Haney%20Group%3A%20What%20Makes%20a%20Budget%20Rider%20Viable&body=What%20Makes%20a%20Budget%20Rider%20Viable%0A%0ADurable%20rider%20language%20is%20the%20product%20of%20early%20design%2C%20disciplined%20drafting%2C%20and%20alignment%20with%20both%20policy%20and%20fiscal%20constraints.%20A%20practical%20framework%20for%20building%20viable%20Texas%20budget%20riders%20during%20the%20interim%2C%20with%20an%20article-by-article%20look%20at%20where%20riders%20live%20in%20the%20General%20Appropriations%20Act%20and%20how%20that%20affects%20drafting%20strategy.%0A%0ARead%20the%20full%20article%3A%0Ahttps%3A//www.haney-group.com/insights/what-makes-a-budget-rider-viable.html%0A%0A%E2%80%94%20The%20Haney%20Group%0AAustin%2C%20Texas%0A%28512%29%20925-5000%0Awww.haney-group.com" aria-label="Email this article to myself"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg><span>Email me this article</span></a>
+      </div>
+
     </div>
   </div>
 </section>
