@@ -826,6 +826,62 @@ section.tight { padding-block: clamp(48px, 6vw, 72px); }
   }
   [data-reveal] { opacity: 1; transform: none; }
 }
+
+/* ---------- Mobile polish (<=640px) ---------- */
+@media (max-width: 640px) {
+  /* Belt-and-suspenders against horizontal scroll caused by oversized photos */
+  html, body { overflow-x: hidden; }
+
+  /* Tighten vertical rhythm so phone screens aren't dominated by padding */
+  section { padding-block: 56px; }
+
+  /* Header: smaller logo + tighter row so it doesn't eat the viewport */
+  .header__inner { padding-block: 12px; gap: 12px; }
+  .brand__logo { height: 54px; }
+
+  /* Utility bar: collapse the bullet dots and tighten gaps when items wrap */
+  .utility { font-size: 12px; }
+  .utility__inner { padding-block: 8px; gap: 8px 14px; }
+  .utility__group { gap: 8px 14px; }
+  .utility__group .dot { display: none; }
+
+  /* Homepage hero: dial down padding, keep subject in frame, stack CTAs */
+  .hero { padding-top: 32px; padding-bottom: 72px; }
+  .hero__bg { background-position: 62% center; }
+  .hero__copy h1 { font-size: clamp(28px, 8.5vw, 34px); }
+  .hero__sub { font-size: 16px; margin-top: 18px; }
+  .hero__rule { margin-bottom: 18px; }
+  .hero__ctas { flex-direction: column; align-items: stretch; gap: 10px; margin-top: 28px; }
+  .hero__ctas .btn { justify-content: center; width: 100%; }
+  .hero__meta { margin-top: 28px; padding-top: 18px; font-size: 13.5px; }
+
+  /* Secondary-page hero: same treatment */
+  .pagehero { padding-block: 56px; }
+  .pagehero h1 { font-size: clamp(28px, 8.5vw, 34px); }
+  .pagehero p.lede { font-size: 16px; margin-top: 14px; }
+  .pagehero__crumbs { font-size: 12px; margin-bottom: 14px; }
+  .pagehero--photo .pagehero__bg { background-position: 55% 32%; }
+
+  /* Type-level squeeze for everything else */
+  .h1 { font-size: clamp(28px, 8.5vw, 34px); line-height: 1.12; }
+  .h2 { font-size: clamp(24px, 7vw, 30px); line-height: 1.18; }
+  .h3 { font-size: 18px; }
+  .lede { font-size: 16px; line-height: 1.55; }
+
+  /* Buttons: bigger tap targets, easier to hit */
+  .btn { padding: 13px 18px; font-size: 15px; }
+
+  /* Forms: 16px input font-size keeps iOS from zooming on focus */
+  .form { gap: 14px; }
+  .form input, .form textarea, .form select { padding: 12px 14px; font-size: 16px; }
+
+  /* Prose readability */
+  .prose { font-size: 16px; }
+  .prose h2 { font-size: 24px; }
+
+  /* Footer rhythm */
+  .footer { padding-block: 48px; }
+}
 </style>
 <meta property="og:title" content="The Haney Group · Texas Government Relations" />
 <meta property="og:description" content="Senior-led legislative strategy, appropriations, and procedural expertise for organizations whose Texas priorities cannot afford to be misunderstood." />
