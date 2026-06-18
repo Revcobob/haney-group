@@ -932,6 +932,13 @@ section.tight { padding-block: clamp(48px, 6vw, 72px); }
   transition: border-color .22s var(--ease), background .22s var(--ease);
 }
 .tile:hover { border-color: var(--navy-900); }
+.tile__icon {
+  width: 96px;
+  height: auto;
+  border-radius: 6px;
+  display: block;
+  margin-bottom: 8px;
+}
 .tile__num {
   font-size: 11px; letter-spacing: 0.24em; text-transform: uppercase;
   color: var(--amber-600); font-weight: 700;
@@ -1431,24 +1438,28 @@ section.tight { padding-block: clamp(48px, 6vw, 72px); }
 
     <div class="tilegrid">
       <a class="tile" href="services/legislative-strategy.html">
+        <img class="tile__icon" src="assets/img/icon-legislative-strategy.jpg" alt="" loading="lazy" width="96" height="96" />
         <span class="tile__num">01</span>
         <h3>Legislative Strategy</h3>
         <p>Read the calendar, map the path, time the engagement. The work that decides whether a bill moves.</p>
         <span class="linkarrow" style="margin-top:14px">Read more <span class="arrow" aria-hidden="true">&rarr;</span></span>
       </a>
       <a class="tile" href="services/appropriations.html">
+        <img class="tile__icon" src="assets/img/icon-appropriations.jpg" alt="" loading="lazy" width="96" height="96" />
         <span class="tile__num">02</span>
         <h3>Appropriations &amp; Riders</h3>
         <p>Article posture, rider language, LBB engagement, and interim work that protects funding cycle to cycle.</p>
         <span class="linkarrow" style="margin-top:14px">Read more <span class="arrow" aria-hidden="true">&rarr;</span></span>
       </a>
       <a class="tile" href="services/public-affairs.html">
+        <img class="tile__icon" src="assets/img/icon-public-affairs.jpg" alt="" loading="lazy" width="96" height="96" />
         <span class="tile__num">03</span>
         <h3>Public Affairs</h3>
         <p>Message development, media posture, and board-ready communications for clients whose issues are public.</p>
         <span class="linkarrow" style="margin-top:14px">Read more <span class="arrow" aria-hidden="true">&rarr;</span></span>
       </a>
       <a class="tile" href="services/parliamentary.html">
+        <img class="tile__icon" src="assets/img/icon-procedural-2.jpg" alt="" loading="lazy" width="96" height="96" />
         <span class="tile__num">04</span>
         <h3>Parliamentary Procedure</h3>
         <p>The institutional advisory practice. House Rules, modernization, and procedural counsel to legislatures.</p>
