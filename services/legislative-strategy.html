@@ -435,26 +435,28 @@ section.tight { padding-block: clamp(48px, 6vw, 72px); }
 @media (min-width: 640px) { .caps__grid { grid-template-columns: repeat(2, 1fr); } }
 @media (min-width: 1024px) { .caps__grid { grid-template-columns: repeat(3, 1fr); } }
 .cap {
-  padding: 32px 28px;
+  padding: 44px 28px 36px;
   border-right: 1px solid var(--line-1);
   border-bottom: 1px solid var(--line-1);
   display: flex; flex-direction: column;
-  gap: 12px;
+  align-items: center;
+  text-align: center;
+  gap: 14px;
   background: var(--paper);
   transition: background .22s var(--ease);
-  position: relative;
 }
 .cap:hover { background: var(--paper-2); }
-.cap__num {
-  font-size: 11px;
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
-  color: var(--amber-600);
-  font-weight: 700;
+.cap__icon {
+  width: clamp(120px, 12vw, 156px);
+  height: auto;
+  aspect-ratio: 1 / 1;
+  display: block;
   margin-bottom: 4px;
+  user-select: none;
+  -webkit-user-drag: none;
 }
-.cap h3 { font-size: 19px; font-weight: 600; }
-.cap p { color: var(--text-2); font-size: 14.5px; line-height: 1.55; margin: 0; }
+.cap h3 { font-size: 17px; font-weight: 600; max-width: 22ch; margin: 0; }
+.cap p { color: var(--text-2); font-size: 14.5px; line-height: 1.55; margin: 0; max-width: 32ch; }
 .caps__foot { margin-top: 36px; }
 
 /* ---------- Credibility / proof ---------- */
@@ -1383,12 +1385,36 @@ section.tight { padding-block: clamp(48px, 6vw, 72px); }
       <h2 class="h2">The capabilities this practice draws on.</h2>
     </div>
     <div class="caps__grid">
-      <article class="cap"><div class="cap__num">01</div><h3>Legislative Strategy</h3><p>Translate a policy objective into a practical, member-by-member path through committee, calendar, floor, and conference.</p></article>
-      <article class="cap"><div class="cap__num">02</div><h3>Lobbying &amp; Advocacy</h3><p>Represent client interests at the Capitol with preparation, credibility, and direct communication.</p></article>
-      <article class="cap"><div class="cap__num">03</div><h3>Bill Drafting &amp; Analysis</h3><p>Review, draft, and refine legislative language with close attention to process, timing, germaneness, and downstream risk.</p></article>
-      <article class="cap"><div class="cap__num">04</div><h3>Appropriations &amp; Budget Riders</h3><p>Article and rider strategy, LBB engagement, agency coordination, and interim work.</p></article>
-      <article class="cap"><div class="cap__num">05</div><h3>Parliamentary Procedure</h3><p>House Rules, points of order, amendments, germaneness, and floor process.</p></article>
-      <article class="cap"><div class="cap__num">06</div><h3>Coalition &amp; Stakeholder Management</h3><p>Build durable support, manage organized opposition, align partners around achievable outcomes.</p></article>
+      <article class="cap">
+        <img class="cap__icon" src="../assets/img/icon-legislative-strategy.png" alt="" loading="lazy" width="480" height="480" />
+        <h3>Legislative Strategy</h3>
+        <p>Translate a policy objective into a practical, member-by-member path through committee, calendar, floor, and conference.</p>
+      </article>
+      <article class="cap">
+        <img class="cap__icon" src="../assets/img/icon-lobbying-advocacy.png" alt="" loading="lazy" width="480" height="480" />
+        <h3>Lobbying &amp; Advocacy</h3>
+        <p>Represent client interests at the Capitol with preparation, credibility, and direct communication grounded in long-standing member relationships.</p>
+      </article>
+      <article class="cap">
+        <img class="cap__icon" src="../assets/img/icon-bill-drafting.png" alt="" loading="lazy" width="480" height="480" />
+        <h3>Bill Drafting &amp; Analysis</h3>
+        <p>Review, draft, and refine legislative language with close attention to process, timing, germaneness, and downstream risk.</p>
+      </article>
+      <article class="cap">
+        <img class="cap__icon" src="../assets/img/icon-appropriations.png" alt="" loading="lazy" width="480" height="480" />
+        <h3>Appropriations &amp; Budget Riders</h3>
+        <p>Article and rider strategy, LBB engagement, agency coordination, and interim work where the state budget is actually decided.</p>
+      </article>
+      <article class="cap">
+        <img class="cap__icon" src="../assets/img/icon-procedural-2.png" alt="" loading="lazy" width="480" height="480" />
+        <h3>Parliamentary Procedure</h3>
+        <p>House Rules, points of order, amendments, germaneness, and floor process, advised by the firm&rsquo;s former Chief Clerk of the Texas House.</p>
+      </article>
+      <article class="cap">
+        <img class="cap__icon" src="../assets/img/icon-coalitions.png" alt="" loading="lazy" width="480" height="480" />
+        <h3>Coalition &amp; Stakeholder Management</h3>
+        <p>Build durable support, manage organized opposition, and align boards, members, and partners around achievable outcomes.</p>
+      </article>
     </div>
   </div>
 </section>
