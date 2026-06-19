@@ -10,6 +10,8 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@clerk/nextjs": "^6.39.5",
+    "@supabase/supabase-js": "^2.108.2",
     "next": "^15.3.9",
     "react": "^19.2.7",
     "react-dom": "^19.2.7"

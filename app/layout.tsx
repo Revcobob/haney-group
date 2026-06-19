@@ -1,9 +1,7 @@
 import type { Metadata, Viewport } from "next";
+import { ClerkProvider } from "@clerk/nextjs";
 import "../styles/main.css";
-import { UtilityBar } from "@/components/site/UtilityBar";
-import { Header } from "@/components/site/Header";
-import { Footer } from "@/components/site/Footer";
-import { SiteScripts } from "@/components/site/SiteScripts";
+import { clerkConfigured } from "@/lib/env";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.haney-group.com"),
@@ -30,7 +28,7 @@ export const viewport: Viewport = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  return (
+  const body = (
     <html lang="en">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -40,16 +38,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap"
         />
       </head>
-      <body>
-        <a className="skip" href="#main">
-          Skip to content
-        </a>
-        <UtilityBar />
-        <Header />
-        <main id="main">{children}</main>
-        <Footer />
-        <SiteScripts />
-      </body>
+      <body>{children}</body>
     </html>
   );
+
+  // Only wrap in ClerkProvider when Clerk is configured. Otherwise the
+  // provider throws at runtime over missing keys and breaks the public site.
+  if (clerkConfigured) {
+    return <ClerkProvider>{body}</ClerkProvider>;
+  }
+  return body;
 }

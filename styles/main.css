@@ -1600,6 +1600,288 @@ section.article-section { padding-top: clamp(14px, 2vw, 28px); padding-bottom: c
   .article__keypoints { padding: 20px 22px; }
 }
 
+/* =============================================================
+   ADMIN — Haney CMS chrome
+   Same tokens as the public site. Built to feel like an extension
+   of haney-group.com, not a generic dashboard skin.
+   ============================================================= */
+.admin {
+  min-height: 100vh;
+  background: var(--paper-2);
+  color: var(--text-1);
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr;
+  grid-template-areas:
+    "header"
+    "main";
+}
+@media (min-width: 960px) {
+  .admin {
+    grid-template-columns: 260px 1fr;
+    grid-template-areas:
+      "header header"
+      "side   main";
+  }
+}
+
+.admin__header {
+  grid-area: header;
+  background: var(--navy-900);
+  color: var(--paper);
+  border-bottom: 1px solid var(--ink-1000);
+  position: sticky; top: 0; z-index: 60;
+}
+.admin__header-inner {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 24px;
+  padding: 14px clamp(20px, 3vw, 32px);
+  max-width: none;
+}
+.admin__brand {
+  display: inline-flex; align-items: center; gap: 14px;
+  color: var(--paper);
+}
+.admin__brand img { height: 40px; width: auto; display: block; }
+.admin__brand-meta {
+  display: flex; flex-direction: column; gap: 2px; line-height: 1.1;
+}
+.admin__brand-eyebrow {
+  font-size: 10px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--amber-400);
+  font-weight: 700;
+}
+.admin__brand-label { font-size: 14px; font-weight: 600; color: var(--paper); }
+
+.admin__userbar {
+  display: flex; align-items: center; gap: 16px;
+  font-size: 13.5px;
+  color: rgba(245,241,232,0.78);
+}
+.admin__userbar .admin__user {
+  display: flex; flex-direction: column; align-items: flex-end; gap: 2px;
+  line-height: 1.15;
+}
+.admin__userbar .admin__user-name { color: var(--paper); font-weight: 600; font-size: 13.5px; }
+.admin__userbar .admin__user-email { font-size: 12px; color: rgba(245,241,232,0.62); }
+.admin__userbar a, .admin__userbar button {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.18);
+  color: var(--paper);
+  padding: 8px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 13px; font-weight: 600;
+  transition: border-color .22s var(--ease), background .22s var(--ease);
+  cursor: pointer;
+}
+.admin__userbar a:hover, .admin__userbar button:hover {
+  border-color: var(--amber-400); background: rgba(201,137,42,0.08);
+}
+
+.admin__side {
+  grid-area: side;
+  background: var(--paper);
+  border-right: 1px solid var(--line-1);
+  padding: 24px 16px 32px;
+  display: none;
+  flex-direction: column;
+  gap: 6px;
+}
+@media (min-width: 960px) { .admin__side { display: flex; } }
+.admin__side-group { display: flex; flex-direction: column; gap: 2px; margin-bottom: 18px; }
+.admin__side-group:last-child { margin-bottom: 0; }
+.admin__side-label {
+  font-size: 10.5px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  font-weight: 700;
+  padding: 6px 12px 8px;
+}
+.admin__side-link {
+  display: flex; align-items: center; gap: 12px;
+  padding: 9px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 14px; font-weight: 500;
+  color: var(--text-2);
+  transition: color .22s var(--ease), background .22s var(--ease);
+}
+.admin__side-link:hover { color: var(--navy-900); background: var(--paper-2); }
+.admin__side-link.is-active {
+  color: var(--navy-900);
+  background: var(--paper-3);
+  font-weight: 600;
+}
+.admin__side-link svg { color: var(--amber-600); flex-shrink: 0; }
+
+.admin__main {
+  grid-area: main;
+  padding: clamp(20px, 3vw, 32px) clamp(20px, 3vw, 40px) 80px;
+  min-width: 0;
+}
+.admin__pagehead {
+  display: flex; flex-direction: column; gap: 8px;
+  margin-bottom: 32px;
+}
+.admin__pagehead-eyebrow {
+  font-size: 11px; letter-spacing: 0.28em; text-transform: uppercase;
+  color: var(--amber-600); font-weight: 700;
+}
+.admin__pagehead h1 {
+  font-size: clamp(24px, 3vw, 32px);
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  color: var(--text-1);
+}
+.admin__pagehead p { color: var(--text-2); font-size: 15.5px; max-width: 64ch; margin: 0; }
+
+/* Cards / panels */
+.admin__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+@media (min-width: 700px) { .admin__grid--2 { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 1100px) { .admin__grid--3 { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 1100px) { .admin__grid--4 { grid-template-columns: repeat(4, 1fr); } }
+
+.admin__card {
+  background: var(--paper);
+  border: 1px solid var(--line-1);
+  border-radius: var(--radius-md);
+  padding: 22px 24px 24px;
+  display: flex; flex-direction: column; gap: 12px;
+  transition: border-color .22s var(--ease), box-shadow .22s var(--ease);
+}
+.admin__card:hover { border-color: var(--line-2); }
+.admin__card--link { cursor: pointer; }
+.admin__card--link:hover { border-color: var(--navy-900); box-shadow: 0 6px 22px rgba(11,18,40,0.05); }
+.admin__card-eyebrow {
+  font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--amber-600); font-weight: 700;
+}
+.admin__card h3 {
+  font-size: 17px; font-weight: 700; color: var(--text-1); margin: 0;
+  letter-spacing: -0.005em;
+}
+.admin__card p { color: var(--text-2); font-size: 14.5px; line-height: 1.55; margin: 0; }
+.admin__card .admin__card-action {
+  margin-top: 6px;
+  font-size: 13.5px; font-weight: 600; color: var(--navy-900);
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.admin__card-action .arrow { color: var(--amber-500); transition: transform .22s var(--ease); }
+.admin__card--link:hover .admin__card-action .arrow { transform: translateX(3px); }
+
+.admin__stat { display: flex; flex-direction: column; gap: 4px; }
+.admin__stat-num {
+  font-size: clamp(28px, 3vw, 36px); font-weight: 700;
+  color: var(--navy-900); letter-spacing: -0.02em; line-height: 1;
+}
+.admin__stat-label { font-size: 12.5px; letter-spacing: 0.06em; color: var(--text-3); }
+
+/* Notice banner */
+.admin__notice {
+  background: var(--paper);
+  border: 1px solid var(--line-1);
+  border-left: 3px solid var(--amber-500);
+  border-radius: var(--radius-md);
+  padding: 16px 18px;
+  display: flex; gap: 14px;
+  align-items: flex-start;
+  margin-bottom: 24px;
+}
+.admin__notice strong { color: var(--text-1); font-weight: 600; }
+.admin__notice p { margin: 0; color: var(--text-2); font-size: 14px; line-height: 1.5; }
+.admin__notice--warning { border-left-color: #B25C2E; }
+.admin__notice--info { border-left-color: var(--amber-500); }
+
+/* Auth/setup screens — branded, single centered card on navy */
+.admin__authshell {
+  min-height: 100vh;
+  background: var(--navy-900);
+  color: var(--paper);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+.admin__authshell::before {
+  content: "";
+  position: absolute; inset: 0; z-index: -1;
+  background:
+    radial-gradient(60% 55% at 80% 20%, rgba(201,137,42,0.18), transparent 60%),
+    radial-gradient(50% 45% at 10% 90%, rgba(30, 42, 82, 0.55), transparent 70%);
+}
+.admin__authcard {
+  width: 100%;
+  max-width: 460px;
+  background: rgba(255,255,255,0.04);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: var(--radius-md);
+  padding: 36px 36px 32px;
+  display: flex; flex-direction: column; gap: 24px;
+}
+.admin__authcard-brand {
+  display: flex; align-items: center; gap: 14px;
+}
+.admin__authcard-brand img { height: 60px; width: auto; display: block; }
+.admin__authcard-brand-meta {
+  display: flex; flex-direction: column; gap: 4px; line-height: 1.1;
+}
+.admin__authcard-eyebrow {
+  font-size: 10.5px; letter-spacing: 0.32em; text-transform: uppercase;
+  color: var(--amber-400); font-weight: 700;
+}
+.admin__authcard-meta-label { font-size: 14px; font-weight: 600; color: var(--paper); }
+.admin__authcard-rule { width: 56px; height: 3px; background: var(--amber-500); }
+.admin__authcard h1 {
+  font-size: 26px; font-weight: 700; color: var(--paper);
+  letter-spacing: -0.015em; line-height: 1.15; margin: 0;
+}
+.admin__authcard p { color: rgba(245,241,232,0.78); font-size: 15px; line-height: 1.55; margin: 0; }
+.admin__authcard .admin__authcard-foot {
+  margin-top: 6px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(255,255,255,0.10);
+  font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: rgba(245,241,232,0.5);
+  display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+}
+.admin__authcard-foot a { color: rgba(245,241,232,0.7); }
+.admin__authcard-foot a:hover { color: var(--amber-400); }
+
+.admin__codeblock {
+  display: block;
+  background: rgba(0,0,0,0.35);
+  color: var(--paper);
+  padding: 14px 16px;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(255,255,255,0.08);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 12.5px;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* Make Clerk's <SignIn /> blend into the auth card */
+.admin__authcard .cl-rootBox,
+.admin__authcard .cl-card {
+  width: 100%;
+  background: transparent;
+  box-shadow: none;
+  border: 0;
+  padding: 0;
+}
+
 /* ---------- Article timeline aside (used in some posts) ---------- */
 .article__timeline {
   margin: 28px 0 36px;
