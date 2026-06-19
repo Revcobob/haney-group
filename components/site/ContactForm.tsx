@@ -4,7 +4,10 @@ import { useState, type FormEvent } from "react";
 
 type Status = "idle" | "submitting" | "success" | "error";
 
-export function ContactForm() {
+const DEFAULT_CONSENT =
+  "I understand my message will be reviewed by The Haney Group and consent to being contacted about my inquiry.";
+
+export function ContactForm({ consentLanguage }: { consentLanguage?: string }) {
   const [status, setStatus] = useState<Status>("idle");
   const [errorMessage, setErrorMessage] = useState<string>("");
 
@@ -119,10 +122,7 @@ export function ContactForm() {
       </div>
       <label className="form__consent">
         <input type="checkbox" name="consent" required />
-        <span>
-          I understand my message will be reviewed by The Haney Group and
-          consent to being contacted about my inquiry.
-        </span>
+        <span>{consentLanguage ?? DEFAULT_CONSENT}</span>
       </label>
       {status === "error" ? (
         <div className="form__status form__status--error" role="alert">

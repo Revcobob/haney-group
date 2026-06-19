@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ClosingCTA } from "@/components/site/ClosingCTA";
 import { ContactForm } from "@/components/site/ContactForm";
+import { getSiteSettings } from "@/lib/content/site";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -10,7 +11,8 @@ export const metadata: Metadata = {
   alternates: { canonical: "/contact" },
 };
 
-export default function ContactPage() {
+export default async function ContactPage() {
+  const settings = await getSiteSettings();
   return (
     <>
       <section className="pagehero pagehero--photo" aria-labelledby="ph-h1">
@@ -84,7 +86,7 @@ export default function ContactPage() {
               <h2 className="h2" style={{ marginBottom: 24 }}>
                 A few details help us prepare.
               </h2>
-              <ContactForm />
+              <ContactForm consentLanguage={settings.consent_language} />
             </div>
           </div>
         </div>

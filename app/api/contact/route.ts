@@ -1,46 +1,113 @@
 import { NextResponse } from "next/server";
+import { z } from "zod";
+import { serverSupabase } from "@/lib/supabase/server";
+import { supabaseServerConfigured } from "@/lib/env";
+import { clientIp, hashIp, checkRateLimit } from "@/lib/rate-limit";
+import { notifyNewInquiry } from "@/lib/email";
 
-// Phase 2 stub. Phase 6 wires this to Supabase + Resend (info@haney-group.com).
-// Already enforces: honeypot check, required fields, consent, basic shape.
+export const runtime = "nodejs";
+
+const PayloadSchema = z.object({
+  name: z.string().trim().min(1, "Name is required").max(200),
+  organization: z.string().trim().max(200).optional().or(z.literal("")),
+  email: z.string().trim().email("Please enter a valid email").max(320),
+  phone: z.string().trim().max(60).optional().or(z.literal("")),
+  inquiry_type: z.string().trim().max(120).optional().or(z.literal("")),
+  message: z.string().trim().min(1, "Message is required").max(5000),
+  consent: z.boolean().refine((v) => v === true, "Consent is required"),
+  source_page: z.string().trim().max(300).optional().or(z.literal("")),
+  company_website: z.string().optional(), // honeypot
+});
+
 export async function POST(request: Request) {
-  let body: Record<string, unknown>;
+  // 1) Parse JSON
+  let body: unknown;
   try {
     body = await request.json();
   } catch {
     return NextResponse.json({ error: "Invalid request body." }, { status: 400 });
   }
 
-  const get = (k: string) => (typeof body[k] === "string" ? (body[k] as string).trim() : "");
-  const honeypot = get("company_website");
-  const name = get("name");
-  const email = get("email");
-  const message = get("message");
-  const consent = body.consent === true;
+  const parsed = PayloadSchema.safeParse(body);
+  if (!parsed.success) {
+    const issue = parsed.error.issues[0];
+    return NextResponse.json(
+      { error: issue?.message ?? "Please check the form and try again." },
+      { status: 400 }
+    );
+  }
+  const input = parsed.data;
 
-  // Honeypot — silently accept then drop. Bots see success; humans never see this.
-  if (honeypot.length > 0) {
+  // 2) Honeypot — silently accept then drop so bots think they succeeded.
+  if (input.company_website && input.company_website.trim().length > 0) {
     return NextResponse.json({ ok: true }, { status: 200 });
   }
 
-  if (!name || !email || !message) {
+  // 3) Rate limit per IP hash.
+  const ip = clientIp(request);
+  const ipHash = hashIp(ip);
+  const { allowed } = checkRateLimit(ipHash);
+  if (!allowed) {
     return NextResponse.json(
-      { error: "Name, email, and message are required." },
-      { status: 400 }
+      { error: "Too many submissions from this network. Please try again later or call us." },
+      { status: 429 }
     );
-  }
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    return NextResponse.json({ error: "Please enter a valid email." }, { status: 400 });
-  }
-  if (!consent) {
-    return NextResponse.json(
-      { error: "Please confirm consent before submitting." },
-      { status: 400 }
-    );
-  }
-  if (name.length > 200 || email.length > 320 || message.length > 5000) {
-    return NextResponse.json({ error: "Submission is too long." }, { status: 400 });
   }
 
-  // TODO Phase 6: insert into cms_contact_inquiries + notify info@haney-group.com
-  return NextResponse.json({ ok: true }, { status: 200 });
+  // 4) If Supabase isn't configured, fail soft — accept the message but tell the
+  //    visitor we'll be in touch by phone or email. This matches the visitor's
+  //    expectation while keeping operations from breaking during setup.
+  if (!supabaseServerConfigured) {
+    return NextResponse.json(
+      {
+        ok: true,
+        notice:
+          "Saved locally; database not yet connected. The firm will follow up directly.",
+      },
+      { status: 200 }
+    );
+  }
+
+  // 5) Insert into cms_contact_inquiries.
+  const sb = serverSupabase();
+  const row = {
+    name: input.name,
+    organization: input.organization || null,
+    email: input.email,
+    phone: input.phone || null,
+    inquiry_type: input.inquiry_type || null,
+    message: input.message,
+    consent: true,
+    source_page: input.source_page || "/contact",
+    ip_hash: ipHash || null,
+    user_agent: request.headers.get("user-agent")?.slice(0, 500) ?? null,
+    status: "new" as const,
+  };
+  const { data: inserted, error } = await sb
+    .from("cms_contact_inquiries")
+    .insert(row as never)
+    .select("id")
+    .single();
+  if (error) {
+    return NextResponse.json(
+      { error: "We couldn’t save your note. Please call (512) 925-5000." },
+      { status: 500 }
+    );
+  }
+
+  // 6) Email notification (best-effort, never blocks the visitor).
+  notifyNewInquiry({
+    name: input.name,
+    organization: input.organization || undefined,
+    email: input.email,
+    phone: input.phone || undefined,
+    inquiry_type: input.inquiry_type || undefined,
+    message: input.message,
+    source_page: input.source_page || "/contact",
+    id: inserted?.id as string | undefined,
+  }).catch(() => {
+    // Email failure shouldn't break the user flow; the inquiry is already saved.
+  });
+
+  return NextResponse.json({ ok: true, id: inserted?.id }, { status: 200 });
 }

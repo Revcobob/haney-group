@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { supabaseServerConfigured } from "@/lib/env";
 import { listAdminArticles } from "@/lib/admin/data/insights";
+import { countNewInquiries } from "@/lib/admin/data/inquiries";
 
 export const metadata: Metadata = { title: "Dashboard" };
 
@@ -18,7 +19,10 @@ const quickLinks: QuickLink[] = [
 
 export default async function DashboardPage() {
   const supabaseReady = supabaseServerConfigured;
-  const articles = supabaseReady ? await listAdminArticles() : [];
+  const [articles, newInquiryCount] = await Promise.all([
+    supabaseReady ? listAdminArticles() : Promise.resolve([]),
+    supabaseReady ? countNewInquiries() : Promise.resolve(0),
+  ]);
   const draftCount = articles.filter((a) => a.status === "draft").length;
   const publishedCount = articles.filter((a) => a.status === "published").length;
 
@@ -73,8 +77,8 @@ export default async function DashboardPage() {
       <div className="admin__grid admin__grid--4">
         <div className="admin__card">
           <div className="admin__stat">
-            <span className="admin__stat-num">—</span>
-            <span className="admin__stat-label">New inquiries this week</span>
+            <span className="admin__stat-num">{supabaseReady ? newInquiryCount : "—"}</span>
+            <span className="admin__stat-label">New inquiries (awaiting review)</span>
           </div>
         </div>
         <div className="admin__card">

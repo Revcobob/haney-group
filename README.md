@@ -102,7 +102,8 @@ copy `.env.example` to `.env.local` and fill in:
    alongside the visual editor)
 5. ✅ Insights — articles list/new/edit, Tiptap editor, server-side HTML
    sanitization, public site reads Supabase first with fallback
-6. Contact form wired to Supabase + Inquiry manager + email notifications
+6. ✅ Contact form wired to Supabase + Inquiry manager + CSV export +
+   optional Resend email notifications to info@haney-group.com
 7. SEO manager + sitemap + robots (per-page editor; sitemap/robots done)
 8. Visual click-to-edit editor + Pages section forms (`/admin/pages/[slug]/visual`)
 
