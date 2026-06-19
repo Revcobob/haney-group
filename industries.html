@@ -1341,7 +1341,13 @@ section.tight { padding-block: clamp(48px, 6vw, 72px); }
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+  z-index: 1;
+  cursor: pointer;
+  text-decoration: none;
+  padding: 0 8px;
 }
+.clientlogos__logo img { pointer-events: none; }
 .clientlogos__logo img {
   max-height: 64px;
   max-width: 180px;
