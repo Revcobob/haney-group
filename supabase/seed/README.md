@@ -1,24 +1,34 @@
 # Supabase seed
 
-Phase 3 ships the schema; Phase 4 will add a TypeScript seed script that
-reads `content/fallbacks/*.ts` and writes the rows into Supabase via the
-service-role client. That keeps the seed in sync with the static fallback
-the public site uses when the DB is empty.
+Pushes the static `content/fallbacks/*.ts` content into Supabase so the
+admin UI has rows to edit on day one. Idempotent — re-running is safe.
 
-For now, the schema migration files are sufficient. Apply them with:
+## Prerequisites
 
-```bash
-# either via the Supabase CLI...
-supabase db push
+1. Apply the migrations in `supabase/migrations/000*.sql` (Supabase SQL
+   editor, or `supabase db push`).
+2. Set `NEXT_PUBLIC_SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` in
+   `.env.local`.
 
-# ...or paste each file's contents into the Supabase SQL editor, in order:
-#   0001_initial_schema.sql
-#   0002_rls_policies.sql
-#   0003_storage_buckets.sql
-```
-
-Once Phase 4 lands, the seed will be runnable with:
+## Run
 
 ```bash
-npm run seed
+npm run seed              # idempotent insert/update
+npm run seed -- --reset   # destructive: truncates each cms_ table first
 ```
+
+## What it does
+
+- Inserts `cms_site_settings` keys for every value in `siteSettings`,
+  plus a `client_disclaimer` key for the Clients page strip.
+- Inserts `cms_navigation_items` for header, footer, and utility links.
+- Inserts `cms_services` (6 capabilities), `cms_industries` (9 cards),
+  `cms_experience_items` (6 engagements), `cms_client_logos` (10 logos).
+- For each image referenced in those rows, creates a `cms_media` row
+  whose `public_url` points to the existing `/assets/...` path under
+  `bucket = "static"`. This keeps existing static files working with
+  zero re-uploads.
+- Pull-quote text and rich body content land as plain strings.
+
+Re-upload images through `/admin/media` to migrate them into real
+Supabase Storage buckets.

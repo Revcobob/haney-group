@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ClosingCTA } from "@/components/site/ClosingCTA";
+import { getServiceCards } from "@/lib/content/site";
 
 export const metadata: Metadata = {
   title: "Services",
@@ -8,39 +9,6 @@ export const metadata: Metadata = {
     "Six capabilities and four specialized practice areas — legislative strategy, appropriations, public affairs, and parliamentary procedure — for organizations whose Texas priorities cannot afford to be misunderstood.",
   alternates: { canonical: "/services" },
 };
-
-const capabilities = [
-  {
-    icon: "/assets/img/icon-legislative-strategy.png",
-    title: "Legislative Strategy",
-    body: "Translate a policy objective into a practical, member-by-member path through committee, calendar, floor, and conference.",
-  },
-  {
-    icon: "/assets/img/icon-lobbying-advocacy.png",
-    title: "Lobbying & Advocacy",
-    body: "Represent client interests at the Capitol with preparation, credibility, and direct communication grounded in long-standing member relationships.",
-  },
-  {
-    icon: "/assets/img/icon-bill-drafting.png",
-    title: "Bill Drafting & Analysis",
-    body: "Review, draft, and refine legislative language with close attention to process, timing, germaneness, and downstream risk.",
-  },
-  {
-    icon: "/assets/img/icon-appropriations.png",
-    title: "Appropriations & Budget Riders",
-    body: "Article and rider strategy, LBB engagement, agency coordination, and interim work where the state budget is actually decided.",
-  },
-  {
-    icon: "/assets/img/icon-procedural-2.png",
-    title: "Parliamentary Procedure",
-    body: "House Rules, points of order, amendments, germaneness, and floor process, advised by the firm’s former Chief Clerk of the Texas House.",
-  },
-  {
-    icon: "/assets/img/icon-coalitions.png",
-    title: "Coalition & Stakeholder Management",
-    body: "Build durable support, manage organized opposition, and align boards, members, and partners around achievable outcomes.",
-  },
-];
 
 const practiceAreas = [
   {
@@ -69,7 +37,8 @@ const practiceAreas = [
   },
 ];
 
-export default function ServicesPage() {
+export default async function ServicesPage() {
+  const capabilities = await getServiceCards();
   return (
     <>
       <section className="pagehero pagehero--photo" aria-labelledby="ph-h1">
@@ -118,7 +87,7 @@ export default function ServicesPage() {
                   height={480}
                 />
                 <h3>{cap.title}</h3>
-                <p>{cap.body}</p>
+                <p>{cap.description}</p>
               </article>
             ))}
           </div>

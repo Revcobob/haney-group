@@ -1,4 +1,6 @@
-// Static fallback for service detail pages (Phase 5: move to Supabase).
+// Static fallback for service detail pages + the services list shown on
+// /services. Used until Phase 4 seeds Supabase, then as backstop if the
+// DB is unreachable.
 
 export type ServiceDetail = {
   slug: string;
@@ -125,3 +127,23 @@ export const serviceDetails: ServiceDetail[] = [
 export function getServiceBySlug(slug: string): ServiceDetail | undefined {
   return serviceDetails.find((s) => s.slug === slug);
 }
+
+// ---------------------------------------------------------------------------
+// Six capabilities shown on the homepage + services page (cms_services rows).
+// ---------------------------------------------------------------------------
+export type ServiceCard = {
+  title: string;
+  description: string;
+  icon: string;
+  href?: string;
+  display_order: number;
+};
+
+export const serviceCards: ServiceCard[] = [
+  { title: "Legislative Strategy", description: "Translate a policy objective into a practical, member-by-member path through committee, calendar, floor, and conference.", icon: "/assets/img/icon-legislative-strategy.png", href: "/services/legislative-strategy", display_order: 1 },
+  { title: "Lobbying & Advocacy", description: "Represent client interests at the Capitol with preparation, credibility, and direct communication grounded in long-standing member relationships.", icon: "/assets/img/icon-lobbying-advocacy.png", display_order: 2 },
+  { title: "Bill Drafting & Analysis", description: "Review, draft, and refine legislative language with close attention to process, timing, germaneness, and downstream risk.", icon: "/assets/img/icon-bill-drafting.png", display_order: 3 },
+  { title: "Appropriations & Budget Riders", description: "Article and rider strategy, LBB engagement, agency coordination, and interim work where the state budget is actually decided.", icon: "/assets/img/icon-appropriations.png", href: "/services/appropriations", display_order: 4 },
+  { title: "Parliamentary Procedure", description: "House Rules, points of order, amendments, germaneness, and floor process, advised by the firm’s former Chief Clerk of the Texas House.", icon: "/assets/img/icon-procedural-2.png", href: "/services/parliamentary", display_order: 5 },
+  { title: "Coalition & Stakeholder Management", description: "Build durable support, manage organized opposition, and align boards, members, and partners around achievable outcomes.", icon: "/assets/img/icon-coalitions.png", display_order: 6 },
+];

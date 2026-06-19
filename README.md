@@ -97,12 +97,13 @@ copy `.env.example` to `.env.local` and fill in:
 1. ✅ Next.js scaffold + design-system port
 2. ✅ Port remaining public pages
 3. ✅ Supabase schema + Clerk admin gate + branded `/admin/login`
-4. Admin dashboard editors (Pages, Settings, Navigation, Services, Industries,
-   Experience, Clients, Media)
+4. ✅ Admin editors — Settings, Navigation, Services, Industries, Experience,
+   Clients, Media (Pages editor with section forms is deferred to Phase 8
+   alongside the visual editor)
 5. Insights system (articles list/new/edit + Tiptap + public dynamic rendering)
 6. Contact form wired to Supabase + Inquiry manager + email notifications
 7. SEO manager + sitemap + robots (per-page editor; sitemap/robots done)
-8. Visual click-to-edit editor (`/admin/pages/[slug]/visual`)
+8. Visual click-to-edit editor + Pages section forms (`/admin/pages/[slug]/visual`)
 
 ## Design tokens
 

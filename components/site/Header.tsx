@@ -1,6 +1,8 @@
 import Link from "next/link";
+import { getNavigation } from "@/lib/content/site";
 
-export function Header() {
+export async function Header() {
+  const nav = await getNavigation();
   return (
     <header className="header">
       <div className="container header__inner">
@@ -33,36 +35,13 @@ export function Header() {
             </button>
           </div>
           <ul className="nav__list">
-            <li>
-              <Link className="nav__link" href="/about">
-                About
-              </Link>
-            </li>
-            <li>
-              <Link className="nav__link" href="/services">
-                Services
-              </Link>
-            </li>
-            <li>
-              <Link className="nav__link" href="/experience">
-                Experience
-              </Link>
-            </li>
-            <li>
-              <Link className="nav__link" href="/industries">
-                Clients
-              </Link>
-            </li>
-            <li>
-              <Link className="nav__link" href="/insights">
-                Insights
-              </Link>
-            </li>
-            <li>
-              <Link className="nav__link" href="/contact">
-                Contact
-              </Link>
-            </li>
+            {nav.header.map((item) => (
+              <li key={`${item.href}-${item.label}`}>
+                <Link className="nav__link" href={item.href}>
+                  {item.label}
+                </Link>
+              </li>
+            ))}
           </ul>
           <Link className="btn btn--primary nav__cta" href="/contact">
             Schedule a Consultation
