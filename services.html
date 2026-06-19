@@ -1101,6 +1101,75 @@ section.tight { padding-block: clamp(48px, 6vw, 72px); }
   flex: 1;
 }
 
+/* ---------- Mid-page senior representation banner (services page) ---------- */
+.srbreak {
+  background: var(--paper);
+  border-bottom: 1px solid var(--line-1);
+  padding-block: clamp(56px, 7vw, 80px);
+}
+.srbreak__inner {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 36px;
+  align-items: center;
+}
+@media (min-width: 880px) {
+  .srbreak__inner { grid-template-columns: 1.15fr 0.85fr; gap: 64px; }
+}
+.srbreak__media {
+  position: relative;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--line-1);
+  background: var(--paper-3);
+  box-shadow: 0 1px 2px rgba(11,18,40,0.04), 0 10px 30px -16px rgba(11,18,40,0.18);
+  aspect-ratio: 16 / 9;
+}
+@media (min-width: 880px) {
+  .srbreak__media { aspect-ratio: 21 / 9; min-height: 320px; max-height: 420px; }
+}
+.srbreak__media img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: center 40%;
+  display: block;
+}
+.srbreak__media::after {
+  /* Very subtle navy wash for visual consistency without darkening the image */
+  content: "";
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(11,18,40,0.04) 0%, rgba(11,18,40,0.10) 100%);
+  pointer-events: none;
+}
+.srbreak__copy { display: flex; flex-direction: column; gap: 18px; max-width: 48ch; }
+.srbreak__copy h2 {
+  font-size: clamp(24px, 2.6vw, 32px);
+  line-height: 1.18;
+  letter-spacing: -0.015em;
+  font-weight: 700;
+  max-width: 22ch;
+  text-wrap: balance;
+}
+.srbreak__copy p {
+  color: var(--text-2);
+  font-size: 16px;
+  line-height: 1.65;
+  margin: 0;
+}
+.srbreak__cta { display: flex; flex-direction: column; gap: 10px; align-items: flex-start; margin-top: 4px; }
+.srbreak__cta .btn { align-self: flex-start; }
+.srbreak__cta small {
+  color: var(--text-3);
+  font-size: 13px;
+  line-height: 1.5;
+  max-width: 44ch;
+}
+@media (max-width: 640px) {
+  .srbreak__copy h2 { font-size: 22px; }
+  .srbreak__cta .btn { width: 100%; justify-content: center; }
+}
+
 /* ---------- "By the numbers" stat strip ---------- */
 .stats {
   display: grid;
@@ -1424,6 +1493,27 @@ section.tight { padding-block: clamp(48px, 6vw, 72px); }
         <h3>Coalition &amp; Stakeholder Management</h3>
         <p>Build durable support, manage organized opposition, and align boards, members, and partners around achievable outcomes.</p>
       </article>
+    </div>
+  </div>
+</section>
+
+<section class="srbreak" aria-labelledby="srbreak-h" data-reveal>
+  <div class="container">
+    <div class="srbreak__inner">
+      <figure class="srbreak__media">
+        <img src="assets/img/banner-services-page.png" alt="Professionals in conversation at a conference table" loading="lazy" width="1600" height="686" />
+      </figure>
+      <div class="srbreak__copy">
+        <p class="eyebrow">Senior-level client representation</p>
+        <h2 id="srbreak-h">Experienced representation when the process starts moving.</h2>
+        <p>The Haney Group gives clients direct principal-level guidance through the legislative, appropriations, and procedural decisions that shape outcomes. From author strategy and bill language to committee movement, budget riders, floor procedure, and stakeholder engagement, we help clients prepare early and execute with discipline when timing matters.</p>
+        <div class="srbreak__cta">
+          <a class="btn btn--primary" href="contact.html">
+            Discuss Your Legislative Strategy <span class="arrow" aria-hidden="true">&rarr;</span>
+          </a>
+          <small>Confidential strategy conversations for corporations, associations, lobby teams, and policy organizations.</small>
+        </div>
+      </div>
     </div>
   </div>
 </section>
