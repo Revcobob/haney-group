@@ -1,109 +1,74 @@
-# The Haney Group — Redesigned Website
+# The Haney Group — Website & CMS
 
-A polished, production-ready static build of the redesigned **haney-group.com**,
-implementing the strategy in `haney-group-redesign-foundation.md` and the copy
-plan in `haney-group-homepage-content-plan.md`.
+Production website for The Haney Group plus a custom in-app CMS for the firm's
+principals to edit page content, publish insight articles, manage SEO, and
+triage contact inquiries without touching code.
 
-## What this is
+## Stack
 
-A self-contained static site — plain HTML, hand-written CSS, and minimal
-vanilla JS. No build step, no framework, no template lock-in. Open
-`index.html` in a browser, or serve the folder with any static host.
-
-It is structured so it can be ported to Next.js, Astro, or a CMS-backed
-build later without re-doing the design, the copy, or the components.
+- **Framework:** Next.js 15 (App Router) + React 19 + TypeScript (strict)
+- **Styling:** hand-written CSS in `styles/main.css` (lifted from the original
+  static HTML). Tokens at the top of that file. Public Sans loaded from Google
+  Fonts.
+- **Auth (CMS):** Clerk — added in Phase 3
+- **Data + storage (CMS):** Supabase — added in Phase 3
+- **Hosting:** Vercel
 
 ## Run it
 
-From the `haney-group/` directory:
-
 ```bash
-# any static server works; e.g.
-python3 -m http.server 8080
-# then visit http://localhost:8080
+npm install
+npm run dev
+# open http://localhost:3000
 ```
 
-Or open `haney-group/index.html` directly in a browser.
-
-## File map
+## Repo layout
 
 ```
-haney-group/
-├── index.html                            Homepage (12 sections)
-├── about.html                            Firm story + full principal bios
-├── services.html                         Services overview
-├── services/
-│   ├── legislative-strategy.html         Pillar 01
-│   ├── appropriations.html               Pillar 02
-│   ├── public-affairs.html               Pillar 03
-│   └── parliamentary.html                Pillar 04 (institutional)
-├── industries.html                       Eight industry landing blurbs
-├── experience.html                       Six anonymized engagements + voice
-├── insights/
-│   └── index.html                        The Session Briefing index
-├── contact.html                          Segmented inquiry form
-├── assets/
-│   ├── css/main.css                      Full design system, ~700 lines
-│   ├── js/main.js                        Nav, reveal, form, footer year
-│   └── svg/                              Logo + dome backgrounds
-└── README.md                             This file
+app/                     App Router routes
+  layout.tsx             Root layout — header, footer, fonts, scripts
+  page.tsx               Homepage (Phase 1)
+  not-found.tsx          Branded 404
+components/site/         Shared layout primitives (Header, Footer, UtilityBar, SiteScripts)
+styles/main.css          Design system — single source of truth
+public/assets/           Images, logos, SVGs (was /assets in the static build)
+content/fallbacks/       Typed static content used when CMS data is missing
+legacy-static/           Original hand-written HTML, kept for parity reference
+  *.html                 Each public page in its pre-port form
+  insights/, services/   Subpages
+  CSS/, js/              Dead-code stylesheets/scripts from an earlier draft
+haney-group-*.md         Strategy + content-plan docs
 ```
 
-## Design system implemented
+`legacy-static/` is excluded from the TS build and from Next's routing. It
+exists so the visual design can be diffed against the new app during the port
+and deleted once parity is signed off.
 
-- **Palette.** Navy primary (`#0B1228`), ivory contrast (`#F5F1E8`),
-  ink near-black (`#06091A`), single amber accent (`#C9892A`). Tokens
-  in `assets/css/main.css` under `:root`.
-- **Typography.** Fraunces display serif + Inter body sans, loaded from
-  Google Fonts with `display=swap`.
-- **Components.** Hero, trust strip, positioning block, three-pillar grid
-  with institutional fourth, principal portraits, industries grid with
-  inversion-on-hover, engagement cards with Situation / Role / Outcome
-  structure, capitol-view brand moment with inline SVG dome, named client
-  quote, Session Briefing teaser, closing CTA, four-column footer,
-  utility bar, sticky header, mobile slide-in nav.
-- **Voice rules followed.** No "trusted advisor," "top-notch," "voice
-  is heard," "make an impact." Insider vocabulary (Article II, rider,
-  conference, interim charge, calendar committee, LBB, HHSC, PUC, TCEQ)
-  used deliberately.
-- **Accessibility.** Skip-to-content, semantic landmarks, visible focus
-  states, aria-labels on all icon-only controls, reduced-motion query.
+## Implementation phases
 
-## Forms
+Tracked in the architecture proposal — current phase noted in the latest
+commit message.
 
-The contact form and Session Briefing subscribe forms are wired to a
-graceful client-side success state for demo purposes. Production deploy
-should route submissions to:
+1. ✅ Next.js scaffold + design-system port (this commit)
+2. Port remaining public pages (about, services, experience, industries,
+   contact, privacy, insights index + article pages)
+3. Supabase schema + Clerk admin gate + branded `/admin/login`
+4. Admin dashboard editors (Pages, Settings, Navigation, Services, Industries,
+   Experience, Clients, Media)
+5. Insights system (articles list/new/edit + Tiptap + public dynamic rendering)
+6. Contact form wired to Supabase + Inquiry manager
+7. SEO manager + sitemap + robots
+8. Visual click-to-edit editor (`/admin/pages/[slug]/visual`)
 
-- A CRM (HubSpot, Folk, or Pipedrive) for inquiries.
-- A list provider (Buttondown, ConvertKit) for The Session Briefing.
+## Design tokens
 
-## Photography to commission
+Defined in `:root` in `styles/main.css`:
 
-The design holds placeholders for three commissioned shoots, each called
-out in `haney-group-homepage-content-plan.md`:
-
-1. **Hero.** Low-angle, golden-hour interior of the Texas House rostrum
-   or the rotunda at dusk.
-2. **Principals.** 4:5 portraits of Robert and Julie, matching lighting
-   and color grading. Slight off-camera gaze.
-3. **Capitol-view band.** Exterior of the Texas State Capitol at blue
-   hour, dome backlit.
-
-Until those land, the design ships with a tasteful gradient-and-SVG
-treatment that does not read as a stock placeholder.
-
-## Porting to Next.js or Astro
-
-The structure was designed for clean migration:
-
-- Each page is a flat HTML file with a top-down section order.
-- Repeated header / utility / footer chunks can become `<Header>`,
-  `<Utility>`, `<Footer>` components in any framework.
-- CSS is token-driven and framework-agnostic — paste into a Tailwind
-  config or keep as a stylesheet.
-
-## Provenance
-
-Strategy: `../haney-group-redesign-foundation.md`
-Content plan: `../haney-group-homepage-content-plan.md`
+- Navy: `--navy-900` `#0B1228` (primary brand)
+- Ink: `--ink-1000` `#06091A`
+- Paper neutrals: `--paper` / `--paper-2` / `--paper-3` / `--ivory`
+- Amber accent: `--amber-500` `#C9892A` (with 400/600/700 variants)
+- Type: `--font-sans` (Public Sans)
+- Layout: `--maxw` `1240px`, fluid `--gutter`, 4/8 px radii
+- Motion: `--ease: cubic-bezier(0.22, 0.61, 0.36, 1)`
+```
