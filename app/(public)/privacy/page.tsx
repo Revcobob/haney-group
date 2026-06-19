@@ -1,13 +1,17 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { resolveMetadata } from "@/lib/content/seo";
 
-export const metadata: Metadata = {
-  title: "Privacy & Legal",
-  description:
-    "How The Haney Group handles information collected through our website, and the terms that govern your use of haney-group.com.",
-  alternates: { canonical: "/privacy" },
-  robots: { index: true, follow: true },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return resolveMetadata({
+    path: "/privacy",
+    fallback: {
+      title: "Privacy & Legal",
+      description:
+        "How The Haney Group handles information collected through our website, and the terms that govern your use of haney-group.com.",
+    },
+  });
+}
 
 export default function PrivacyPage() {
   return (

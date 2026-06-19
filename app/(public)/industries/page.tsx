@@ -2,13 +2,18 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ClosingCTA } from "@/components/site/ClosingCTA";
 import { getIndustryCards, getClientLogos } from "@/lib/content/site";
+import { resolveMetadata } from "@/lib/content/seo";
 
-export const metadata: Metadata = {
-  title: "Clients",
-  description:
-    "Nine sectors where The Haney Group's Texas legislative and regulatory work is concentrated — and a trusted roster of associations, providers, and operators who rely on principal-level representation.",
-  alternates: { canonical: "/industries" },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return resolveMetadata({
+    path: "/industries",
+    fallback: {
+      title: "Clients",
+      description:
+        "Nine sectors where The Haney Group's Texas legislative and regulatory work is concentrated — and a trusted roster of associations, providers, and operators who rely on principal-level representation.",
+    },
+  });
+}
 
 export default async function IndustriesPage() {
   const [industries, { logos, disclaimer }] = await Promise.all([

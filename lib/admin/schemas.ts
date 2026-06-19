@@ -121,6 +121,37 @@ export const MediaUpdateSchema = z.object({
 });
 export type MediaUpdateInput = z.infer<typeof MediaUpdateSchema>;
 
+// ----- SEO -----
+const pathField = z.preprocess(
+  blankToUndef,
+  z
+    .string()
+    .trim()
+    .refine(
+      (v) => v.startsWith("/"),
+      "Path must start with a slash, e.g. /about"
+    )
+);
+
+export const SeoSchema = z.object({
+  meta_title: optionalText,
+  meta_description: optionalText,
+  og_title: optionalText,
+  og_description: optionalText,
+  og_image_id: optionalUuid,
+  canonical_path: optionalText,
+  noindex: z
+    .preprocess((v) => v === "on" || v === true || v === "true", z.boolean())
+    .default(false),
+});
+export type SeoInput = z.infer<typeof SeoSchema>;
+
+// Used when creating a new per-path override; path is required.
+export const SeoPathCreateSchema = SeoSchema.extend({
+  path: pathField,
+});
+export type SeoPathCreateInput = z.infer<typeof SeoPathCreateSchema>;
+
 // ----- Articles (Insights / The Session Briefing) -----
 const slugField = z.preprocess(
   blankToUndef,

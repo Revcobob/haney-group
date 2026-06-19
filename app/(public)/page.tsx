@@ -1,4 +1,17 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+import { resolveMetadata } from "@/lib/content/seo";
+
+export async function generateMetadata(): Promise<Metadata> {
+  return resolveMetadata({
+    path: "/",
+    fallback: {
+      title: "The Haney Group · Texas Government Relations & Legislative Strategy",
+      description:
+        "A senior-led Austin government relations firm with deep Texas Capitol experience. Legislative strategy, appropriations, parliamentary procedure, and disciplined advocacy for associations, corporations, public entities, and policy organizations.",
+    },
+  });
+}
 
 export default function HomePage() {
   return (

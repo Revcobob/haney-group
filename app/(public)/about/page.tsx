@@ -1,13 +1,18 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ClosingCTA } from "@/components/site/ClosingCTA";
+import { resolveMetadata } from "@/lib/content/seo";
 
-export const metadata: Metadata = {
-  title: "About",
-  description:
-    "A senior-led Austin government relations firm built around procedural and budgetary fluency and disciplined communications. Led by Robert Haney, former Chief Clerk of the Texas House, and Julie Freeman Haney.",
-  alternates: { canonical: "/about" },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return resolveMetadata({
+    path: "/about",
+    fallback: {
+      title: "About",
+      description:
+        "A senior-led Austin government relations firm built around procedural and budgetary fluency and disciplined communications. Led by Robert Haney, former Chief Clerk of the Texas House, and Julie Freeman Haney.",
+    },
+  });
+}
 
 export default function AboutPage() {
   return (

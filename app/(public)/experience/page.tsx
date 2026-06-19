@@ -2,13 +2,18 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ClosingCTA } from "@/components/site/ClosingCTA";
 import { getExperienceItems } from "@/lib/content/site";
+import { resolveMetadata } from "@/lib/content/seo";
 
-export const metadata: Metadata = {
-  title: "Experience",
-  description:
-    "Selected anonymized engagements: regulatory bills, Article II budget riders, preemption defense, permit reform, public-affairs programs, and parliamentary consults across the Texas Capitol.",
-  alternates: { canonical: "/experience" },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return resolveMetadata({
+    path: "/experience",
+    fallback: {
+      title: "Experience",
+      description:
+        "Selected anonymized engagements: regulatory bills, Article II budget riders, preemption defense, permit reform, public-affairs programs, and parliamentary consults across the Texas Capitol.",
+    },
+  });
+}
 
 export default async function ExperiencePage() {
   const engagements = await getExperienceItems();

@@ -2,13 +2,18 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ClosingCTA } from "@/components/site/ClosingCTA";
 import { getServiceCards } from "@/lib/content/site";
+import { resolveMetadata } from "@/lib/content/seo";
 
-export const metadata: Metadata = {
-  title: "Services",
-  description:
-    "Six capabilities and four specialized practice areas — legislative strategy, appropriations, public affairs, and parliamentary procedure — for organizations whose Texas priorities cannot afford to be misunderstood.",
-  alternates: { canonical: "/services" },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return resolveMetadata({
+    path: "/services",
+    fallback: {
+      title: "Services",
+      description:
+        "Six capabilities and four specialized practice areas — legislative strategy, appropriations, public affairs, and parliamentary procedure — for organizations whose Texas priorities cannot afford to be misunderstood.",
+    },
+  });
+}
 
 const practiceAreas = [
   {

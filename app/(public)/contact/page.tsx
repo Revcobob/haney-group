@@ -3,13 +3,18 @@ import Link from "next/link";
 import { ClosingCTA } from "@/components/site/ClosingCTA";
 import { ContactForm } from "@/components/site/ContactForm";
 import { getSiteSettings } from "@/lib/content/site";
+import { resolveMetadata } from "@/lib/content/seo";
 
-export const metadata: Metadata = {
-  title: "Contact",
-  description:
-    "Start a confidential conversation with The Haney Group. Inquiries reach a principal directly. We respond within one business day, often the same day during session.",
-  alternates: { canonical: "/contact" },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return resolveMetadata({
+    path: "/contact",
+    fallback: {
+      title: "Contact",
+      description:
+        "Start a confidential conversation with The Haney Group. Inquiries reach a principal directly. We respond within one business day, often the same day during session.",
+    },
+  });
+}
 
 export default async function ContactPage() {
   const settings = await getSiteSettings();

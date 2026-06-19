@@ -2,13 +2,18 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ClosingCTA } from "@/components/site/ClosingCTA";
 import { listPublishedArticles } from "@/lib/content/insights";
+import { resolveMetadata } from "@/lib/content/seo";
 
-export const metadata: Metadata = {
-  title: "Insights · The Session Briefing",
-  description:
-    "A candid read on what moved at the Texas Capitol, written by The Haney Group during session and monthly during interim.",
-  alternates: { canonical: "/insights" },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return resolveMetadata({
+    path: "/insights",
+    fallback: {
+      title: "Insights · The Session Briefing",
+      description:
+        "A candid read on what moved at the Texas Capitol, written by The Haney Group during session and monthly during interim.",
+    },
+  });
+}
 
 export default async function InsightsIndexPage() {
   const articles = await listPublishedArticles();
