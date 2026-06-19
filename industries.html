@@ -1293,6 +1293,93 @@ section.tight { padding-block: clamp(48px, 6vw, 72px); }
   }
   .nav__foot-link:hover { border-color: var(--navy-900); background: var(--paper-3); }
 }
+
+/* ---------- Client logos marquee ---------- */
+.clientlogos {
+  background: var(--paper-2);
+  border-top: 1px solid var(--line-1);
+  border-bottom: 1px solid var(--line-1);
+  overflow: hidden;
+  padding-block: clamp(56px, 6vw, 80px);
+  position: relative;
+}
+.clientlogos__head {
+  text-align: center;
+  margin-bottom: 36px;
+  padding-inline: var(--gutter);
+}
+.clientlogos__head .eyebrow {
+  margin-bottom: 14px;
+  display: inline-flex;
+  justify-content: center;
+}
+.clientlogos__head h2 {
+  font-size: clamp(22px, 2.4vw, 28px);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: var(--text-1);
+  font-weight: 700;
+  margin: 0;
+  max-width: 28ch;
+  margin-inline: auto;
+}
+.clientlogos__viewport {
+  -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+          mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+}
+.clientlogos__track {
+  display: flex;
+  gap: 64px;
+  align-items: center;
+  width: max-content;
+  animation: clientlogos-scroll 48s linear infinite;
+}
+.clientlogos__viewport:hover .clientlogos__track { animation-play-state: paused; }
+.clientlogos__logo {
+  flex-shrink: 0;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.clientlogos__logo img {
+  max-height: 64px;
+  max-width: 180px;
+  width: auto;
+  height: auto;
+  display: block;
+  filter: grayscale(100%);
+  opacity: 0.6;
+  transition: filter .35s var(--ease), opacity .35s var(--ease);
+}
+.clientlogos__logo:hover img { filter: grayscale(0%); opacity: 1; }
+.clientlogos__note {
+  text-align: center;
+  color: var(--text-3);
+  font-size: 12.5px;
+  letter-spacing: 0.04em;
+  margin: 28px var(--gutter) 0;
+}
+@keyframes clientlogos-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .clientlogos__viewport { -webkit-mask-image: none; mask-image: none; }
+  .clientlogos__track {
+    animation: none;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+    gap: 48px 56px;
+    padding-inline: var(--gutter);
+  }
+}
+@media (max-width: 640px) {
+  .clientlogos__track { gap: 44px; }
+  .clientlogos__logo { height: 48px; }
+  .clientlogos__logo img { max-height: 48px; max-width: 140px; }
+}
 </style>
 </head>
 <body>
@@ -1436,6 +1523,38 @@ section.tight { padding-block: clamp(48px, 6vw, 72px); }
       </article>
     </div>
   </div>
+</section>
+
+<section class="clientlogos" data-reveal aria-label="Selected clients">
+  <div class="clientlogos__head">
+    <p class="eyebrow">Selected Clients</p>
+    <h2>Trusted by associations, providers, and operators across Texas.</h2>
+  </div>
+  <div class="clientlogos__viewport">
+    <div class="clientlogos__track">
+        <div class="clientlogos__logo"><img src="assets/img/blue-cross-blue-shield-texas-logo.jpg" alt="BlueCross BlueShield of Texas" loading="lazy" /></div>
+        <div class="clientlogos__logo"><img src="assets/img/superior.jpg" alt="Superior HealthPlan" loading="lazy" /></div>
+        <div class="clientlogos__logo"><img src="assets/img/managed%20health%20care%20alliance.webp" alt="Texas Managed Care Alliance" loading="lazy" /></div>
+        <div class="clientlogos__logo"><img src="assets/img/TRA%20logo.png" alt="Texas REALTORS" loading="lazy" /></div>
+        <div class="clientlogos__logo"><img src="assets/img/Beer%20Distrib%20logo.png" alt="Wholesale Beer Distributors of Texas" loading="lazy" /></div>
+        <div class="clientlogos__logo"><img src="assets/img/Sports-Betting-Alliance_color.webp" alt="Sports Betting Alliance" loading="lazy" /></div>
+        <div class="clientlogos__logo"><img src="assets/img/Trinity_Metro_Logo.png" alt="Trinity Metro" loading="lazy" /></div>
+        <div class="clientlogos__logo"><img src="assets/img/ReaganLogo_NEW-1_.png" alt="Reagan Outdoor Advertising" loading="lazy" /></div>
+        <div class="clientlogos__logo"><img src="assets/img/hillcountryalliance-300x300.png" alt="Hill Country Alliance" loading="lazy" /></div>
+        <div class="clientlogos__logo"><img src="assets/img/wood%20county%20health%20care.jpg" alt="Wood County Health Care" loading="lazy" /></div>
+        <div class="clientlogos__logo" aria-hidden="true"><img src="assets/img/blue-cross-blue-shield-texas-logo.jpg" alt="" loading="lazy" /></div>
+        <div class="clientlogos__logo" aria-hidden="true"><img src="assets/img/superior.jpg" alt="" loading="lazy" /></div>
+        <div class="clientlogos__logo" aria-hidden="true"><img src="assets/img/managed%20health%20care%20alliance.webp" alt="" loading="lazy" /></div>
+        <div class="clientlogos__logo" aria-hidden="true"><img src="assets/img/TRA%20logo.png" alt="" loading="lazy" /></div>
+        <div class="clientlogos__logo" aria-hidden="true"><img src="assets/img/Beer%20Distrib%20logo.png" alt="" loading="lazy" /></div>
+        <div class="clientlogos__logo" aria-hidden="true"><img src="assets/img/Sports-Betting-Alliance_color.webp" alt="" loading="lazy" /></div>
+        <div class="clientlogos__logo" aria-hidden="true"><img src="assets/img/Trinity_Metro_Logo.png" alt="" loading="lazy" /></div>
+        <div class="clientlogos__logo" aria-hidden="true"><img src="assets/img/ReaganLogo_NEW-1_.png" alt="" loading="lazy" /></div>
+        <div class="clientlogos__logo" aria-hidden="true"><img src="assets/img/hillcountryalliance-300x300.png" alt="" loading="lazy" /></div>
+        <div class="clientlogos__logo" aria-hidden="true"><img src="assets/img/wood%20county%20health%20care.jpg" alt="" loading="lazy" /></div>
+    </div>
+  </div>
+  <p class="clientlogos__note">A representative selection of current and past clients. Used with permission where required.</p>
 </section>
 
 <section class="closing" data-reveal>
