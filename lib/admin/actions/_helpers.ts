@@ -10,15 +10,15 @@ export type ActionResult<T = void> =
 
 // Wraps a server action with admin gate + Supabase config check + zod parsing.
 // Server actions read a FormData and return ActionResult.
-export async function adminFormAction<S extends z.ZodTypeAny>(
+export async function adminFormAction<S extends z.ZodTypeAny, T = void>(
   schema: S,
   formData: FormData,
   handler: (
     input: z.infer<S>,
     supabase: ReturnType<typeof serverSupabase>,
     adminId: string
-  ) => Promise<ActionResult>
-): Promise<ActionResult> {
+  ) => Promise<ActionResult<T>>
+): Promise<ActionResult<T>> {
   const admin = await requireAdmin();
 
   if (!supabaseServerConfigured) {

@@ -3,7 +3,9 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getArticle, listArticleSlugs } from "@/lib/content/insights";
 
-export const dynamicParams = false;
+// Allow new slugs published via the admin to render without a redeploy.
+// Unknown slugs return notFound() below.
+export const dynamicParams = true;
 
 export async function generateStaticParams() {
   const slugs = await listArticleSlugs();

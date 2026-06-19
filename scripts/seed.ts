@@ -25,6 +25,7 @@ import {
   utilityNav,
 } from "../content/fallbacks/navigation";
 import { siteSettings } from "../content/fallbacks/settings";
+import { insightArticles } from "../content/fallbacks/insights";
 
 const URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
@@ -250,6 +251,38 @@ async function seedClientLogos() {
   console.log(`✓ Client logos (${clientLogos.length})`);
 }
 
+async function seedArticles() {
+  if (RESET) await reset("cms_articles");
+  const media = await ensureMedia(
+    insightArticles.map((a) => a.hero_image),
+    "article-hero"
+  );
+  for (const a of insightArticles) {
+    const mediaId = media.get(a.hero_image);
+    const readTimeMinutes = parseInt(a.read_time.match(/(\d+)/)?.[1] ?? "0", 10);
+    await upsertOne(
+      "cms_articles",
+      { slug: a.slug },
+      {
+        slug: a.slug,
+        title: a.title,
+        category: a.category,
+        article_label: a.article_label,
+        summary: a.summary,
+        lede: a.lede,
+        body_html: a.body_html.trim(),
+        featured_image_id: mediaId ?? null,
+        author: a.author,
+        date_label: a.date_label,
+        read_time_minutes: readTimeMinutes || null,
+        status: "published",
+        published_at: new Date().toISOString(),
+      }
+    );
+  }
+  console.log(`✓ Articles (${insightArticles.length})`);
+}
+
 async function main() {
   console.log(`Seeding Supabase at ${URL}${RESET ? " (RESET)" : ""}…`);
   await seedSettings();
@@ -258,6 +291,7 @@ async function main() {
   await seedIndustries();
   await seedExperience();
   await seedClientLogos();
+  await seedArticles();
   console.log("Done.");
 }
 

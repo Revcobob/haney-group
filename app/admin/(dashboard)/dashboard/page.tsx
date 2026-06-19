@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { supabaseServerConfigured } from "@/lib/env";
+import { listAdminArticles } from "@/lib/admin/data/insights";
 
 export const metadata: Metadata = { title: "Dashboard" };
 
@@ -15,8 +16,11 @@ const quickLinks: QuickLink[] = [
   { href: "/admin/settings", eyebrow: "Site", title: "Site Settings", body: "Firm name, address, phone, email, nav links, footer text, and social URLs." },
 ];
 
-export default function DashboardPage() {
+export default async function DashboardPage() {
   const supabaseReady = supabaseServerConfigured;
+  const articles = supabaseReady ? await listAdminArticles() : [];
+  const draftCount = articles.filter((a) => a.status === "draft").length;
+  const publishedCount = articles.filter((a) => a.status === "published").length;
 
   return (
     <>
@@ -75,13 +79,13 @@ export default function DashboardPage() {
         </div>
         <div className="admin__card">
           <div className="admin__stat">
-            <span className="admin__stat-num">—</span>
+            <span className="admin__stat-num">{supabaseReady ? draftCount : "—"}</span>
             <span className="admin__stat-label">Draft articles</span>
           </div>
         </div>
         <div className="admin__card">
           <div className="admin__stat">
-            <span className="admin__stat-num">—</span>
+            <span className="admin__stat-num">{supabaseReady ? publishedCount : "—"}</span>
             <span className="admin__stat-label">Published articles</span>
           </div>
         </div>

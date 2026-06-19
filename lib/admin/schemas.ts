@@ -120,3 +120,36 @@ export const MediaUpdateSchema = z.object({
   category: optionalText,
 });
 export type MediaUpdateInput = z.infer<typeof MediaUpdateSchema>;
+
+// ----- Articles (Insights / The Session Briefing) -----
+const slugField = z.preprocess(
+  blankToUndef,
+  z
+    .string()
+    .trim()
+    .min(1, "Slug is required")
+    .max(120, "Slug is too long")
+    .regex(
+      /^[a-z0-9]+(?:-[a-z0-9]+)*$/,
+      "Use lowercase letters, numbers, and dashes only"
+    )
+);
+
+export const ArticleSchema = z.object({
+  title: requiredText("Title is required"),
+  slug: slugField,
+  category: optionalText,
+  article_label: optionalText,
+  summary: optionalText,
+  lede: optionalText,
+  body_html: optionalText,
+  featured_image_id: optionalUuid,
+  author: optionalText,
+  date_label: optionalText,
+  read_time_minutes: z.preprocess(
+    (v) => (v === "" || v === null || v === undefined ? undefined : v),
+    z.coerce.number().int().min(1).max(120).optional()
+  ),
+  status: z.enum(["draft", "published"]).default("draft"),
+});
+export type ArticleInput = z.infer<typeof ArticleSchema>;
