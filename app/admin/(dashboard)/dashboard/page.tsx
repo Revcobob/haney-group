@@ -14,7 +14,7 @@ const quickLinks: QuickLink[] = [
   { href: "/admin/seo", eyebrow: "SEO", title: "SEO Manager", body: "Per-page meta titles, descriptions, social previews, and the global defaults." },
   { href: "/admin/media", eyebrow: "Media", title: "Media Library", body: "Upload and manage images and brand assets used across the site." },
   { href: "/admin/inquiries", eyebrow: "Inbox", title: "Contact Inquiries", body: "Review and triage notes that came in through the Contact form." },
-  { href: "/admin/settings", eyebrow: "Site", title: "Site Settings", body: "Firm name, address, phone, email, nav links, footer text, and social URLs." },
+  { href: "/admin/settings", eyebrow: "Site", title: "Site Settings", body: "Firm name, address, phone, email, footer copy, Contact-page text, and where new inquiry emails go." },
 ];
 
 export default async function DashboardPage() {

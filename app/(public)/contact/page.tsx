@@ -33,15 +33,12 @@ export default async function ContactPage() {
             <span>Contact</span>
           </p>
           <p className="eyebrow" style={{ marginBottom: 22 }}>
-            Contact
+            {settings.contact_page_eyebrow}
           </p>
           <h1 className="h1" id="ph-h1">
-            Start a confidential conversation.
+            {settings.contact_page_headline}
           </h1>
-          <p className="lede">
-            Tell us a little about the issue, the timing, and what success would
-            look like. We will be in touch within one business day.
-          </p>
+          <p className="lede">{settings.contact_page_lede}</p>
         </div>
       </section>
 
@@ -50,48 +47,50 @@ export default async function ContactPage() {
           <div className="colgrid">
             <div>
               <p className="eyebrow eyebrow--plain" style={{ marginBottom: 18 }}>
-                Reach The Firm
+                {settings.contact_left_eyebrow}
               </p>
               <h2 className="h2" style={{ marginBottom: 24 }}>
-                Talk directly to a principal.
+                {settings.contact_left_heading}
               </h2>
               <div className="prose" style={{ maxWidth: "48ch" }}>
-                <p>
-                  The Haney Group is a small firm. Inquiries reach a principal
-                  directly. We respond inside one business day, often the same
-                  day during session.
-                </p>
-                <p>For urgent procedural questions during session, please call.</p>
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: settings.contact_left_body_html,
+                  }}
+                />
                 <p>
                   <strong>Phone</strong>
                   <br />
-                  <a href="tel:+15129255000">(512) 925-5000</a>
+                  <a href={settings.phone_link}>{settings.phone}</a>
                 </p>
                 <p>
                   <strong>Email</strong>
                   <br />
-                  <a href="mailto:info@haney-group.com">info@haney-group.com</a>
+                  <a href={`mailto:${settings.email}`}>{settings.email}</a>
                 </p>
                 <p>
                   <strong>Mailing address</strong>
                   <br />
-                  The Haney Group
+                  {settings.mailing_address_line_1}
                   <br />
-                  P.O. Box 521
+                  {settings.mailing_address_line_2}
                   <br />
-                  Austin, Texas 78767
+                  {settings.mailing_address_line_3}
                 </p>
               </div>
             </div>
 
             <div>
               <p className="eyebrow eyebrow--plain" style={{ marginBottom: 18 }}>
-                Send a Note
+                {settings.contact_right_eyebrow}
               </p>
               <h2 className="h2" style={{ marginBottom: 24 }}>
-                A few details help us prepare.
+                {settings.contact_right_heading}
               </h2>
-              <ContactForm consentLanguage={settings.consent_language} />
+              <ContactForm
+                consentLanguage={settings.consent_language}
+                submitLabel={settings.contact_form_submit_label}
+              />
             </div>
           </div>
         </div>

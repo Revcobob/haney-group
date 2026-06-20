@@ -7,7 +7,13 @@ type Status = "idle" | "submitting" | "success" | "error";
 const DEFAULT_CONSENT =
   "I understand my message will be reviewed by The Haney Group and consent to being contacted about my inquiry.";
 
-export function ContactForm({ consentLanguage }: { consentLanguage?: string }) {
+export function ContactForm({
+  consentLanguage,
+  submitLabel,
+}: {
+  consentLanguage?: string;
+  submitLabel?: string;
+}) {
   const [status, setStatus] = useState<Status>("idle");
   const [errorMessage, setErrorMessage] = useState<string>("");
 
@@ -135,7 +141,7 @@ export function ContactForm({ consentLanguage }: { consentLanguage?: string }) {
           type="submit"
           disabled={status === "submitting"}
         >
-          {status === "submitting" ? "Sending…" : "Send Message"}{" "}
+          {status === "submitting" ? "Sending…" : submitLabel ?? "Send Message"}{" "}
           <span className="arrow" aria-hidden="true">
             →
           </span>

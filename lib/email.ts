@@ -1,6 +1,7 @@
 import "server-only";
 import { Resend } from "resend";
 import { env } from "@/lib/env";
+import { getSiteSettings } from "@/lib/content/site";
 
 // Thin Resend wrapper. Optional — when RESEND_API_KEY is not set,
 // every send is a no-op so the contact API still succeeds.
@@ -17,6 +18,20 @@ function client(): Resend | null {
   return cached;
 }
 
+// Resolve the recipient: CMS settings.contact_notification_email wins
+// when set; falls back to the CONTACT_NOTIFICATION_EMAIL env var; final
+// fallback is info@haney-group.com.
+async function resolveRecipient(): Promise<string> {
+  try {
+    const settings = await getSiteSettings();
+    const fromCms = (settings.contact_notification_email ?? "").trim();
+    if (fromCms) return fromCms;
+  } catch {
+    // settings query failed — fall through to env.
+  }
+  return env.CONTACT_NOTIFICATION_EMAIL || "info@haney-group.com";
+}
+
 export async function notifyNewInquiry(input: {
   name: string;
   organization?: string;
@@ -30,7 +45,7 @@ export async function notifyNewInquiry(input: {
   const resend = client();
   if (!resend) return { ok: false, reason: "resend not configured" };
 
-  const to = env.CONTACT_NOTIFICATION_EMAIL;
+  const to = await resolveRecipient();
   const subject = `New inquiry: ${input.name}${input.organization ? ` (${input.organization})` : ""}`;
   const adminUrl = input.id
     ? `https://www.haney-group.com/admin/inquiries/${input.id}`

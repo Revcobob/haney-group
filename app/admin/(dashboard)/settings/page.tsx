@@ -211,18 +211,138 @@ export default async function AdminSettingsPage() {
 
             <section className="adminform__section">
               <div className="adminform__section-head">
-                <p className="adminform__section-eyebrow">Contact form</p>
-                <h2>Consent language</h2>
-                <p>Shown beneath the consent checkbox on the public Contact form.</p>
+                <p className="adminform__section-eyebrow">Contact page · Hero</p>
+                <h2>Top of the Contact page</h2>
+                <p>The headline, eyebrow, and lede on /contact above the form.</p>
               </div>
+              <div className="adminform__row two">
+                <TextField
+                  id="contact_page_eyebrow"
+                  name="contact_page_eyebrow"
+                  label="Hero eyebrow"
+                  defaultValue={settings.contact_page_eyebrow}
+                  error={errors.contact_page_eyebrow}
+                />
+                <TextField
+                  id="contact_page_headline"
+                  name="contact_page_headline"
+                  label="Hero headline"
+                  defaultValue={settings.contact_page_headline}
+                  error={errors.contact_page_headline}
+                  maxLength={140}
+                />
+              </div>
+              <TextareaField
+                id="contact_page_lede"
+                name="contact_page_lede"
+                label="Hero lede"
+                defaultValue={settings.contact_page_lede}
+                rows={3}
+                error={errors.contact_page_lede}
+                maxLength={320}
+              />
+            </section>
+
+            <section className="adminform__section">
+              <div className="adminform__section-head">
+                <p className="adminform__section-eyebrow">Contact page · Reach The Firm column</p>
+                <h2>Left column copy</h2>
+                <p>
+                  Eyebrow, heading, and intro text that sits above the firm’s
+                  phone, email, and address. Phone, email, and mailing address
+                  themselves come from the Identity / Address sections above.
+                </p>
+              </div>
+              <div className="adminform__row two">
+                <TextField
+                  id="contact_left_eyebrow"
+                  name="contact_left_eyebrow"
+                  label="Eyebrow"
+                  defaultValue={settings.contact_left_eyebrow}
+                  error={errors.contact_left_eyebrow}
+                />
+                <TextField
+                  id="contact_left_heading"
+                  name="contact_left_heading"
+                  label="Heading"
+                  defaultValue={settings.contact_left_heading}
+                  error={errors.contact_left_heading}
+                  maxLength={140}
+                />
+              </div>
+              <TextareaField
+                id="contact_left_body_html"
+                name="contact_left_body_html"
+                label="Intro paragraphs (HTML allowed)"
+                defaultValue={settings.contact_left_body_html}
+                rows={5}
+                error={errors.contact_left_body_html}
+                help="Use <p>…</p> per paragraph. The phone, email, and mailing address blocks below this are rendered automatically from the Identity / Address sections."
+              />
+            </section>
+
+            <section className="adminform__section">
+              <div className="adminform__section-head">
+                <p className="adminform__section-eyebrow">Contact page · Send a Note column</p>
+                <h2>Right column copy + form</h2>
+              </div>
+              <div className="adminform__row two">
+                <TextField
+                  id="contact_right_eyebrow"
+                  name="contact_right_eyebrow"
+                  label="Eyebrow"
+                  defaultValue={settings.contact_right_eyebrow}
+                  error={errors.contact_right_eyebrow}
+                />
+                <TextField
+                  id="contact_right_heading"
+                  name="contact_right_heading"
+                  label="Heading"
+                  defaultValue={settings.contact_right_heading}
+                  error={errors.contact_right_heading}
+                  maxLength={140}
+                />
+              </div>
+              <TextField
+                id="contact_form_submit_label"
+                name="contact_form_submit_label"
+                label="Submit button text"
+                defaultValue={settings.contact_form_submit_label}
+                error={errors.contact_form_submit_label}
+                maxLength={40}
+              />
               <TextareaField
                 id="consent_language"
                 name="consent_language"
-                label="Consent language"
+                label="Consent checkbox language"
                 defaultValue={settings.consent_language}
                 rows={3}
                 required
                 error={errors.consent_language}
+                help="Shown beneath the consent checkbox on the public Contact form."
+              />
+            </section>
+
+            <section className="adminform__section">
+              <div className="adminform__section-head">
+                <p className="adminform__section-eyebrow">Contact form notifications</p>
+                <h2>Where new inquiries are emailed</h2>
+                <p>
+                  When the public Contact form is submitted, an email goes here
+                  with the visitor’s message and a link into the admin Inquiries
+                  inbox. Requires <code>RESEND_API_KEY</code> to be configured
+                  to actually send.
+                </p>
+              </div>
+              <TextField
+                id="contact_notification_email"
+                name="contact_notification_email"
+                type="email"
+                label="Notification recipient email"
+                defaultValue={settings.contact_notification_email}
+                required
+                error={errors.contact_notification_email}
+                placeholder="info@haney-group.com"
               />
             </section>
 
