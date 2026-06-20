@@ -26,8 +26,14 @@ export default async function AdminLoginPage() {
         <div>
           <h1>Sign in to the firm site.</h1>
           <p>
-            Access is restricted to approved principals at The Haney Group. Use
-            the email address you were added with.
+            Access is restricted to approved principals at The Haney Group.
+          </p>
+          <p style={{ marginTop: 10, fontSize: 14 }}>
+            <strong style={{ color: "var(--paper)" }}>Recommended:</strong>{" "}
+            enter your email below, then click{" "}
+            <em>&ldquo;Use another method&rdquo;</em> and choose{" "}
+            <em>Email code</em>. No password to remember; the code arrives in
+            seconds.
           </p>
         </div>
 
