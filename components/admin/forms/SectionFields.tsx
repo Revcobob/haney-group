@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { FieldShell } from "./Fields";
-import { MediaPickerModal, type MediaPickerItem } from "../MediaPickerModal";
+import { MediaPickerField } from "./MediaPickerField";
 
 // ---------- text + textarea ----------
 export function SectionTextField({
@@ -109,6 +109,8 @@ export function SectionCtaField({
 }
 
 // ---------- image picker ----------
+// Thin wrapper so the section editor speaks the same API as before, but
+// the actual UI (preview + library lookup) lives in MediaPickerField.
 export function SectionImageField({
   name,
   label,
@@ -122,55 +124,14 @@ export function SectionImageField({
   defaultUrl?: string;
   help?: string;
 }) {
-  const [id, setId] = useState(defaultId ?? "");
-  const [url, setUrl] = useState(defaultUrl ?? "");
-  const [open, setOpen] = useState(false);
-
   return (
-    <div className="adminfield">
-      <span className="adminfield__label">{label}</span>
-      <div className="adminimg" style={{ alignItems: "flex-start" }}>
-        <div className="adminimg__preview">
-          {url ? <img src={url} alt="" /> : null}
-        </div>
-        <div className="adminimg__meta" style={{ flex: 1 }}>
-          <p className="adminimg__name">
-            {url ? url.split("/").pop() : "No image selected"}
-          </p>
-          {help ? <p className="adminimg__alt">{help}</p> : null}
-          <div style={{ display: "flex", gap: 8, marginTop: 8, flexWrap: "wrap" }}>
-            <button
-              type="button"
-              className="adminbtn adminbtn--ghost adminbtn--small"
-              onClick={() => setOpen(true)}
-            >
-              {url ? "Replace" : "Choose from media"}
-            </button>
-            {url ? (
-              <button
-                type="button"
-                className="adminbtn adminbtn--ghost adminbtn--small"
-                onClick={() => {
-                  setId("");
-                  setUrl("");
-                }}
-              >
-                Remove image
-              </button>
-            ) : null}
-          </div>
-        </div>
-      </div>
-      <input type="hidden" name={name} value={id} />
-      <MediaPickerModal
-        open={open}
-        onClose={() => setOpen(false)}
-        onSelect={(item: MediaPickerItem) => {
-          setId(item.id);
-          setUrl(item.public_url);
-        }}
-      />
-    </div>
+    <MediaPickerField
+      name={name}
+      label={label}
+      defaultId={defaultId}
+      defaultUrl={defaultUrl}
+      help={help}
+    />
   );
 }
 

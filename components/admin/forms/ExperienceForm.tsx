@@ -3,6 +3,7 @@
 import { useActionState } from "react";
 import { SaveBar } from "./SaveBar";
 import { TextField, TextareaField, ToggleField } from "./Fields";
+import { MediaPickerField } from "./MediaPickerField";
 import type { ActionResult } from "@/lib/admin/actions/_helpers";
 
 type Action = (
@@ -49,7 +50,7 @@ export function ExperienceForm({
         <TextField id="client_type" name="client_type" label="Client type (optional)" defaultValue={defaults?.client_type} error={errors.client_type} placeholder="Provider · Coalition · Association" />
         <TextField id="leading_line" name="leading_line" label="Lead line (bold opener)" defaultValue={defaults?.leading_line} error={errors.leading_line} placeholder="Article II budget rider, interim through session." />
         <TextareaField id="body" name="body" label="Engagement description" help="Brief, declarative. The lead line appears in bold before this paragraph." defaultValue={defaults?.body} rows={5} required error={errors.body} />
-        <TextField id="image_media_id" name="image_media_id" label="Image (media ID)" defaultValue={defaults?.image_media_id ?? ""} error={errors.image_media_id} />
+        <MediaPickerField name="image_media_id" label="Image" defaultId={defaults?.image_media_id} error={errors.image_media_id} />
       </section>
       <section className="adminform__section">
         <div className="adminform__section-head">

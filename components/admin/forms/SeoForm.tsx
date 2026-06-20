@@ -3,6 +3,7 @@
 import { useActionState } from "react";
 import { SaveBar } from "./SaveBar";
 import { TextField, ToggleField } from "./Fields";
+import { MediaPickerField } from "./MediaPickerField";
 import { CountedTextField, CountedTextareaField } from "./CountedField";
 import { SeoPreviews } from "../SeoPreviews";
 import type { ActionResult } from "@/lib/admin/actions/_helpers";
@@ -103,13 +104,13 @@ export function SeoForm({
             recommendedMax={200}
             rows={3}
           />
-          <TextField
-            id="og_image_id"
+          <MediaPickerField
             name="og_image_id"
-            label="Social image (media ID)"
-            defaultValue={defaults?.og_image_id ?? ""}
+            label="Social image"
+            defaultId={defaults?.og_image_id}
+            defaultUrl={defaults?.og_image_url}
             error={errors.og_image_id}
-            help="Paste a cms_media ID. 1200×630 works best. Falls back to the global default if blank."
+            help="1200×630 works best. Falls back to the global default if blank."
           />
         </section>
 
