@@ -1,50 +1,49 @@
 import "server-only";
-import DOMPurify from "isomorphic-dompurify";
+import sanitizeHtml, { type IOptions } from "sanitize-html";
 
-// Server-side sanitization for any rich-text content written into Supabase.
+// Server-side sanitization for rich-text content written to Supabase.
 // Tiptap output goes through this before INSERT/UPDATE; the public site
 // reads sanitized HTML and renders it via dangerouslySetInnerHTML.
+//
+// sanitize-html instead of DOMPurify: DOMPurify needs jsdom on the server,
+// which trips Vercel's serverless bundler over an ESM-only sub-dep.
+// sanitize-html runs cleanly without any DOM.
 
-// Conservative allowlist tuned for The Session Briefing posts:
-// editorial prose, headings, lists, blockquotes, links, basic formatting.
-const ALLOWED_TAGS = [
-  "p", "br", "strong", "em", "u", "s", "code",
-  "h1", "h2", "h3", "h4",
-  "ul", "ol", "li",
-  "blockquote",
-  "a",
-  "hr",
-  "img",
-  "figure", "figcaption",
-  "aside",
-  "div", "span",
-];
-
-const ALLOWED_ATTR = [
-  "href", "target", "rel", "title",
-  "src", "alt", "width", "height", "loading",
-  "class", "id",
-  "aria-labelledby", "aria-hidden",
-];
+const OPTIONS: IOptions = {
+  allowedTags: [
+    "p", "br", "strong", "em", "u", "s", "code",
+    "h1", "h2", "h3", "h4",
+    "ul", "ol", "li",
+    "blockquote",
+    "a",
+    "hr",
+    "img",
+    "figure", "figcaption",
+    "aside",
+    "div", "span",
+  ],
+  allowedAttributes: {
+    a: ["href", "title", "target", "rel"],
+    img: ["src", "alt", "width", "height", "loading"],
+    "*": ["class", "id", "aria-labelledby", "aria-hidden"],
+  },
+  allowedSchemes: ["http", "https", "mailto", "tel"],
+  allowedSchemesByTag: { img: ["http", "https"] },
+  // Disallow inline event handlers and javascript: URLs by default; we keep
+  // sanitize-html's defaults, which strip them.
+  transformTags: {
+    // Any anchor opening in a new tab gets safe rel attributes.
+    a: (tagName, attribs) => {
+      const out: Record<string, string> = { ...attribs };
+      if (out.target === "_blank") {
+        out.rel = "noopener noreferrer";
+      }
+      return { tagName, attribs: out };
+    },
+  },
+};
 
 export function sanitizeArticleHtml(input: string): string {
   if (!input) return "";
-  const clean = DOMPurify.sanitize(input, {
-    ALLOWED_TAGS,
-    ALLOWED_ATTR,
-    ALLOW_DATA_ATTR: false,
-    KEEP_CONTENT: true,
-    USE_PROFILES: { html: true },
-    // Force noopener/noreferrer on any link with target=_blank.
-    ADD_ATTR: ["target", "rel"],
-  });
-  // Belt-and-suspenders: enforce safe rel on links opening in a new tab.
-  return clean.replace(
-    /<a([^>]+target=["']_blank["'][^>]*)>/gi,
-    (match, attrs: string) => {
-      const hasRel = /rel=/i.test(attrs);
-      if (hasRel) return `<a${attrs.replace(/rel=["'][^"']*["']/i, 'rel="noopener noreferrer"')}>`;
-      return `<a${attrs} rel="noopener noreferrer">`;
-    }
-  );
+  return sanitizeHtml(input, OPTIONS);
 }

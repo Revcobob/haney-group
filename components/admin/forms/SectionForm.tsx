@@ -11,7 +11,16 @@ import {
   SectionCardList,
 } from "./SectionFields";
 import type { ActionResult } from "@/lib/admin/actions/_helpers";
-import type { FieldConfig, SectionTypeDef } from "@/lib/sections/types";
+import type { FieldConfig } from "@/lib/sections/types";
+
+// Serializable subset of SectionTypeDef. The schema + empty() function
+// stay on the server; the client only needs to render fields and labels.
+export type SectionTypeClient = {
+  type: string;
+  label: string;
+  description: string;
+  fields: FieldConfig[];
+};
 
 type Action = (
   prev: ActionResult | undefined,
@@ -149,7 +158,7 @@ export function SectionForm({
   action,
   cancelHref,
 }: {
-  typeDef: SectionTypeDef;
+  typeDef: SectionTypeClient;
   content: Record<string, unknown>;
   action: Action;
   cancelHref?: string;

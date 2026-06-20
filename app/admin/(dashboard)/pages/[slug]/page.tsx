@@ -149,9 +149,17 @@ export default async function AdminPageEditor({
                 sectionType: active.section_type,
                 displayOrder: active.display_order,
               });
+              // Only pass serializable fields to the client form.
+              // schema + empty() stay server-side.
+              const clientTypeDef = {
+                type: typeDef.type,
+                label: typeDef.label,
+                description: typeDef.description,
+                fields: typeDef.fields,
+              };
               return (
                 <SectionForm
-                  typeDef={typeDef}
+                  typeDef={clientTypeDef}
                   content={active.content_json}
                   action={boundAction}
                   cancelHref={`/admin/pages/${slug}`}
