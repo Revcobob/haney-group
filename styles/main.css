@@ -1830,17 +1830,25 @@ section.article-section { padding-top: clamp(14px, 2vw, 28px); padding-bottom: c
   display: flex; flex-direction: column; gap: 24px;
 }
 .admin__authcard-brand {
-  display: flex; align-items: center; gap: 14px;
+  display: flex; flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  text-align: left;
 }
-.admin__authcard-brand img { height: 60px; width: auto; display: block; }
+.admin__authcard-brand img { display: none; }
 .admin__authcard-brand-meta {
-  display: flex; flex-direction: column; gap: 4px; line-height: 1.1;
+  display: flex; flex-direction: column; gap: 4px; line-height: 1.15;
+  align-items: flex-start;
+  text-align: left;
 }
 .admin__authcard-eyebrow {
-  font-size: 10.5px; letter-spacing: 0.32em; text-transform: uppercase;
+  font-size: 11px; letter-spacing: 0.32em; text-transform: uppercase;
   color: var(--amber-400); font-weight: 700;
 }
-.admin__authcard-meta-label { font-size: 14px; font-weight: 600; color: var(--paper); }
+.admin__authcard-meta-label {
+  font-size: 22px; font-weight: 700; color: var(--paper);
+  letter-spacing: -0.005em;
+}
 .admin__authcard-rule { width: 56px; height: 3px; background: var(--amber-500); }
 .admin__authcard h1 {
   font-size: 26px; font-weight: 700; color: var(--paper);
