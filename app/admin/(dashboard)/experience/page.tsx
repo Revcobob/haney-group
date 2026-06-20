@@ -1,14 +1,32 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { listAdminRows } from "@/lib/admin/data/entities";
-import { RowActions } from "@/components/admin/RowActions";
+import {
+  EntityListClient,
+  type EntityListRow,
+} from "@/components/admin/EntityListClient";
 import { EntityListEmpty } from "@/components/admin/EntityListEmpty";
 import { supabaseServerConfigured } from "@/lib/env";
 
 export const metadata: Metadata = { title: "Experience" };
 
+type ExperienceRow = EntityListRow & {
+  title: string;
+  leading_line: string;
+};
+
 export default async function AdminExperiencePage() {
-  const rows = supabaseServerConfigured ? await listAdminRows("cms_experience_items") : [];
+  const raw = supabaseServerConfigured
+    ? await listAdminRows("cms_experience_items")
+    : [];
+  const rows: ExperienceRow[] = raw.map((r) => ({
+    id: r.id as string,
+    is_visible: (r.is_visible as boolean) ?? true,
+    display_order: (r.display_order as number) ?? 0,
+    title: (r.title as string) ?? "Untitled",
+    leading_line: (r.leading_line as string) ?? "",
+  }));
+
   return (
     <>
       <div className="adminheaderbar">
@@ -16,13 +34,18 @@ export default async function AdminExperiencePage() {
           <p className="admin__pagehead-eyebrow">Structure</p>
           <h1>Engagement cards</h1>
           <p>
-            The anonymized engagement cards on the Experience page. <strong>Use
-            anonymized descriptions unless the client has approved public
-            identification.</strong>
+            The anonymized engagement cards on the Experience page.{" "}
+            <strong>
+              Use anonymized descriptions unless the client has approved public
+              identification.
+            </strong>
           </p>
         </div>
         <div className="adminheaderbar__actions">
-          <Link href="/admin/experience/new" className="adminbtn adminbtn--primary">
+          <Link
+            href="/admin/experience/new"
+            className="adminbtn adminbtn--primary"
+          >
             + Add engagement
           </Link>
         </div>
@@ -42,41 +65,33 @@ export default async function AdminExperiencePage() {
           newLabel="Add the first engagement"
         />
       ) : (
-        <div className="admintable">
-          <div className="admintable__row admintable__row--header">
-            <div>Engagement</div>
-            <div>Actions</div>
-          </div>
-          {rows.map((r) => {
-            const id = r.id as string;
-            const title = (r.title as string) ?? "Untitled";
-            const lead = (r.leading_line as string) ?? "";
-            const isVisible = (r.is_visible as boolean) ?? true;
-            return (
-              <div key={id} className="admintable__row">
-                <div>
-                  <Link href={`/admin/experience/${id}`} className="admintable__title">
-                    {title}
-                  </Link>
-                  <p className="admintable__sub">{lead}</p>
-                  <div style={{ marginTop: 6 }}>
-                    <span className={`admintable__pill admintable__pill--${isVisible ? "published" : "hidden"}`}>
-                      {isVisible ? "Visible" : "Hidden"}
-                    </span>{" "}
-                    <span className="admintable__pill">Order {r.display_order as number}</span>
-                  </div>
-                </div>
-                <RowActions
-                  table="cms_experience_items"
-                  id={id}
-                  isVisible={isVisible}
-                  editHref={`/admin/experience/${id}`}
-                  deleteConfirmLabel="engagement"
-                />
+        <EntityListClient
+          table="cms_experience_items"
+          rows={rows}
+          editHref={(r) => `/admin/experience/${r.id}`}
+          deleteConfirmLabel="engagement"
+          renderRow={(r) => (
+            <>
+              <Link
+                href={`/admin/experience/${r.id}`}
+                className="admintable__title"
+              >
+                {r.title}
+              </Link>
+              <p className="admintable__sub">{r.leading_line}</p>
+              <div style={{ marginTop: 6 }}>
+                <span
+                  className={`admintable__pill admintable__pill--${
+                    r.is_visible ? "published" : "hidden"
+                  }`}
+                >
+                  {r.is_visible ? "Visible" : "Hidden"}
+                </span>{" "}
+                <span className="admintable__pill">Order {r.display_order}</span>
               </div>
-            );
-          })}
-        </div>
+            </>
+          )}
+        />
       )}
     </>
   );

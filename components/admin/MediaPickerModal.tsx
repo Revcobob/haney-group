@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { uploadMediaAction } from "@/lib/admin/actions/media";
 
 export type MediaPickerItem = {
   id: string;
@@ -23,19 +24,63 @@ export function MediaPickerModal({
   const [items, setItems] = useState<MediaPickerItem[] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [query, setQuery] = useState("");
+  const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
+  const [showUpload, setShowUpload] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const altInputRef = useRef<HTMLInputElement>(null);
+
+  async function refetch() {
+    setError(null);
+    setItems(null);
+    try {
+      const r = await fetch("/api/admin/media");
+      if (!r.ok) throw new Error(`Media library not available (${r.status})`);
+      const d: { items: MediaPickerItem[] } = await r.json();
+      setItems(d.items);
+      return d.items;
+    } catch (e) {
+      setError((e as Error).message);
+      return null;
+    }
+  }
 
   useEffect(() => {
     if (!open) return;
-    setError(null);
-    setItems(null);
-    fetch("/api/admin/media")
-      .then(async (r) => {
-        if (!r.ok) throw new Error(`Media library not available (${r.status})`);
-        return r.json();
-      })
-      .then((d: { items: MediaPickerItem[] }) => setItems(d.items))
-      .catch((e: Error) => setError(e.message));
+    refetch();
   }, [open]);
+
+  async function onUpload(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const file = fileInputRef.current?.files?.[0];
+    if (!file) {
+      setUploadError("Choose a file first.");
+      return;
+    }
+    const fd = new FormData();
+    fd.set("file", file);
+    fd.set("bucket", "site-media");
+    fd.set("alt_text", altInputRef.current?.value ?? "");
+    setUploadError(null);
+    setUploading(true);
+    const result = await uploadMediaAction(undefined, fd);
+    setUploading(false);
+    if (!result.ok) {
+      setUploadError(result.error ?? "Upload failed");
+      return;
+    }
+    // Refresh, then auto-pick whichever row has the file name we just sent.
+    const next = await refetch();
+    const hit = next?.find((m) => m.file_name === file.name);
+    if (hit) {
+      onSelect(hit);
+      onClose();
+      return;
+    }
+    setShowUpload(false);
+    if (fileInputRef.current) fileInputRef.current.value = "";
+    if (altInputRef.current) altInputRef.current.value = "";
+  }
 
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
@@ -78,8 +123,77 @@ export function MediaPickerModal({
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             autoFocus
+            style={{ flex: 1 }}
           />
+          <button
+            type="button"
+            className={`adminbtn adminbtn--small ${
+              showUpload ? "adminbtn--ghost" : "adminbtn--primary"
+            }`}
+            onClick={() => setShowUpload((v) => !v)}
+            style={{ marginLeft: 10 }}
+          >
+            {showUpload ? "Cancel upload" : "+ Upload new"}
+          </button>
         </div>
+        {showUpload ? (
+          <form
+            onSubmit={onUpload}
+            className="mediapicker__upload"
+            style={{
+              padding: "12px 16px",
+              borderBottom: "1px solid var(--line-1)",
+              background: "var(--paper-2)",
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr auto",
+              gap: 10,
+              alignItems: "end",
+            }}
+          >
+            <div className="adminfield" style={{ margin: 0 }}>
+              <label className="adminfield__label" htmlFor="mpm-file">
+                File
+              </label>
+              <input
+                ref={fileInputRef}
+                id="mpm-file"
+                type="file"
+                accept="image/jpeg,image/png,image/webp,image/gif"
+                className="adminfield__input"
+                style={{ padding: "8px 10px" }}
+                required
+              />
+            </div>
+            <div className="adminfield" style={{ margin: 0 }}>
+              <label className="adminfield__label" htmlFor="mpm-alt">
+                Alt text
+              </label>
+              <input
+                ref={altInputRef}
+                id="mpm-alt"
+                type="text"
+                placeholder="Describes the image for screen readers"
+                className="adminfield__input"
+              />
+            </div>
+            <button
+              type="submit"
+              className="adminbtn adminbtn--primary"
+              disabled={uploading}
+            >
+              {uploading ? "Uploading…" : "Upload + use"}
+            </button>
+            {uploadError ? (
+              <p
+                className="adminfield__error"
+                role="alert"
+                style={{ gridColumn: "1 / -1", margin: 0 }}
+              >
+                {uploadError}
+              </p>
+            ) : null}
+          </form>
+        ) : null}
         <div className="mediapicker__body">
           {error ? (
             <p className="adminfield__error" style={{ padding: 16 }}>
