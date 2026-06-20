@@ -2591,24 +2591,19 @@ section.article-section { padding-top: clamp(14px, 2vw, 28px); padding-bottom: c
 }
 
 /* ---------- Reveal motion ----------
-   Progressive enhancement: content is visible by default. JS adds
-   `.has-reveal-js` to <html> early (from the root layout), which
-   activates the hide-then-fade-in behavior keyed by IntersectionObserver.
-   If JS fails for any reason, content stays visible — never hidden.
+   Content visibility is non-negotiable. Sections marked [data-reveal]
+   stay fully visible at all times — the attribute is now a hook for
+   optional JS-driven animation only, never something that can hide
+   content. We previously relied on JS to add an .is-in class to
+   reveal, which left pages blank when the IntersectionObserver
+   didn't kick in (hydration race, SSR bundle quirks, etc.).
+
+   If we want the fade-in polish back later, do it as a CSS-only
+   keyframe animation that runs once on load — never as opacity:0.
 */
 [data-reveal] {
   opacity: 1;
   transform: none;
-}
-.has-reveal-js [data-reveal]:not(.is-in) {
-  opacity: 0;
-  transform: translateY(14px);
-  transition: opacity .65s var(--ease), transform .65s var(--ease);
-}
-.has-reveal-js [data-reveal].is-in {
-  opacity: 1;
-  transform: none;
-  transition: opacity .65s var(--ease), transform .65s var(--ease);
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
@@ -2616,8 +2611,6 @@ section.article-section { padding-top: clamp(14px, 2vw, 28px); padding-bottom: c
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
   }
-  [data-reveal] { opacity: 1; transform: none; }
-  .has-reveal-js [data-reveal]:not(.is-in) { opacity: 1; transform: none; }
 }
 
 /* ---------- Mobile polish ---------- */

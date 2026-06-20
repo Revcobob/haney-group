@@ -78,28 +78,9 @@ export function SiteScripts() {
     navEl.addEventListener("touchstart", onTouchStart, { passive: true });
     navEl.addEventListener("touchend", onTouchEnd, { passive: true });
 
-    let io: IntersectionObserver | undefined;
-    if (
-      "IntersectionObserver" in window &&
-      !window.matchMedia("(prefers-reduced-motion: reduce)").matches
-    ) {
-      io = new IntersectionObserver(
-        (entries, obs) => {
-          entries.forEach((e) => {
-            if (e.isIntersecting) {
-              e.target.classList.add("is-in");
-              obs.unobserve(e.target);
-            }
-          });
-        },
-        { rootMargin: "-40px 0px", threshold: 0.05 }
-      );
-      document.querySelectorAll("[data-reveal]").forEach((el) => io!.observe(el));
-    } else {
-      document
-        .querySelectorAll("[data-reveal]")
-        .forEach((el) => el.classList.add("is-in"));
-    }
+    // Reveal animation was removed — [data-reveal] is always visible via
+    // CSS now. Kept the attribute so future JS-driven polish can hook
+    // onto it without changing markup.
 
     return () => {
       window.removeEventListener("resize", reparentNav);
@@ -109,7 +90,6 @@ export function SiteScripts() {
       navEl.removeEventListener("touchstart", onTouchStart);
       navEl.removeEventListener("touchend", onTouchEnd);
       linkHandlers.forEach((unsub) => unsub());
-      io?.disconnect();
     };
   }, []);
 
