@@ -3,6 +3,7 @@
 import { useActionState } from "react";
 import { SaveBar } from "./SaveBar";
 import { TextField, SelectField, ToggleField } from "./Fields";
+import { MediaPickerField } from "./MediaPickerField";
 import type { ActionResult } from "@/lib/admin/actions/_helpers";
 
 type Action = (
@@ -45,7 +46,7 @@ export function ClientLogoForm({
         </div>
         <TextField id="client_name" name="client_name" label="Client name" defaultValue={defaults?.client_name} required error={errors.client_name} />
         <TextField id="alt_text" name="alt_text" label="Alt text (required)" help="Describes the logo for screen readers and when images don’t load." defaultValue={defaults?.alt_text} required error={errors.alt_text} />
-        <TextField id="logo_media_id" name="logo_media_id" label="Logo (media ID)" help="Media picker lands in the Media Library section." defaultValue={defaults?.logo_media_id ?? ""} error={errors.logo_media_id} />
+        <MediaPickerField name="logo_media_id" label="Logo" help="The grayscale logo file shown in the client strip." defaultId={defaults?.logo_media_id} error={errors.logo_media_id} />
         <TextField id="website_url" name="website_url" type="url" label="Client website" defaultValue={defaults?.website_url} placeholder="https://www.example.com" error={errors.website_url} />
       </section>
       <section className="adminform__section">

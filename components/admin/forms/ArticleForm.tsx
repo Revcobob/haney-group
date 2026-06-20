@@ -3,6 +3,7 @@
 import { useActionState } from "react";
 import { SaveBar } from "./SaveBar";
 import { TextField, TextareaField, SelectField } from "./Fields";
+import { MediaPickerField } from "./MediaPickerField";
 import { TiptapEditor } from "../TiptapEditor";
 import type { ActionResult } from "@/lib/admin/actions/_helpers";
 
@@ -210,11 +211,10 @@ export function ArticleForm({
             help="Optional. Skipped on the public meta strip if blank."
           />
         </div>
-        <TextField
-          id="featured_image_id"
+        <MediaPickerField
           name="featured_image_id"
-          label="Featured image (media ID)"
-          defaultValue={defaults?.featured_image_id ?? ""}
+          label="Featured image"
+          defaultId={defaults?.featured_image_id}
           error={errors.featured_image_id}
           help="The hero image. Falls back to a default if blank."
         />

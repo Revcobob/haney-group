@@ -130,36 +130,31 @@ export function VisualEditorClient({
               save in place; the preview reloads on save.
             </p>
 
-            <div className="visualeditor__sectionlist">
-              <div className="admin__side-label">Sections</div>
-              {sections.map((s) => {
-                const isActive = s.section_key === activeKey;
-                return (
-                  <button
-                    type="button"
-                    key={s.section_key}
-                    onClick={() => setActiveKey(s.section_key)}
-                    className={`admin__side-link${isActive ? " is-active" : ""}`}
-                    style={{
-                      textAlign: "left",
-                      width: "100%",
-                      border: 0,
-                      background: "transparent",
-                      cursor: "pointer",
-                    }}
-                  >
-                    <span style={{ flex: 1 }}>{s.section_label}</span>
-                    {isActive ? (
-                      <span style={{ color: "var(--amber-600)", fontSize: 11 }}>
-                        editing
-                      </span>
-                    ) : null}
-                  </button>
-                );
-              })}
+            <div className="adminfield" style={{ marginBottom: 18 }}>
+              <label
+                className="adminfield__label"
+                htmlFor="visualeditor-section-select"
+              >
+                Section to edit
+              </label>
+              <select
+                id="visualeditor-section-select"
+                className="adminfield__select"
+                value={activeKey ?? ""}
+                onChange={(e) => setActiveKey(e.target.value || null)}
+              >
+                {sections.length === 0 ? (
+                  <option value="">No sections yet</option>
+                ) : null}
+                {sections.map((s) => (
+                  <option key={s.section_key} value={s.section_key}>
+                    {s.section_label}
+                  </option>
+                ))}
+              </select>
             </div>
 
-            <div style={{ marginTop: 18 }}>
+            <div>
               {!active ? (
                 <p className="visualeditor__hint">
                   Pick a section to start editing.

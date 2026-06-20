@@ -3,6 +3,7 @@
 import { useActionState } from "react";
 import { SaveBar } from "./SaveBar";
 import { TextField, TextareaField, ToggleField } from "./Fields";
+import { MediaPickerField } from "./MediaPickerField";
 import type { ActionResult } from "@/lib/admin/actions/_helpers";
 
 type Action = (
@@ -43,7 +44,7 @@ export function IndustryForm({
         </div>
         <TextField id="title" name="title" label="Industry title" defaultValue={defaults?.title} required error={errors.title} maxLength={60} />
         <TextareaField id="description" name="description" label="Description" help="One or two sentences explaining the firm’s work in this sector." defaultValue={defaults?.description} rows={3} required error={errors.description} maxLength={320} />
-        <TextField id="illustration_media_id" name="illustration_media_id" label="Illustration (media ID)" help="Media picker lands in the Media Library section. For now, paste a media row ID." defaultValue={defaults?.illustration_media_id ?? ""} error={errors.illustration_media_id} />
+        <MediaPickerField name="illustration_media_id" label="Illustration" help="The illustration shown on the industry card." defaultId={defaults?.illustration_media_id} error={errors.illustration_media_id} />
       </section>
       <section className="adminform__section">
         <div className="adminform__section-head">

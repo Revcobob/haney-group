@@ -3,6 +3,7 @@
 import { useActionState } from "react";
 import { SaveBar } from "./SaveBar";
 import { TextField, TextareaField, ToggleField } from "./Fields";
+import { MediaPickerField } from "./MediaPickerField";
 import type { ActionResult } from "@/lib/admin/actions/_helpers";
 
 type Action = (
@@ -76,12 +77,11 @@ export function ServiceForm({
           error={errors.href}
           placeholder="/services/…"
         />
-        <TextField
-          id="icon_media_id"
+        <MediaPickerField
           name="icon_media_id"
-          label="Icon (media ID)"
-          help="Media picker lands in the Media Library section. For now, paste a media row ID."
-          defaultValue={defaults?.icon_media_id ?? ""}
+          label="Icon"
+          help="Pick the SVG / PNG icon shown above the title on the card."
+          defaultId={defaults?.icon_media_id}
           error={errors.icon_media_id}
         />
       </section>
