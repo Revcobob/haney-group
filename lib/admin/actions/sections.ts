@@ -209,6 +209,132 @@ export async function saveSectionAction(
   return { ok: true };
 }
 
+// Reorder every section on a page. Caller submits the new ordering as
+// an array of section_keys. For each key:
+//   - if a cms_page_sections row exists, its display_order is updated
+//     to match the new index;
+//   - if not (the section currently lives in the fallback only), we
+//     insert a real row using the fallback content_json so the order
+//     persists on the public site.
+export async function reorderSectionsAction(
+  pageId: string,
+  pageSlug: string,
+  orderedKeys: string[]
+): Promise<ActionResult> {
+  await requireAdmin();
+  if (!supabaseServerConfigured) {
+    return { ok: false, error: "Supabase is not connected." };
+  }
+  if (!pageId || orderedKeys.length === 0) {
+    return { ok: false, error: "Missing page or ordering." };
+  }
+  const sb = serverSupabase();
+  const fb = getPageFallback(pageSlug);
+  const fbByKey = new Map(
+    (fb?.sections ?? []).map((s) => [s.section_key, s])
+  );
+
+  const { data: existing, error: loadErr } = await sb
+    .from("cms_page_sections")
+    .select("id, section_key")
+    .eq("page_id", pageId);
+  if (loadErr) return { ok: false, error: loadErr.message };
+  const existingByKey = new Map(
+    (existing ?? []).map((r) => [r.section_key as string, r.id as string])
+  );
+
+  for (let i = 0; i < orderedKeys.length; i++) {
+    const key = orderedKeys[i];
+    const newOrder = i + 1;
+    const rowId = existingByKey.get(key);
+    if (rowId) {
+      const { error } = await sb
+        .from("cms_page_sections")
+        .update({ display_order: newOrder } as never)
+        .eq("id", rowId);
+      if (error) return { ok: false, error: error.message };
+      continue;
+    }
+    // No row yet — promote the fallback section to a real row so the
+    // ordering sticks.
+    const fbSection = fbByKey.get(key);
+    if (!fbSection) continue; // unknown key; ignore quietly
+    const { error } = await sb.from("cms_page_sections").insert({
+      page_id: pageId,
+      section_key: fbSection.section_key,
+      section_label: fbSection.section_label,
+      section_type: fbSection.section_type,
+      content_json: fbSection.content_json,
+      display_order: newOrder,
+      is_visible: true,
+    } as never);
+    if (error) return { ok: false, error: error.message };
+  }
+
+  revalidatePath(publicPathForSlug(pageSlug));
+  revalidatePath(`/admin/pages/${pageSlug}`);
+  revalidatePath(`/admin/pages/${pageSlug}/visual`);
+  return { ok: true };
+}
+
+// Reset a single section's content back to whatever the in-tree
+// fallback defines. Useful when an experimental edit broke a section
+// and the admin wants to recover without touching the database.
+export async function resetSectionToDefaultAction(
+  pageId: string,
+  pageSlug: string,
+  sectionKey: string
+): Promise<ActionResult> {
+  await requireAdmin();
+  if (!supabaseServerConfigured) {
+    return { ok: false, error: "Supabase is not connected." };
+  }
+  if (!pageId || !sectionKey) {
+    return { ok: false, error: "Missing page or section key." };
+  }
+  const fb = getPageFallback(pageSlug);
+  const fbSection = fb?.sections.find((s) => s.section_key === sectionKey);
+  if (!fbSection) {
+    return {
+      ok: false,
+      error: "No default content exists for this section.",
+    };
+  }
+  const sb = serverSupabase();
+  const { data: existing } = await sb
+    .from("cms_page_sections")
+    .select("id")
+    .eq("page_id", pageId)
+    .eq("section_key", sectionKey)
+    .maybeSingle();
+
+  const row = {
+    page_id: pageId,
+    section_key: fbSection.section_key,
+    section_label: fbSection.section_label,
+    section_type: fbSection.section_type,
+    content_json: fbSection.content_json,
+    display_order: fbSection.display_order,
+    is_visible: true,
+  };
+
+  if (existing?.id) {
+    const { error } = await sb
+      .from("cms_page_sections")
+      .update(row as never)
+      .eq("id", existing.id);
+    if (error) return { ok: false, error: error.message };
+  } else {
+    const { error } = await sb.from("cms_page_sections").insert(row as never);
+    if (error) return { ok: false, error: error.message };
+  }
+
+  revalidatePath(publicPathForSlug(pageSlug));
+  revalidatePath(`/admin/pages/${pageSlug}`);
+  revalidatePath(`/admin/pages/${pageSlug}/visual`);
+  return { ok: true };
+}
+
 // "Seed this page from fallback" — bulk insert the fallback sections for a
 // page that hasn't been edited yet. Handy when you want a starting point.
 export async function seedPageFromFallbackAction(

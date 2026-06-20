@@ -6,6 +6,7 @@ import {
   SectionForm,
   type SectionMeta,
 } from "./forms/SectionForm";
+import { SectionReorderList } from "./SectionReorderList";
 import type { FieldConfig } from "@/lib/sections/types";
 import { saveSectionAction } from "@/lib/admin/actions/sections";
 
@@ -48,6 +49,7 @@ export function VisualEditorClient({
     sections[0]?.section_key ?? null
   );
   const [collapsed, setCollapsed] = useState(false);
+  const [reorderOpen, setReorderOpen] = useState(false);
   const [iframeKey, setIframeKey] = useState(0); // bump to reload iframe
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
@@ -130,7 +132,7 @@ export function VisualEditorClient({
               save in place; the preview reloads on save.
             </p>
 
-            <div className="adminfield" style={{ marginBottom: 18 }}>
+            <div className="adminfield" style={{ marginBottom: 12 }}>
               <label
                 className="adminfield__label"
                 htmlFor="visualeditor-section-select"
@@ -153,6 +155,37 @@ export function VisualEditorClient({
                 ))}
               </select>
             </div>
+
+            {pageId && sections.length > 1 ? (
+              <details
+                style={{ marginBottom: 18 }}
+                open={reorderOpen}
+                onToggle={(e) => setReorderOpen((e.target as HTMLDetailsElement).open)}
+              >
+                <summary
+                  style={{
+                    cursor: "pointer",
+                    fontSize: 13,
+                    color: "var(--text-2)",
+                    padding: "6px 0",
+                    userSelect: "none",
+                  }}
+                >
+                  {reorderOpen ? "Hide" : "Reorder sections"}
+                </summary>
+                <div style={{ marginTop: 10 }}>
+                  <SectionReorderList
+                    pageId={pageId}
+                    pageSlug={pageSlug}
+                    items={sections.map((s) => ({
+                      section_key: s.section_key,
+                      section_label: s.section_label,
+                    }))}
+                    onReordered={reloadIframe}
+                  />
+                </div>
+              </details>
+            ) : null}
 
             <div>
               {!active ? (
