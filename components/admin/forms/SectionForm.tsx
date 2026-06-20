@@ -152,16 +152,31 @@ function renderField(field: FieldConfig, content: Record<string, unknown>) {
   }
 }
 
+export type SectionMeta = {
+  pageId: string;
+  pageSlug: string;
+  sectionKey: string;
+  sectionLabel: string;
+  sectionType: string;
+  displayOrder: number;
+};
+
 export function SectionForm({
   typeDef,
   content,
   action,
+  meta,
   cancelHref,
+  onSaved,
+  compact,
 }: {
   typeDef: SectionTypeClient;
   content: Record<string, unknown>;
   action: Action;
+  meta: SectionMeta;
   cancelHref?: string;
+  onSaved?: () => void;
+  compact?: boolean;
 }) {
   const [state, formAction] = useActionState<ActionResult | undefined, FormData>(
     action,
@@ -170,13 +185,31 @@ export function SectionForm({
   const status = !state ? "idle" : state.ok ? "success" : "error";
   const message = !state ? undefined : state.ok ? "Saved." : state.error;
 
+  // Fire the onSaved callback on the *transition* to a success state so the
+  // visual editor can reload the iframe right after a successful save.
+  if (state?.ok && onSaved) {
+    queueMicrotask(onSaved);
+  }
+
   return (
     <form action={formAction} className="adminform">
+      {/* Hidden context for the server action — no per-call bind required */}
+      <input type="hidden" name="_meta_page_id" value={meta.pageId} />
+      <input type="hidden" name="_meta_page_slug" value={meta.pageSlug} />
+      <input type="hidden" name="_meta_section_key" value={meta.sectionKey} />
+      <input type="hidden" name="_meta_section_label" value={meta.sectionLabel} />
+      <input type="hidden" name="_meta_section_type" value={meta.sectionType} />
+      <input
+        type="hidden"
+        name="_meta_display_order"
+        value={String(meta.displayOrder)}
+      />
+
       <section className="adminform__section">
         <div className="adminform__section-head">
           <p className="adminform__section-eyebrow">Section · {typeDef.type}</p>
           <h2>{typeDef.label}</h2>
-          <p>{typeDef.description}</p>
+          {!compact ? <p>{typeDef.description}</p> : null}
         </div>
         {typeDef.fields.map((f) => renderField(f, content))}
       </section>

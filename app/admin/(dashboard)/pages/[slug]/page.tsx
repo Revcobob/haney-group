@@ -141,14 +141,6 @@ export default async function AdminPageEditor({
                   </div>
                 );
               }
-              const boundAction = saveSectionAction.bind(null, {
-                pageId: page?.id ?? "",
-                pageSlug: slug,
-                sectionKey: active.section_key,
-                sectionLabel: active.section_label,
-                sectionType: active.section_type,
-                displayOrder: active.display_order,
-              });
               // Only pass serializable fields to the client form.
               // schema + empty() stay server-side.
               const clientTypeDef = {
@@ -159,9 +151,18 @@ export default async function AdminPageEditor({
               };
               return (
                 <SectionForm
+                  key={active.section_key}
                   typeDef={clientTypeDef}
                   content={active.content_json}
-                  action={boundAction}
+                  action={saveSectionAction}
+                  meta={{
+                    pageId: page?.id ?? "",
+                    pageSlug: slug,
+                    sectionKey: active.section_key,
+                    sectionLabel: active.section_label,
+                    sectionType: active.section_type,
+                    displayOrder: active.display_order,
+                  }}
                   cancelHref={`/admin/pages/${slug}`}
                 />
               );

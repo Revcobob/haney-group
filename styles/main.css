@@ -2399,7 +2399,12 @@ section.article-section { padding-top: clamp(14px, 2vw, 28px); padding-bottom: c
   flex: 1;
 }
 
-/* ---------- Visual editor frame ---------- */
+/* ---------- Visual editor frame ----------
+   Layout: preview iframe on the left, edit panel on the right.
+   The panel collapses to a thin re-open tab so the user can examine
+   the page full-width when they need to. The (dashboard) admin sidebar
+   is also hidden on this page via body.body--visual-editor below.
+*/
 .visualeditor {
   display: grid;
   grid-template-columns: 1fr;
@@ -2407,9 +2412,11 @@ section.article-section { padding-top: clamp(14px, 2vw, 28px); padding-bottom: c
   gap: 0;
   height: calc(100vh - 70px);
   margin: -24px -28px -32px;
+  position: relative;
 }
 @media (min-width: 1100px) {
-  .visualeditor { grid-template-columns: minmax(0, 1fr) 420px; grid-template-rows: 1fr; }
+  .visualeditor { grid-template-columns: minmax(0, 1fr) 460px; grid-template-rows: 1fr; }
+  .visualeditor.visualeditor--collapsed { grid-template-columns: 1fr 0; }
 }
 .visualeditor__frame {
   background: var(--paper-2);
@@ -2430,6 +2437,12 @@ section.article-section { padding-top: clamp(14px, 2vw, 28px); padding-bottom: c
   display: flex;
   flex-direction: column;
   min-height: 0;
+  transition: width 0.25s var(--ease);
+}
+.visualeditor--collapsed .visualeditor__panel {
+  width: 0;
+  overflow: hidden;
+  border-left: 0;
 }
 .visualeditor__panel-head {
   padding: 14px 18px;
@@ -2446,6 +2459,55 @@ section.article-section { padding-top: clamp(14px, 2vw, 28px); padding-bottom: c
   color: var(--text-3);
   font-size: 13.5px;
   line-height: 1.5;
+}
+.visualeditor__sectionlist {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  background: var(--paper-2);
+  border: 1px solid var(--line-1);
+  border-radius: var(--radius-md);
+  padding: 8px;
+}
+.visualeditor__sectionlist .admin__side-label {
+  padding: 4px 10px 6px;
+}
+.visualeditor__sectionlist .admin__side-link {
+  padding: 8px 10px;
+  font-size: 13.5px;
+}
+
+/* Re-open tab when the panel is collapsed — floats over the iframe */
+.visualeditor__tab {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 30;
+  background: var(--navy-900);
+  color: var(--paper);
+  border: 1px solid var(--navy-800);
+  border-radius: 999px;
+  padding: 8px 16px;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 14px -4px rgba(11,18,40,0.35);
+  transition: background 0.2s var(--ease);
+}
+.visualeditor__tab:hover { background: var(--navy-800); }
+
+/* Hide the admin sidebar while the visual editor is active so the
+   preview can use the full width. */
+body.body--visual-editor .admin__side { display: none; }
+@media (min-width: 960px) {
+  body.body--visual-editor .admin {
+    grid-template-columns: 1fr;
+    grid-template-areas: "header" "main";
+  }
+}
+body.body--visual-editor .admin__main {
+  padding: 0;
 }
 
 /* Editable region in preview frame */
