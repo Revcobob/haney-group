@@ -107,7 +107,10 @@ copy `.env.example` to `.env.local` and fill in:
 7. ✅ SEO manager — global defaults + per-path overrides with live
    Google / social previews, character counters, noindex toggle;
    each public page reads via `resolveMetadata()` with fallback chain
-8. Visual click-to-edit editor + Pages section forms (`/admin/pages/[slug]/visual`)
+8. ✅ Pages section editor + visual editor + media picker — homepage
+   is fully section-driven (cms_page_sections); `/admin/pages/home`
+   dashboard editor; `/admin/pages/home/visual` iframes a preview of
+   the live page with click-to-edit regions backed by postMessage
 
 ## Design tokens
 

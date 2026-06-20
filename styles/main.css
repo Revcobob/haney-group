@@ -2347,6 +2347,135 @@ section.article-section { padding-top: clamp(14px, 2vw, 28px); padding-bottom: c
   .seoeditor { grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); }
 }
 
+/* ---------- Media picker modal ---------- */
+.mediapicker {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.mediapicker__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(6, 9, 26, 0.55);
+  backdrop-filter: blur(2px);
+}
+.mediapicker__panel {
+  position: relative;
+  width: min(960px, 100%);
+  max-height: calc(100vh - 48px);
+  background: var(--paper);
+  border-radius: var(--radius-md);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--line-1);
+  box-shadow: 0 30px 80px -20px rgba(11, 18, 40, 0.45);
+}
+.mediapicker__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 22px;
+  border-bottom: 1px solid var(--line-1);
+  background: var(--paper-2);
+}
+.mediapicker__searchbar { padding: 14px 22px; border-bottom: 1px solid var(--line-1); }
+.mediapicker__body {
+  overflow-y: auto;
+  padding: 16px 22px 22px;
+  flex: 1;
+}
+
+/* ---------- Visual editor frame ---------- */
+.visualeditor {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr;
+  gap: 0;
+  height: calc(100vh - 70px);
+  margin: -24px -28px -32px;
+}
+@media (min-width: 1100px) {
+  .visualeditor { grid-template-columns: minmax(0, 1fr) 420px; grid-template-rows: 1fr; }
+}
+.visualeditor__frame {
+  background: var(--paper-2);
+  border-right: 1px solid var(--line-1);
+  position: relative;
+  overflow: hidden;
+}
+.visualeditor__frame iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+  background: var(--paper);
+}
+.visualeditor__panel {
+  background: var(--paper);
+  border-left: 1px solid var(--line-1);
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+.visualeditor__panel-head {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--line-1);
+  background: var(--paper-2);
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+}
+.visualeditor__panel-body {
+  overflow-y: auto;
+  padding: 18px;
+  flex: 1;
+}
+.visualeditor__hint {
+  color: var(--text-3);
+  font-size: 13.5px;
+  line-height: 1.5;
+}
+
+/* Editable region in preview frame */
+.editable-region {
+  position: relative;
+  outline: 2px dashed transparent;
+  outline-offset: -2px;
+  cursor: pointer;
+  transition: outline-color .15s var(--ease);
+}
+.editable-region:hover,
+.editable-region.is-targeted {
+  outline-color: var(--amber-500);
+}
+.editable-region::after {
+  content: attr(data-label);
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: var(--navy-900);
+  color: var(--paper);
+  font-family: var(--font-sans);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 3px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .15s var(--ease);
+  z-index: 50;
+}
+.editable-region:hover::after,
+.editable-region.is-targeted::after {
+  opacity: 1;
+}
+
 /* Article preview panel inside the edit page */
 .articlepreview {
   background: var(--paper);

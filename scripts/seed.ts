@@ -26,6 +26,7 @@ import {
 } from "../content/fallbacks/navigation";
 import { siteSettings } from "../content/fallbacks/settings";
 import { insightArticles } from "../content/fallbacks/insights";
+import { pageFallbacks } from "../content/fallbacks/pages";
 
 const URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
@@ -283,6 +284,77 @@ async function seedArticles() {
   console.log(`✓ Articles (${insightArticles.length})`);
 }
 
+async function seedPages() {
+  if (RESET) {
+    await reset("cms_page_sections");
+    await reset("cms_pages");
+  }
+  for (const page of pageFallbacks) {
+    // Upsert page row
+    const pageId = await upsertOne(
+      "cms_pages",
+      { slug: page.slug },
+      {
+        slug: page.slug,
+        title: page.title,
+        page_type: page.page_type,
+        status: "published",
+      }
+    );
+    // Resolve any inline /assets/ image paths inside content_json into
+    // cms_media rows and rewrite content to reference {key}_id values.
+    // Cheap path: collect all foo_url strings, ensure media for each,
+    // then attach matching foo_id beside the existing foo_url.
+    const allUrls = new Set<string>();
+    const walk = (v: unknown) => {
+      if (Array.isArray(v)) v.forEach(walk);
+      else if (v && typeof v === "object") {
+        for (const [k, val] of Object.entries(v as Record<string, unknown>)) {
+          if (k.endsWith("_url") && typeof val === "string" && val.startsWith("/")) {
+            allUrls.add(val);
+          } else walk(val);
+        }
+      }
+    };
+    page.sections.forEach((s) => walk(s.content_json));
+    const media = await ensureMedia(allUrls, "page-section");
+    const attachIds = (v: unknown): unknown => {
+      if (Array.isArray(v)) return v.map(attachIds);
+      if (v && typeof v === "object") {
+        const o = v as Record<string, unknown>;
+        const out: Record<string, unknown> = {};
+        for (const [k, val] of Object.entries(o)) {
+          out[k] = attachIds(val);
+          if (k.endsWith("_url") && typeof val === "string" && media.has(val)) {
+            const idKey = `${k.slice(0, -4)}_id`;
+            if (!(idKey in o)) out[idKey] = media.get(val);
+          }
+        }
+        return out;
+      }
+      return v;
+    };
+
+    for (const s of page.sections) {
+      const content = attachIds(s.content_json) as Record<string, unknown>;
+      await upsertOne(
+        "cms_page_sections",
+        { page_id: pageId, section_key: s.section_key },
+        {
+          page_id: pageId,
+          section_key: s.section_key,
+          section_label: s.section_label,
+          section_type: s.section_type,
+          content_json: content,
+          display_order: s.display_order,
+          is_visible: true,
+        }
+      );
+    }
+  }
+  console.log(`✓ Pages (${pageFallbacks.length}, sections seeded)`);
+}
+
 async function main() {
   console.log(`Seeding Supabase at ${URL}${RESET ? " (RESET)" : ""}…`);
   await seedSettings();
@@ -292,6 +364,7 @@ async function main() {
   await seedExperience();
   await seedClientLogos();
   await seedArticles();
+  await seedPages();
   console.log("Done.");
 }
 

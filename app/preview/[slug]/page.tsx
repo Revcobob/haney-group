@@ -1,22 +1,29 @@
-import type { Metadata } from "next";
-import { resolveMetadata } from "@/lib/content/seo";
+import { notFound } from "next/navigation";
+import { requireAdmin } from "@/lib/auth";
 import { getPageWithSections } from "@/lib/content/pages";
 import { getServiceCards, getIndustryCards } from "@/lib/content/site";
 import { listPublishedArticles } from "@/lib/content/insights";
 import { HomeSections } from "@/components/site/HomeSections";
 
-export async function generateMetadata(): Promise<Metadata> {
-  return resolveMetadata({
-    path: "/",
-    fallback: {
-      title: "The Haney Group · Texas Government Relations & Legislative Strategy",
-      description:
-        "A senior-led Austin government relations firm with deep Texas Capitol experience. Legislative strategy, appropriations, parliamentary procedure, and disciplined advocacy for associations, corporations, public entities, and policy organizations.",
-    },
-  });
-}
+export const dynamic = "force-dynamic";
 
-export default async function HomePage() {
+export const metadata = {
+  title: "Preview",
+  robots: { index: false, follow: false },
+};
+
+export default async function PreviewPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  await requireAdmin();
+  const { slug } = await params;
+
+  // Today only the homepage has a section-driven renderer. Other pages would
+  // hit this route once their section editor lands.
+  if (slug !== "home") notFound();
+
   const [page, capabilities, industries, articles] = await Promise.all([
     getPageWithSections("home"),
     getServiceCards(),
