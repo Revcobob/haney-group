@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { SignOutButton } from "@clerk/nextjs";
+import { BrandMark } from "@/components/admin/BrandMark";
 
 export const metadata: Metadata = { title: "Access denied" };
 
@@ -8,12 +9,8 @@ export default function ForbiddenPage() {
   return (
     <div className="admin__authshell">
       <div className="admin__authcard">
-        <div className="admin__authcard-brand">
-          <img src="/assets/img/inline-1c87817066.png" alt="The Haney Group" />
-          <div className="admin__authcard-brand-meta">
-            <span className="admin__authcard-eyebrow">The Haney Group</span>
-            <span className="admin__authcard-meta-label">Site Admin</span>
-          </div>
+        <div className="admin__authcard-brand" style={{ color: "var(--paper)" }}>
+          <BrandMark size="lg" />
         </div>
         <div className="admin__authcard-rule" aria-hidden="true"></div>
         <div>
