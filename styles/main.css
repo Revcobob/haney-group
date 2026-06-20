@@ -2590,13 +2590,26 @@ section.article-section { padding-top: clamp(14px, 2vw, 28px); padding-bottom: c
   .article__timeline { padding: 22px 22px 24px; }
 }
 
-/* ---------- Reveal motion ---------- */
+/* ---------- Reveal motion ----------
+   Progressive enhancement: content is visible by default. JS adds
+   `.has-reveal-js` to <html> early (from the root layout), which
+   activates the hide-then-fade-in behavior keyed by IntersectionObserver.
+   If JS fails for any reason, content stays visible — never hidden.
+*/
 [data-reveal] {
+  opacity: 1;
+  transform: none;
+}
+.has-reveal-js [data-reveal]:not(.is-in) {
   opacity: 0;
   transform: translateY(14px);
   transition: opacity .65s var(--ease), transform .65s var(--ease);
 }
-[data-reveal].is-in { opacity: 1; transform: none; }
+.has-reveal-js [data-reveal].is-in {
+  opacity: 1;
+  transform: none;
+  transition: opacity .65s var(--ease), transform .65s var(--ease);
+}
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.001ms !important;
@@ -2604,6 +2617,7 @@ section.article-section { padding-top: clamp(14px, 2vw, 28px); padding-bottom: c
     scroll-behavior: auto !important;
   }
   [data-reveal] { opacity: 1; transform: none; }
+  .has-reveal-js [data-reveal]:not(.is-in) { opacity: 1; transform: none; }
 }
 
 /* ---------- Mobile polish ---------- */
