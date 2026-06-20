@@ -209,7 +209,11 @@ export default async function AdminSettingsPage() {
               />
             </section>
 
-            <section className="adminform__section">
+            <section
+              className="adminform__section"
+              id="contact"
+              style={{ scrollMarginTop: 90 }}
+            >
               <div className="adminform__section-head">
                 <p className="adminform__section-eyebrow">Contact page · Hero</p>
                 <h2>Top of the Contact page</h2>
