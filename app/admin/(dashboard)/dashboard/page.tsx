@@ -9,12 +9,12 @@ export const metadata: Metadata = { title: "Dashboard" };
 type QuickLink = { href: string; eyebrow: string; title: string; body: string };
 
 const quickLinks: QuickLink[] = [
-  { href: "/admin/pages", eyebrow: "Pages", title: "Edit Pages", body: "Update headlines, body copy, cards, images, and CTAs across every public page." },
+  { href: "/admin/pages", eyebrow: "Pages", title: "Edit Pages", body: "Every public page and where to edit it — homepage sections, services, industries, contact page text, and more." },
+  { href: "/admin/pages/home/visual", eyebrow: "Visual", title: "Open Visual Editor", body: "Click any region on the homepage to edit it inline, with a live preview that reloads on save." },
   { href: "/admin/insights", eyebrow: "Insights", title: "Write an Insight Article", body: "Draft, edit, and publish posts for The Session Briefing." },
-  { href: "/admin/seo", eyebrow: "SEO", title: "SEO Manager", body: "Per-page meta titles, descriptions, social previews, and the global defaults." },
-  { href: "/admin/media", eyebrow: "Media", title: "Media Library", body: "Upload and manage images and brand assets used across the site." },
+  { href: "/admin/settings#contact", eyebrow: "Contact", title: "Edit Contact Page", body: "Update the Contact page text and change the email address that gets new-inquiry alerts." },
   { href: "/admin/inquiries", eyebrow: "Inbox", title: "Contact Inquiries", body: "Review and triage notes that came in through the Contact form." },
-  { href: "/admin/settings", eyebrow: "Site", title: "Site Settings", body: "Firm name, address, phone, email, footer copy, Contact-page text, and where new inquiry emails go." },
+  { href: "/admin/settings", eyebrow: "Site", title: "Site Settings", body: "Firm name, address, phone, email, footer copy, and every site-wide setting." },
 ];
 
 export default async function DashboardPage() {
