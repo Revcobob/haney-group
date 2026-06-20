@@ -81,6 +81,47 @@ async function resolveImageUrls(content: Record<string, unknown>): Promise<Recor
   return apply(content) as Record<string, unknown>;
 }
 
+// Deep-merge: DB content takes priority where it has a real value; the
+// fallback fills in any missing/blank field. Treats "", null, undefined,
+// and empty arrays as "use fallback for this leaf".
+function isBlank(v: unknown): boolean {
+  if (v === null || v === undefined) return true;
+  if (typeof v === "string" && v.trim().length === 0) return true;
+  if (Array.isArray(v) && v.length === 0) return true;
+  return false;
+}
+
+function deepMergeWithFallback(
+  primary: unknown,
+  fallback: unknown
+): unknown {
+  if (isBlank(primary)) return fallback;
+  if (Array.isArray(primary) && Array.isArray(fallback)) {
+    // For arrays, prefer the primary length (admin's intent) but heal
+    // any blank slot from the fallback at the same index when present.
+    return primary.map((item, i) =>
+      deepMergeWithFallback(item, fallback[i] ?? undefined)
+    );
+  }
+  if (
+    primary &&
+    typeof primary === "object" &&
+    fallback &&
+    typeof fallback === "object" &&
+    !Array.isArray(primary) &&
+    !Array.isArray(fallback)
+  ) {
+    const a = primary as Record<string, unknown>;
+    const b = fallback as Record<string, unknown>;
+    const out: Record<string, unknown> = { ...b, ...a };
+    for (const k of Object.keys(out)) {
+      out[k] = deepMergeWithFallback(a[k], b[k]);
+    }
+    return out;
+  }
+  return primary;
+}
+
 export async function getPageWithSections(slug: string): Promise<Page | null> {
   const sb = publicSupabase();
   const fallback = getPageFallback(slug) ?? null;
@@ -106,20 +147,58 @@ export async function getPageWithSections(slug: string): Promise<Page | null> {
 
   if (!sectionRows || sectionRows.length === 0) return fallback;
 
-  const sections: PageSection[] = await Promise.all(
-    (sectionRows as DbSectionRow[]).map(async (s) => ({
-      section_key: s.section_key,
-      section_label: s.section_label,
-      section_type: s.section_type,
-      content_json: await resolveImageUrls(s.content_json ?? {}),
-      display_order: s.display_order,
-    }))
+  // Index fallback sections by key so per-section merging is O(1).
+  const fallbackByKey = new Map(
+    (fallback?.sections ?? []).map((s) => [s.section_key, s])
   );
+
+  // Start with all fallback sections (in display order), so any section
+  // missing from the DB still renders.
+  const dbByKey = new Map(
+    (sectionRows as DbSectionRow[]).map((s) => [s.section_key, s])
+  );
+  const merged: PageSection[] = [];
+
+  // First, every fallback section — overlay the DB row if present.
+  for (const fbSection of fallback?.sections ?? []) {
+    const dbSection = dbByKey.get(fbSection.section_key);
+    if (!dbSection) {
+      merged.push(fbSection);
+      continue;
+    }
+    const mergedContent = deepMergeWithFallback(
+      dbSection.content_json ?? {},
+      fbSection.content_json ?? {}
+    ) as Record<string, unknown>;
+    merged.push({
+      section_key: dbSection.section_key,
+      section_label: dbSection.section_label || fbSection.section_label,
+      section_type: dbSection.section_type || fbSection.section_type,
+      content_json: await resolveImageUrls(mergedContent),
+      display_order: dbSection.display_order ?? fbSection.display_order,
+    });
+  }
+
+  // Then any DB sections the admin added that aren't in the fallback.
+  for (const dbSection of sectionRows as DbSectionRow[]) {
+    const fb = fallbackByKey.get(dbSection.section_key);
+    if (fb) continue; // already merged above
+    merged.push({
+      section_key: dbSection.section_key,
+      section_label: dbSection.section_label,
+      section_type: dbSection.section_type,
+      content_json: await resolveImageUrls(dbSection.content_json ?? {}),
+      display_order: dbSection.display_order,
+    });
+  }
+
+  merged.sort((a, b) => a.display_order - b.display_order);
+
   return {
     slug: pageRow.slug,
     title: pageRow.title,
     page_type: pageRow.page_type,
-    sections,
+    sections: merged,
   };
 }
 
