@@ -1,8 +1,16 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { ClosingCTA } from "@/components/site/ClosingCTA";
+import {
+  PageHeroBlock,
+  ClientLogosStripBlock,
+} from "@/components/site/PageBlocks";
 import { getIndustryCards, getClientLogos } from "@/lib/content/site";
+import { getPageWithSections, type PageSection } from "@/lib/content/pages";
 import { resolveMetadata } from "@/lib/content/seo";
+import type {
+  PageHeroContent,
+  ClientLogosStripContent,
+} from "@/lib/sections/types";
 
 export async function generateMetadata(): Promise<Metadata> {
   return resolveMetadata({
@@ -15,40 +23,29 @@ export async function generateMetadata(): Promise<Metadata> {
   });
 }
 
+function findSection(sections: PageSection[], key: string): PageSection | null {
+  return sections.find((s) => s.section_key === key) ?? null;
+}
+
 export default async function IndustriesPage() {
-  const [industries, { logos, disclaimer }] = await Promise.all([
+  const [page, industries, { logos, disclaimer }] = await Promise.all([
+    getPageWithSections("industries"),
     getIndustryCards(),
     getClientLogos(),
   ]);
+  const sections = page?.sections ?? [];
+  const hero = findSection(sections, "page_hero");
+  const logosSection = findSection(sections, "client_logos_strip");
+  const closing = findSection(sections, "closing_cta");
+
+  // The industry tile grid itself isn't an editable section — it's driven
+  // by /admin/industries — but we still wrap it as a non-clickable region
+  // so it visually integrates with the page in the visual editor.
   return (
     <>
-      <section className="pagehero pagehero--photo" aria-labelledby="ph-h1">
-        <div
-          className="pagehero__bg"
-          style={{ backgroundImage: "url('/assets/img/clients-hero-web.jpg')" }}
-          aria-hidden="true"
-        ></div>
-        <div className="container pagehero__inner">
-          <p className="pagehero__crumbs">
-            <Link href="/">Home</Link>
-            <span className="sep">/</span>
-            <span>Clients</span>
-          </p>
-          <p className="eyebrow" style={{ marginBottom: 22 }}>
-            Clients
-          </p>
-          <h1 className="h1" id="ph-h1">
-            Industries we serve.
-          </h1>
-          <p className="lede">
-            The firm represents organizations whose Texas priorities cannot
-            afford to be misunderstood — nine sectors where our work is
-            concentrated, and a trusted roster of associations, providers, and
-            operators who rely on principal-level representation when the stakes
-            are real.
-          </p>
-        </div>
-      </section>
+      {hero ? (
+        <PageHeroBlock s={hero} c={hero.content_json as PageHeroContent} />
+      ) : null}
 
       <section data-reveal>
         <div className="container">
@@ -56,7 +53,13 @@ export default async function IndustriesPage() {
             {industries.map((i) => (
               <article key={i.title} className="tile tile--banner tile--illo">
                 <div className="tile__banner">
-                  <img src={i.image} alt="" loading="lazy" width={960} height={540} />
+                  <img
+                    src={i.image}
+                    alt=""
+                    loading="lazy"
+                    width={960}
+                    height={540}
+                  />
                 </div>
                 <div className="tile__body">
                   <h3>{i.title}</h3>
@@ -68,36 +71,25 @@ export default async function IndustriesPage() {
         </div>
       </section>
 
-      <section className="clientlogos" data-reveal aria-label="Selected clients">
-        <div className="clientlogos__head">
-          <p className="eyebrow">Selected Clients</p>
-          <h2>Trusted by associations, providers, and operators across Texas.</h2>
-        </div>
-        <div className="clientlogos__viewport">
-          <div className="clientlogos__track">
-            {[...logos, ...logos].map((c, idx) => (
-              <a
-                key={`${c.client_name}-${idx}`}
-                className="clientlogos__logo"
-                href={c.website_url || "#"}
-                target="_blank"
-                rel="noopener"
-                tabIndex={idx >= logos.length ? -1 : undefined}
-                aria-hidden={idx >= logos.length ? true : undefined}
-              >
-                <img
-                  src={c.logo}
-                  alt={idx >= logos.length ? "" : c.alt_text}
-                  loading="lazy"
-                />
-              </a>
-            ))}
-          </div>
-        </div>
-        <p className="clientlogos__note">{disclaimer}</p>
-      </section>
+      {logosSection ? (
+        <ClientLogosStripBlock
+          s={logosSection}
+          c={{
+            ...(logosSection.content_json as ClientLogosStripContent),
+            disclaimer:
+              (logosSection.content_json as ClientLogosStripContent)
+                .disclaimer || disclaimer,
+          }}
+          logos={logos.map((l) => ({
+            client_name: l.client_name,
+            logo: l.logo,
+            alt_text: l.alt_text,
+            website_url: l.website_url,
+          }))}
+        />
+      ) : null}
 
-      <ClosingCTA />
+      {closing ? <ClosingCTA section={closing} /> : <ClosingCTA />}
     </>
   );
 }

@@ -1,9 +1,19 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { ClosingCTA } from "@/components/site/ClosingCTA";
 import { ContactForm } from "@/components/site/ContactForm";
+import {
+  PageHeroBlock,
+  ContactLeftColBlock,
+  ContactRightColBlock,
+} from "@/components/site/PageBlocks";
 import { getSiteSettings } from "@/lib/content/site";
+import { getPageWithSections, type PageSection } from "@/lib/content/pages";
 import { resolveMetadata } from "@/lib/content/seo";
+import type {
+  PageHeroContent,
+  ContactLeftColContent,
+  ContactRightColContent,
+} from "@/lib/sections/types";
 
 export async function generateMetadata(): Promise<Metadata> {
   return resolveMetadata({
@@ -16,87 +26,68 @@ export async function generateMetadata(): Promise<Metadata> {
   });
 }
 
+function findSection(sections: PageSection[], key: string): PageSection | null {
+  return sections.find((s) => s.section_key === key) ?? null;
+}
+
 export default async function ContactPage() {
-  const settings = await getSiteSettings();
+  const [page, settings] = await Promise.all([
+    getPageWithSections("contact"),
+    getSiteSettings(),
+  ]);
+  const sections = page?.sections ?? [];
+  const hero = findSection(sections, "page_hero");
+  const left = findSection(sections, "contact_left_col");
+  const right = findSection(sections, "contact_right_col");
+  const closing = findSection(sections, "closing_cta");
+
+  const rightContent =
+    (right?.content_json as ContactRightColContent | undefined) ?? null;
+
   return (
     <>
-      <section className="pagehero pagehero--photo" aria-labelledby="ph-h1">
-        <div
-          className="pagehero__bg"
-          style={{ backgroundImage: "url('/assets/img/contact-us-hero-web.jpg')" }}
-          aria-hidden="true"
-        ></div>
-        <div className="container pagehero__inner">
-          <p className="pagehero__crumbs">
-            <Link href="/">Home</Link>
-            <span className="sep">/</span>
-            <span>Contact</span>
-          </p>
-          <p className="eyebrow" style={{ marginBottom: 22 }}>
-            {settings.contact_page_eyebrow}
-          </p>
-          <h1 className="h1" id="ph-h1">
-            {settings.contact_page_headline}
-          </h1>
-          <p className="lede">{settings.contact_page_lede}</p>
-        </div>
-      </section>
+      {hero ? (
+        <PageHeroBlock s={hero} c={hero.content_json as PageHeroContent} />
+      ) : null}
 
       <section data-reveal>
         <div className="container">
           <div className="colgrid">
-            <div>
-              <p className="eyebrow eyebrow--plain" style={{ marginBottom: 18 }}>
-                {settings.contact_left_eyebrow}
-              </p>
-              <h2 className="h2" style={{ marginBottom: 24 }}>
-                {settings.contact_left_heading}
-              </h2>
-              <div className="prose" style={{ maxWidth: "48ch" }}>
-                <div
-                  dangerouslySetInnerHTML={{
-                    __html: settings.contact_left_body_html,
-                  }}
-                />
-                <p>
-                  <strong>Phone</strong>
-                  <br />
-                  <a href={settings.phone_link}>{settings.phone}</a>
-                </p>
-                <p>
-                  <strong>Email</strong>
-                  <br />
-                  <a href={`mailto:${settings.email}`}>{settings.email}</a>
-                </p>
-                <p>
-                  <strong>Mailing address</strong>
-                  <br />
-                  {settings.mailing_address_line_1}
-                  <br />
-                  {settings.mailing_address_line_2}
-                  <br />
-                  {settings.mailing_address_line_3}
-                </p>
-              </div>
-            </div>
-
-            <div>
-              <p className="eyebrow eyebrow--plain" style={{ marginBottom: 18 }}>
-                {settings.contact_right_eyebrow}
-              </p>
-              <h2 className="h2" style={{ marginBottom: 24 }}>
-                {settings.contact_right_heading}
-              </h2>
-              <ContactForm
-                consentLanguage={settings.consent_language}
-                submitLabel={settings.contact_form_submit_label}
+            {left ? (
+              <ContactLeftColBlock
+                s={left}
+                c={left.content_json as ContactLeftColContent}
+                phone={settings.phone}
+                phoneLink={settings.phone_link}
+                email={settings.email}
+                addrLine1={settings.mailing_address_line_1}
+                addrLine2={settings.mailing_address_line_2}
+                addrLine3={settings.mailing_address_line_3}
               />
-            </div>
+            ) : null}
+
+            {right ? (
+              <ContactRightColBlock
+                s={right}
+                c={rightContent!}
+                contactForm={
+                  <ContactForm
+                    consentLanguage={
+                      rightContent?.consent_language || settings.consent_language
+                    }
+                    submitLabel={
+                      rightContent?.submit_label ||
+                      settings.contact_form_submit_label
+                    }
+                  />
+                }
+              />
+            ) : null}
           </div>
         </div>
       </section>
 
-      <ClosingCTA />
+      {closing ? <ClosingCTA section={closing} /> : <ClosingCTA />}
     </>
   );
 }

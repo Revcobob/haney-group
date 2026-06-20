@@ -191,6 +191,225 @@ export function SectionParagraphList({
   );
 }
 
+// ---------- stat list ({num, label}[]) ----------
+type StatItem = { num: string; label: string };
+export function SectionStatList({
+  name,
+  label,
+  defaultValue,
+  help,
+}: {
+  name: string;
+  label: string;
+  defaultValue?: StatItem[];
+  help?: string;
+}) {
+  const [items, setItems] = useState<StatItem[]>(
+    defaultValue && defaultValue.length > 0 ? defaultValue : [{ num: "", label: "" }]
+  );
+  return (
+    <div className="adminfield">
+      <span className="adminfield__label">{label}</span>
+      {help ? <p className="adminfield__help">{help}</p> : null}
+      <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+        {items.map((it, i) => (
+          <div
+            key={i}
+            className="adminform__section"
+            style={{ background: "var(--paper-2)" }}
+          >
+            <div className="adminform__section-head" style={{ marginBottom: 0 }}>
+              <p className="adminform__section-eyebrow">Stat {i + 1}</p>
+            </div>
+            <SectionTextField
+              name={`${name}[${i}].num`}
+              label="Big number / label"
+              defaultValue={it.num}
+              maxLength={32}
+              placeholder="40+ yrs"
+            />
+            <SectionTextareaField
+              name={`${name}[${i}].label`}
+              label="Caption"
+              defaultValue={it.label}
+              rows={2}
+              maxLength={240}
+            />
+            <div>
+              <button
+                type="button"
+                className="adminbtn adminbtn--danger adminbtn--small"
+                onClick={() => setItems(items.filter((_, idx) => idx !== i))}
+              >
+                Remove stat
+              </button>
+            </div>
+          </div>
+        ))}
+        <button
+          type="button"
+          className="adminbtn adminbtn--ghost adminbtn--small"
+          style={{ alignSelf: "flex-start" }}
+          onClick={() => setItems([...items, { num: "", label: "" }])}
+        >
+          + Add stat
+        </button>
+      </div>
+    </div>
+  );
+}
+
+// ---------- principles list ({num, title, body}[]) ----------
+type PrincipleItem = { num: string; title: string; body: string };
+export function SectionPrinciplesList({
+  name,
+  label,
+  defaultValue,
+  help,
+}: {
+  name: string;
+  label: string;
+  defaultValue?: PrincipleItem[];
+  help?: string;
+}) {
+  const [items, setItems] = useState<PrincipleItem[]>(
+    defaultValue && defaultValue.length > 0
+      ? defaultValue
+      : [{ num: "", title: "", body: "" }]
+  );
+  return (
+    <div className="adminfield">
+      <span className="adminfield__label">{label}</span>
+      {help ? <p className="adminfield__help">{help}</p> : null}
+      <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+        {items.map((it, i) => (
+          <div
+            key={i}
+            className="adminform__section"
+            style={{ background: "var(--paper-2)" }}
+          >
+            <div className="adminform__section-head" style={{ marginBottom: 0 }}>
+              <p className="adminform__section-eyebrow">Principle {i + 1}</p>
+            </div>
+            <SectionTextField
+              name={`${name}[${i}].num`}
+              label="Number label"
+              defaultValue={it.num}
+              maxLength={4}
+              placeholder="01"
+            />
+            <SectionTextField
+              name={`${name}[${i}].title`}
+              label="Title"
+              defaultValue={it.title}
+              maxLength={160}
+            />
+            <SectionTextareaField
+              name={`${name}[${i}].body`}
+              label="Body"
+              defaultValue={it.body}
+              rows={3}
+              maxLength={480}
+            />
+            <div>
+              <button
+                type="button"
+                className="adminbtn adminbtn--danger adminbtn--small"
+                onClick={() => setItems(items.filter((_, idx) => idx !== i))}
+              >
+                Remove principle
+              </button>
+            </div>
+          </div>
+        ))}
+        <button
+          type="button"
+          className="adminbtn adminbtn--ghost adminbtn--small"
+          style={{ alignSelf: "flex-start" }}
+          onClick={() => setItems([...items, { num: "", title: "", body: "" }])}
+        >
+          + Add principle
+        </button>
+      </div>
+    </div>
+  );
+}
+
+// ---------- founder list ({name, role, bio}[]) ----------
+type FounderItem = { name: string; role: string; bio: string };
+export function SectionFounderList({
+  name,
+  label,
+  defaultValue,
+  help,
+}: {
+  name: string;
+  label: string;
+  defaultValue?: FounderItem[];
+  help?: string;
+}) {
+  const [items, setItems] = useState<FounderItem[]>(
+    defaultValue && defaultValue.length > 0
+      ? defaultValue
+      : [{ name: "", role: "", bio: "" }]
+  );
+  return (
+    <div className="adminfield">
+      <span className="adminfield__label">{label}</span>
+      {help ? <p className="adminfield__help">{help}</p> : null}
+      <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+        {items.map((it, i) => (
+          <div
+            key={i}
+            className="adminform__section"
+            style={{ background: "var(--paper-2)" }}
+          >
+            <div className="adminform__section-head" style={{ marginBottom: 0 }}>
+              <p className="adminform__section-eyebrow">Founder {i + 1}</p>
+            </div>
+            <SectionTextField
+              name={`${name}[${i}].name`}
+              label="Name"
+              defaultValue={it.name}
+              maxLength={80}
+            />
+            <SectionTextField
+              name={`${name}[${i}].role`}
+              label="Role"
+              defaultValue={it.role}
+              maxLength={200}
+            />
+            <SectionTextareaField
+              name={`${name}[${i}].bio`}
+              label="Short bio"
+              defaultValue={it.bio}
+              rows={3}
+              maxLength={480}
+            />
+            <div>
+              <button
+                type="button"
+                className="adminbtn adminbtn--danger adminbtn--small"
+                onClick={() => setItems(items.filter((_, idx) => idx !== i))}
+              >
+                Remove founder
+              </button>
+            </div>
+          </div>
+        ))}
+        <button
+          type="button"
+          className="adminbtn adminbtn--ghost adminbtn--small"
+          style={{ alignSelf: "flex-start" }}
+          onClick={() => setItems([...items, { name: "", role: "", bio: "" }])}
+        >
+          + Add founder
+        </button>
+      </div>
+    </div>
+  );
+}
+
 // ---------- card list (proof items / approach steps) ----------
 type CardItem = { image_id?: string; image_url?: string; title: string; body: string };
 

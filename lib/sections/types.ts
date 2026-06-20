@@ -130,16 +130,111 @@ export const PageHeroSchema = z.object({
 });
 export type PageHeroContent = z.infer<typeof PageHeroSchema>;
 
+export const RichTextBlockSchema = z.object({
+  eyebrow: text,
+  heading: text,
+  body_paragraphs: z.array(z.string().default("")).default([]),
+});
+export type RichTextBlockContent = z.infer<typeof RichTextBlockSchema>;
+
+export const HtmlBlockSchema = z.object({
+  eyebrow: text,
+  heading: text,
+  body_html: text,
+});
+export type HtmlBlockContent = z.infer<typeof HtmlBlockSchema>;
+
+const StatItemSchema = z.object({
+  num: z.string().default(""),
+  label: z.string().default(""),
+});
+export const StatStripSchema = z.object({
+  eyebrow: text,
+  heading: text,
+  items: z.array(StatItemSchema).default([]),
+});
+export type StatStripContent = z.infer<typeof StatStripSchema>;
+
+const PrincipleItemSchema = z.object({
+  num: z.string().default(""),
+  title: z.string().default(""),
+  body: z.string().default(""),
+});
+export const PrinciplesGridSchema = z.object({
+  eyebrow: text,
+  heading: text,
+  items: z.array(PrincipleItemSchema).default([]),
+});
+export type PrinciplesGridContent = z.infer<typeof PrinciplesGridSchema>;
+
+const FounderShortSchema = z.object({
+  name: z.string().default(""),
+  role: z.string().default(""),
+  bio: z.string().default(""),
+});
+export const FirmIntroSchema = z.object({
+  eyebrow: text,
+  heading: text,
+  body_paragraphs_html: z.array(z.string().default("")).default([]),
+  founders: z.array(FounderShortSchema).default([]),
+});
+export type FirmIntroContent = z.infer<typeof FirmIntroSchema>;
+
+export const PersonBioSchema = z.object({
+  anchor: text,
+  name: text,
+  role: text,
+  portrait_image_id: optionalImageId,
+  portrait_image_url: optionalText,
+  body_paragraphs: z.array(z.string().default("")).default([]),
+  pull_quote: text,
+  link_url: text,
+  link_label: text,
+});
+export type PersonBioContent = z.infer<typeof PersonBioSchema>;
+
+export const ClientLogosStripSchema = z.object({
+  eyebrow: text,
+  heading: text,
+  disclaimer: text,
+});
+export type ClientLogosStripContent = z.infer<typeof ClientLogosStripSchema>;
+
+export const ContactLeftColSchema = z.object({
+  eyebrow: text,
+  heading: text,
+  body_html: text,
+});
+export type ContactLeftColContent = z.infer<typeof ContactLeftColSchema>;
+
+export const ContactRightColSchema = z.object({
+  eyebrow: text,
+  heading: text,
+  submit_label: text,
+  consent_language: text,
+});
+export type ContactRightColContent = z.infer<typeof ContactRightColSchema>;
+
+export const QuoteCardSchema = z.object({
+  quote: text,
+  attribution: text,
+});
+export type QuoteCardContent = z.infer<typeof QuoteCardSchema>;
+
 // ---------- field UI configuration ----------
 export type FieldType =
   | "text"
   | "textarea"
   | "richtext-inline" // single-line HTML; we render as plain textarea for now
+  | "rich-text" // full Tiptap editor; produces sanitized HTML
   | "image"
   | "cta"
   | "paragraph-list"
   | "card-list-proof"
-  | "card-list-approach";
+  | "card-list-approach"
+  | "stat-list"
+  | "principles-list"
+  | "founder-list";
 
 export type FieldConfig = {
   key: string;
@@ -309,6 +404,158 @@ const closingCtaDef: SectionTypeDef = {
   empty: () => ClosingCtaSchema.parse({}),
 };
 
+const pageHeroDef: SectionTypeDef = {
+  type: "page_hero",
+  label: "Page hero",
+  description:
+    "The photographic banner at the top of an interior page — breadcrumb label, eyebrow, headline, lede, and background image.",
+  schema: PageHeroSchema,
+  fields: [
+    { key: "crumb_label", label: "Breadcrumb label", type: "text", maxLength: 60, help: "Shown in the breadcrumb trail after “Home”." },
+    { key: "eyebrow", label: "Eyebrow", type: "text", maxLength: 80 },
+    { key: "headline", label: "Headline", type: "textarea", maxLength: 200 },
+    { key: "lede", label: "Lede", type: "textarea", maxLength: 480 },
+    { key: "background_image_id", label: "Background image", type: "image" },
+  ],
+  empty: () => PageHeroSchema.parse({}),
+};
+
+const richTextBlockDef: SectionTypeDef = {
+  type: "rich_text",
+  label: "Rich text block",
+  description: "Eyebrow + heading on the left, paragraphs on the right.",
+  schema: RichTextBlockSchema,
+  fields: [
+    { key: "eyebrow", label: "Eyebrow", type: "text", maxLength: 60 },
+    { key: "heading", label: "Heading", type: "textarea", maxLength: 200 },
+    { key: "body_paragraphs", label: "Body paragraphs", type: "paragraph-list", help: "One paragraph per row." },
+  ],
+  empty: () => RichTextBlockSchema.parse({}),
+};
+
+const htmlBlockDef: SectionTypeDef = {
+  type: "html_block",
+  label: "Rich-formatted article",
+  description: "Long-form copy with headings, lists, and links. Used for legal pages and similar.",
+  schema: HtmlBlockSchema,
+  fields: [
+    { key: "eyebrow", label: "Eyebrow", type: "text", maxLength: 60 },
+    { key: "heading", label: "Heading", type: "text", maxLength: 200 },
+    { key: "body_html", label: "Body", type: "rich-text", help: "Full rich-text editor with headings, lists, links." },
+  ],
+  empty: () => HtmlBlockSchema.parse({}),
+};
+
+const statStripDef: SectionTypeDef = {
+  type: "stat_strip",
+  label: "Statistics strip",
+  description: "A horizontal row of big-number statistics with labels.",
+  schema: StatStripSchema,
+  fields: [
+    { key: "eyebrow", label: "Eyebrow (optional)", type: "text", maxLength: 60 },
+    { key: "heading", label: "Heading (optional)", type: "text", maxLength: 200 },
+    { key: "items", label: "Statistics", type: "stat-list", help: "Each row is a big number + short caption." },
+  ],
+  empty: () => StatStripSchema.parse({}),
+};
+
+const principlesGridDef: SectionTypeDef = {
+  type: "principles_grid",
+  label: "Principles grid",
+  description: "Numbered cards — “01 / Title / Body”.",
+  schema: PrinciplesGridSchema,
+  fields: [
+    { key: "eyebrow", label: "Eyebrow", type: "text", maxLength: 60 },
+    { key: "heading", label: "Heading", type: "text", maxLength: 200 },
+    { key: "items", label: "Principles", type: "principles-list", help: "Each item is a numbered card." },
+  ],
+  empty: () => PrinciplesGridSchema.parse({}),
+};
+
+const firmIntroDef: SectionTypeDef = {
+  type: "firm_intro",
+  label: "Firm intro + founder snapshots",
+  description: "Two-column block: the firm copy on the left, small founder cards on the right.",
+  schema: FirmIntroSchema,
+  fields: [
+    { key: "eyebrow", label: "Eyebrow", type: "text", maxLength: 60 },
+    { key: "heading", label: "Heading", type: "textarea", maxLength: 200 },
+    { key: "body_paragraphs_html", label: "Body paragraphs (HTML allowed)", type: "paragraph-list", help: "One paragraph per row. <strong> and <em> are allowed." },
+    { key: "founders", label: "Founder snapshots", type: "founder-list", help: "The two small bio cards beside the body copy." },
+  ],
+  empty: () => FirmIntroSchema.parse({}),
+};
+
+const personBioDef: SectionTypeDef = {
+  type: "person_bio",
+  label: "Full principal bio",
+  description: "Portrait + name + role + multiple paragraphs + optional pull quote + LinkedIn link.",
+  schema: PersonBioSchema,
+  fields: [
+    { key: "anchor", label: "URL anchor", type: "text", maxLength: 40, help: "Used in deep links like /about#robert. Lowercase, no spaces." },
+    { key: "name", label: "Name", type: "text", maxLength: 80 },
+    { key: "role", label: "Role / subtitle", type: "text", maxLength: 200 },
+    { key: "portrait_image_id", label: "Portrait", type: "image" },
+    { key: "body_paragraphs", label: "Biography paragraphs", type: "paragraph-list", help: "One paragraph per row." },
+    { key: "pull_quote", label: "Pull quote (optional)", type: "textarea", maxLength: 400 },
+    { key: "link_url", label: "External link URL (optional)", type: "text", maxLength: 300, placeholder: "https://www.linkedin.com/in/…" },
+    { key: "link_label", label: "External link label", type: "text", maxLength: 40, placeholder: "LinkedIn" },
+  ],
+  empty: () => PersonBioSchema.parse({}),
+};
+
+const clientLogosDef: SectionTypeDef = {
+  type: "client_logos_strip",
+  label: "Client logos strip",
+  description: "The grayscale scrolling logo strip. Logos themselves are managed under Client Logos.",
+  schema: ClientLogosStripSchema,
+  fields: [
+    { key: "eyebrow", label: "Eyebrow", type: "text", maxLength: 60 },
+    { key: "heading", label: "Heading", type: "textarea", maxLength: 200 },
+    { key: "disclaimer", label: "Disclaimer line", type: "textarea", maxLength: 320, help: "The grey note under the strip." },
+  ],
+  empty: () => ClientLogosStripSchema.parse({}),
+};
+
+const contactLeftDef: SectionTypeDef = {
+  type: "contact_left_col",
+  label: "Contact: Reach the Firm column",
+  description: "Left column on /contact — eyebrow, heading, and intro paragraphs above the phone/email/address block.",
+  schema: ContactLeftColSchema,
+  fields: [
+    { key: "eyebrow", label: "Eyebrow", type: "text", maxLength: 60 },
+    { key: "heading", label: "Heading", type: "textarea", maxLength: 200 },
+    { key: "body_html", label: "Intro paragraphs", type: "rich-text", help: "Phone/email/address are added automatically below this." },
+  ],
+  empty: () => ContactLeftColSchema.parse({}),
+};
+
+const contactRightDef: SectionTypeDef = {
+  type: "contact_right_col",
+  label: "Contact: Send a Note column",
+  description: "Right column on /contact — eyebrow, heading, and the labels around the form.",
+  schema: ContactRightColSchema,
+  fields: [
+    { key: "eyebrow", label: "Eyebrow", type: "text", maxLength: 60 },
+    { key: "heading", label: "Heading", type: "textarea", maxLength: 200 },
+    { key: "submit_label", label: "Submit button text", type: "text", maxLength: 40 },
+    { key: "consent_language", label: "Consent checkbox language", type: "textarea", maxLength: 320 },
+  ],
+  empty: () => ContactRightColSchema.parse({}),
+};
+
+const quoteCardDef: SectionTypeDef = {
+  type: "quote_card",
+  label: "Pull quote",
+  description: "A standalone editorial quote — often used at the bottom of a page.",
+  schema: QuoteCardSchema,
+  fields: [
+    { key: "quote", label: "Quote", type: "textarea", maxLength: 600 },
+    { key: "attribution", label: "Attribution", type: "text", maxLength: 200 },
+  ],
+  empty: () => QuoteCardSchema.parse({}),
+};
+
 export const SECTION_TYPES: Record<string, SectionTypeDef> = {
   hero: heroDef,
   problem: problemDef,
@@ -320,6 +567,17 @@ export const SECTION_TYPES: Record<string, SectionTypeDef> = {
   insights_intro: insightsDef,
   capabilities_intro: capabilitiesDef,
   closing_cta: closingCtaDef,
+  page_hero: pageHeroDef,
+  rich_text: richTextBlockDef,
+  html_block: htmlBlockDef,
+  stat_strip: statStripDef,
+  principles_grid: principlesGridDef,
+  firm_intro: firmIntroDef,
+  person_bio: personBioDef,
+  client_logos_strip: clientLogosDef,
+  contact_left_col: contactLeftDef,
+  contact_right_col: contactRightDef,
+  quote_card: quoteCardDef,
 };
 
 export function getSectionType(type: string): SectionTypeDef | undefined {
