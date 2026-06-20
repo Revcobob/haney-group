@@ -217,6 +217,7 @@ async function seedServices() {
         description: s.description,
         href: s.href ?? null,
         icon_media_id: media.get(s.icon) ?? null,
+        icon_hint: s.icon_hint ?? null,
         display_order: s.display_order,
         is_visible: true,
       }
