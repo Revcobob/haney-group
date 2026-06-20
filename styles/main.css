@@ -2404,25 +2404,38 @@ section.article-section { padding-top: clamp(14px, 2vw, 28px); padding-bottom: c
    The panel collapses to a thin re-open tab so the user can examine
    the page full-width when they need to. The (dashboard) admin sidebar
    is also hidden on this page via body.body--visual-editor below.
+
+   Fits inside the viewport with zero page-level scrolling. The iframe
+   handles its own scroll for the previewed page; the panel handles its
+   own scroll for the form.
 */
 .visualeditor {
   display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: auto 1fr;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: 1fr;
   gap: 0;
-  height: calc(100vh - 70px);
-  margin: -24px -28px -32px;
+  height: 100%;
+  width: 100%;
+  margin: 0;
   position: relative;
+  overflow: hidden;
+  background: var(--paper-2);
 }
 @media (min-width: 1100px) {
-  .visualeditor { grid-template-columns: minmax(0, 1fr) 460px; grid-template-rows: 1fr; }
-  .visualeditor.visualeditor--collapsed { grid-template-columns: 1fr 0; }
+  .visualeditor {
+    grid-template-columns: minmax(0, 1fr) clamp(360px, 30vw, 480px);
+  }
+  .visualeditor.visualeditor--collapsed {
+    grid-template-columns: minmax(0, 1fr) 0;
+  }
 }
 .visualeditor__frame {
   background: var(--paper-2);
   border-right: 1px solid var(--line-1);
   position: relative;
   overflow: hidden;
+  min-width: 0;
+  min-height: 0;
 }
 .visualeditor__frame iframe {
   width: 100%;
@@ -2437,11 +2450,10 @@ section.article-section { padding-top: clamp(14px, 2vw, 28px); padding-bottom: c
   display: flex;
   flex-direction: column;
   min-height: 0;
-  transition: width 0.25s var(--ease);
+  min-width: 0;
+  overflow: hidden;
 }
 .visualeditor--collapsed .visualeditor__panel {
-  width: 0;
-  overflow: hidden;
   border-left: 0;
 }
 .visualeditor__panel-head {
@@ -2449,12 +2461,36 @@ section.article-section { padding-top: clamp(14px, 2vw, 28px); padding-bottom: c
   border-bottom: 1px solid var(--line-1);
   background: var(--paper-2);
   display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  flex-shrink: 0;
 }
 .visualeditor__panel-body {
   overflow-y: auto;
+  overflow-x: hidden;
   padding: 18px;
-  flex: 1;
+  flex: 1 1 auto;
+  min-height: 0;
+  /* Make the inner form layout fit, never break the column */
+  word-wrap: break-word;
 }
+.visualeditor__panel-body .adminform { max-width: 100%; }
+.visualeditor__panel-body .adminfield__input,
+.visualeditor__panel-body .adminfield__textarea,
+.visualeditor__panel-body .adminfield__select { max-width: 100%; }
+
+/* Sticky save bar pinned to the panel bottom so admins always see it
+   without scrolling all the way down a long form */
+.visualeditor__panel-body .adminsavebar {
+  position: sticky;
+  bottom: 0;
+  margin: 12px -18px -18px;
+  padding-inline: 18px;
+  border-radius: 0;
+  border-left: 0;
+  border-right: 0;
+  border-bottom: 0;
+  background: var(--paper);
+}
+
 .visualeditor__hint {
   color: var(--text-3);
   font-size: 13.5px;
@@ -2497,8 +2533,10 @@ section.article-section { padding-top: clamp(14px, 2vw, 28px); padding-bottom: c
 }
 .visualeditor__tab:hover { background: var(--navy-800); }
 
-/* Hide the admin sidebar while the visual editor is active so the
-   preview can use the full width. */
+/* When the visual editor is mounted: lock the admin shell to the viewport,
+   hide the sidebar, kill admin__main padding, and stop any page-level
+   scroll so only the iframe + panel scroll internally. */
+body.body--visual-editor { overflow: hidden; }
 body.body--visual-editor .admin__side { display: none; }
 @media (min-width: 960px) {
   body.body--visual-editor .admin {
@@ -2506,9 +2544,17 @@ body.body--visual-editor .admin__side { display: none; }
     grid-template-areas: "header" "main";
   }
 }
+body.body--visual-editor .admin {
+  height: 100vh;
+  min-height: 100vh;
+  overflow: hidden;
+}
 body.body--visual-editor .admin__main {
   padding: 0;
+  overflow: hidden;
+  min-height: 0;
 }
+body.body--visual-editor .admin__header { position: sticky; top: 0; }
 
 /* Editable region in preview frame */
 .editable-region {
