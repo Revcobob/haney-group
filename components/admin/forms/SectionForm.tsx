@@ -12,6 +12,7 @@ import {
   SectionStatList,
   SectionPrinciplesList,
   SectionFounderList,
+  SectionAudienceList,
 } from "./SectionFields";
 import { TiptapEditor } from "../TiptapEditor";
 import { FieldShell } from "./Fields";
@@ -37,6 +38,7 @@ type CardArrItem = { image_id: string; image_url: string; title: string; body: s
 type StatItem = { num: string; label: string };
 type PrincipleItem = { num: string; title: string; body: string };
 type FounderItem = { name: string; role: string; bio: string };
+type AudienceItem = { title: string; body: string };
 
 function asString(v: unknown): string {
   return typeof v === "string" ? v : "";
@@ -99,6 +101,16 @@ function asFounderArray(v: unknown): FounderItem[] {
       };
     }
     return { name: "", role: "", bio: "" };
+  });
+}
+function asAudienceArray(v: unknown): AudienceItem[] {
+  if (!Array.isArray(v)) return [];
+  return v.map((c) => {
+    if (c && typeof c === "object") {
+      const o = c as Record<string, unknown>;
+      return { title: asString(o.title), body: asString(o.body) };
+    }
+    return { title: "", body: "" };
   });
 }
 
@@ -220,6 +232,16 @@ function renderField(field: FieldConfig, content: Record<string, unknown>) {
           name={field.key}
           label={field.label}
           defaultValue={asFounderArray(v)}
+          help={field.help}
+        />
+      );
+    case "audience-list":
+      return (
+        <SectionAudienceList
+          key={field.key}
+          name={field.key}
+          label={field.label}
+          defaultValue={asAudienceArray(v)}
           help={field.help}
         />
       );

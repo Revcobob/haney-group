@@ -221,6 +221,18 @@ export const QuoteCardSchema = z.object({
 });
 export type QuoteCardContent = z.infer<typeof QuoteCardSchema>;
 
+const AudienceItemSchema = z.object({
+  title: z.string().default(""),
+  body: z.string().default(""),
+});
+export const AudienceGridSchema = z.object({
+  eyebrow: text,
+  heading: text,
+  lede: text,
+  items: z.array(AudienceItemSchema).default([]),
+});
+export type AudienceGridContent = z.infer<typeof AudienceGridSchema>;
+
 // ---------- field UI configuration ----------
 export type FieldType =
   | "text"
@@ -234,7 +246,8 @@ export type FieldType =
   | "card-list-approach"
   | "stat-list"
   | "principles-list"
-  | "founder-list";
+  | "founder-list"
+  | "audience-list";
 
 export type FieldConfig = {
   key: string;
@@ -556,6 +569,20 @@ const quoteCardDef: SectionTypeDef = {
   empty: () => QuoteCardSchema.parse({}),
 };
 
+const audienceGridDef: SectionTypeDef = {
+  type: "audience_grid",
+  label: "Who We Help",
+  description: "A grid of prospective client audiences with a short description for each.",
+  schema: AudienceGridSchema,
+  fields: [
+    { key: "eyebrow", label: "Eyebrow", type: "text", maxLength: 60 },
+    { key: "heading", label: "Heading", type: "textarea", maxLength: 200 },
+    { key: "lede", label: "Lede (optional)", type: "textarea", maxLength: 320 },
+    { key: "items", label: "Audiences", type: "audience-list", help: "Each card is a category we serve, with a short description of how." },
+  ],
+  empty: () => AudienceGridSchema.parse({}),
+};
+
 export const SECTION_TYPES: Record<string, SectionTypeDef> = {
   hero: heroDef,
   problem: problemDef,
@@ -578,6 +605,7 @@ export const SECTION_TYPES: Record<string, SectionTypeDef> = {
   contact_left_col: contactLeftDef,
   contact_right_col: contactRightDef,
   quote_card: quoteCardDef,
+  audience_grid: audienceGridDef,
 };
 
 export function getSectionType(type: string): SectionTypeDef | undefined {

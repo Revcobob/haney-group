@@ -410,6 +410,75 @@ export function SectionFounderList({
   );
 }
 
+// ---------- audience list ({title, body}[]) ----------
+type AudienceItem = { title: string; body: string };
+export function SectionAudienceList({
+  name,
+  label,
+  defaultValue,
+  help,
+}: {
+  name: string;
+  label: string;
+  defaultValue?: AudienceItem[];
+  help?: string;
+}) {
+  const [items, setItems] = useState<AudienceItem[]>(
+    defaultValue && defaultValue.length > 0
+      ? defaultValue
+      : [{ title: "", body: "" }]
+  );
+  return (
+    <div className="adminfield">
+      <span className="adminfield__label">{label}</span>
+      {help ? <p className="adminfield__help">{help}</p> : null}
+      <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+        {items.map((it, i) => (
+          <div
+            key={i}
+            className="adminform__section"
+            style={{ background: "var(--paper-2)" }}
+          >
+            <div className="adminform__section-head" style={{ marginBottom: 0 }}>
+              <p className="adminform__section-eyebrow">Audience {i + 1}</p>
+            </div>
+            <SectionTextField
+              name={`${name}[${i}].title`}
+              label="Title"
+              defaultValue={it.title}
+              maxLength={80}
+            />
+            <SectionTextareaField
+              name={`${name}[${i}].body`}
+              label="Description"
+              defaultValue={it.body}
+              rows={3}
+              maxLength={400}
+            />
+            <div>
+              <button
+                type="button"
+                className="adminbtn adminbtn--danger adminbtn--small"
+                onClick={() => setItems(items.filter((_, idx) => idx !== i))}
+              >
+                Remove audience
+              </button>
+            </div>
+          </div>
+        ))}
+        <button
+          type="button"
+          className="adminbtn adminbtn--ghost adminbtn--small"
+          style={{ alignSelf: "flex-start" }}
+          onClick={() => setItems([...items, { title: "", body: "" }])}
+        >
+          + Add audience
+        </button>
+      </div>
+    </div>
+  );
+}
+
 // ---------- card list (proof items / approach steps) ----------
 type CardItem = { image_id?: string; image_url?: string; title: string; body: string };
 
