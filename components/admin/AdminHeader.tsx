@@ -1,17 +1,18 @@
 import Link from "next/link";
 import { SignOutButton } from "@clerk/nextjs";
 import type { AdminUser } from "@/lib/auth";
+import { BrandMark } from "./BrandMark";
 
 export function AdminHeader({ user }: { user: AdminUser | null }) {
   return (
     <header className="admin__header">
       <div className="admin__header-inner">
-        <Link className="admin__brand" href="/admin/dashboard">
-          <img src="/assets/img/inline-1c87817066.png" alt="The Haney Group" />
-          <div className="admin__brand-meta">
-            <span className="admin__brand-eyebrow">The Haney Group</span>
-            <span className="admin__brand-label">Site Admin</span>
-          </div>
+        <Link
+          className="admin__brand"
+          href="/admin/dashboard"
+          style={{ color: "var(--paper)" }}
+        >
+          <BrandMark size="md" />
         </Link>
         <div className="admin__userbar">
           <Link href="/">View site →</Link>

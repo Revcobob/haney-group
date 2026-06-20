@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { SignIn } from "@clerk/nextjs";
 import { auth } from "@clerk/nextjs/server";
 import { clerkConfigured } from "@/lib/env";
+import { BrandMark } from "@/components/admin/BrandMark";
 
 export const metadata: Metadata = { title: "Sign in" };
 
@@ -15,12 +16,8 @@ export default async function AdminLoginPage() {
   return (
     <div className="admin__authshell">
       <div className="admin__authcard">
-        <div className="admin__authcard-brand">
-          <img src="/assets/img/inline-1c87817066.png" alt="The Haney Group" />
-          <div className="admin__authcard-brand-meta">
-            <span className="admin__authcard-eyebrow">The Haney Group</span>
-            <span className="admin__authcard-meta-label">Site Admin</span>
-          </div>
+        <div className="admin__authcard-brand" style={{ color: "var(--paper)" }}>
+          <BrandMark size="lg" />
         </div>
         <div className="admin__authcard-rule" aria-hidden="true"></div>
         <div>
