@@ -140,6 +140,21 @@ async function seedNavigation() {
     ...footerFirmNav.map((n) => ({ ...n, nav_area: "utility_bar", is_visible: true })),
     ...utilityNav.map((n) => ({ ...n, nav_area: "footer_utility", is_visible: true })),
   ];
+
+  // Build the set of (area, label) pairs that SHOULD exist after this seed.
+  // Any row in the DB whose (area, label) isn't in this set gets pruned —
+  // that's how stale rows like the removed TEC link disappear on next seed.
+  const want = new Set(all.map((n) => `${n.nav_area}::${n.label}`));
+  const { data: existing } = await sb
+    .from("cms_navigation_items")
+    .select("id, nav_area, label");
+  for (const row of existing ?? []) {
+    const key = `${row.nav_area}::${row.label}`;
+    if (!want.has(key)) {
+      await sb.from("cms_navigation_items").delete().eq("id", row.id);
+    }
+  }
+
   for (const n of all) {
     await upsertOne(
       "cms_navigation_items",
@@ -147,7 +162,7 @@ async function seedNavigation() {
       n
     );
   }
-  console.log(`✓ Navigation (${all.length} links)`);
+  console.log(`✓ Navigation (${all.length} links, stale pruned)`);
 }
 
 async function seedServices() {
