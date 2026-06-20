@@ -131,20 +131,39 @@ export async function saveSectionAction(
 
   const sb = serverSupabase();
 
-  // Upsert into cms_page_sections by (page_id, section_key).
+  // Upsert into cms_page_sections by (page_id, section_key). When updating,
+  // merge new field values into the existing content_json instead of
+  // replacing it — fields the form didn't render (e.g. background_image_url
+  // resolved at read time) shouldn't be wiped just because they aren't in
+  // the submit body.
   const { data: existing } = await sb
     .from("cms_page_sections")
-    .select("id")
+    .select("id, content_json")
     .eq("page_id", args.pageId)
     .eq("section_key", args.sectionKey)
     .maybeSingle();
+
+  // Shallow + per-key deep merge: existing keys keep their value when the
+  // form didn't submit a non-blank value for them.
+  const incoming = parsed.data as Record<string, unknown>;
+  const previous = (existing?.content_json as Record<string, unknown> | null) ?? {};
+  const mergedContent: Record<string, unknown> = { ...previous };
+  for (const [k, v] of Object.entries(incoming)) {
+    const isBlankString = typeof v === "string" && v.trim().length === 0;
+    const isEmptyArray = Array.isArray(v) && v.length === 0;
+    if (v === undefined || v === null || isBlankString || isEmptyArray) {
+      // Keep whatever was there before.
+      continue;
+    }
+    mergedContent[k] = v;
+  }
 
   const row = {
     page_id: args.pageId,
     section_key: args.sectionKey,
     section_label: args.sectionLabel,
     section_type: args.sectionType,
-    content_json: parsed.data as object,
+    content_json: mergedContent,
     display_order: args.displayOrder,
     is_visible: true,
   };

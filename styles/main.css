@@ -2590,26 +2590,141 @@ section.article-section { padding-top: clamp(14px, 2vw, 28px); padding-bottom: c
   .article__timeline { padding: 22px 22px 24px; }
 }
 
-/* ---------- Reveal motion ----------
-   Content visibility is non-negotiable. Sections marked [data-reveal]
-   stay fully visible at all times — the attribute is now a hook for
-   optional JS-driven animation only, never something that can hide
-   content. We previously relied on JS to add an .is-in class to
-   reveal, which left pages blank when the IntersectionObserver
-   didn't kick in (hydration race, SSR bundle quirks, etc.).
-
-   If we want the fade-in polish back later, do it as a CSS-only
-   keyframe animation that runs once on load — never as opacity:0.
+/* ---------- Reveal & polish motion ----------
+   CSS-only. No JavaScript dependency anywhere — if the animation runs
+   into trouble, the browser falls back to the final state (visible),
+   not the initial state (hidden). Content visibility is permanent.
 */
+@keyframes haney-rise-in {
+  from { opacity: 0; transform: translate3d(0, 14px, 0); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes haney-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Sections fade up subtly on first paint. Final state (opacity:1, no
+   transform) is the keyframe's TO step, which the animation lands on
+   even if it never plays. */
 [data-reveal] {
   opacity: 1;
   transform: none;
+  animation: haney-rise-in 0.7s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+  animation-delay: 60ms;
 }
+
+/* Cards inside section grids stagger in just behind their section. */
+.caps__grid .cap,
+.proof__grid .proof__item,
+.approach__grid .step,
+.principals__grid .principal,
+.issues__grid .issue,
+.insights__grid .insight,
+.tilegrid .tile {
+  animation: haney-rise-in 0.6s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+.caps__grid .cap:nth-child(1),
+.proof__grid .proof__item:nth-child(1),
+.approach__grid .step:nth-child(1),
+.principals__grid .principal:nth-child(1),
+.issues__grid .issue:nth-child(1),
+.insights__grid .insight:nth-child(1),
+.tilegrid .tile:nth-child(1) { animation-delay: 100ms; }
+.caps__grid .cap:nth-child(2),
+.proof__grid .proof__item:nth-child(2),
+.approach__grid .step:nth-child(2),
+.principals__grid .principal:nth-child(2),
+.issues__grid .issue:nth-child(2),
+.insights__grid .insight:nth-child(2),
+.tilegrid .tile:nth-child(2) { animation-delay: 180ms; }
+.caps__grid .cap:nth-child(3),
+.proof__grid .proof__item:nth-child(3),
+.approach__grid .step:nth-child(3),
+.issues__grid .issue:nth-child(3),
+.insights__grid .insight:nth-child(3),
+.tilegrid .tile:nth-child(3) { animation-delay: 260ms; }
+.caps__grid .cap:nth-child(4),
+.proof__grid .proof__item:nth-child(4),
+.approach__grid .step:nth-child(4),
+.issues__grid .issue:nth-child(4),
+.tilegrid .tile:nth-child(4) { animation-delay: 340ms; }
+.caps__grid .cap:nth-child(5),
+.issues__grid .issue:nth-child(5),
+.tilegrid .tile:nth-child(5) { animation-delay: 420ms; }
+.caps__grid .cap:nth-child(6),
+.issues__grid .issue:nth-child(6),
+.tilegrid .tile:nth-child(6) { animation-delay: 500ms; }
+
+/* Hero copy lifts in slightly slower for a stately feel. */
+.hero__copy {
+  animation: haney-rise-in 0.9s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+  animation-delay: 80ms;
+}
+.hero__credit { animation: haney-fade-in 1.4s ease-out 600ms both; }
+
+/* Page hero on inner pages */
+.pagehero__inner {
+  animation: haney-rise-in 0.7s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+  animation-delay: 60ms;
+}
+
+/* Slow background drift on the hero photo so it doesn't feel static. */
+@keyframes haney-hero-drift {
+  from { transform: scale(1.02) translate3d(0, 0, 0); }
+  to   { transform: scale(1.05) translate3d(0, -1.5%, 0); }
+}
+.hero__bg {
+  will-change: transform;
+  animation: haney-hero-drift 22s ease-in-out infinite alternate;
+}
+
+/* Card / link interaction polish */
+.cap, .proof__item, .step, .principal, .tile, .insight, .issue, .post {
+  transition:
+    transform 0.32s cubic-bezier(0.22, 0.61, 0.36, 1),
+    box-shadow 0.32s cubic-bezier(0.22, 0.61, 0.36, 1),
+    border-color 0.22s cubic-bezier(0.22, 0.61, 0.36, 1),
+    background 0.22s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.cap:hover, .proof__item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px -16px rgba(11, 18, 40, 0.18);
+}
+.step:hover, .principle:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px -18px rgba(11, 18, 40, 0.18);
+}
+.insight, .issue, .tile {
+  /* hover transforms already declared per component; this just ensures
+     the timing function is consistent across them */
+}
+.btn, .linkarrow, .nav__link {
+  transition:
+    background 0.22s cubic-bezier(0.22, 0.61, 0.36, 1),
+    color 0.22s cubic-bezier(0.22, 0.61, 0.36, 1),
+    border-color 0.22s cubic-bezier(0.22, 0.61, 0.36, 1),
+    transform 0.22s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.btn:hover {
+  transform: translateY(-1px);
+}
+
+/* Respect users who don't want motion */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.001ms !important;
+    animation-delay: 0ms !important;
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
+  }
+  .hero__bg { animation: none !important; transform: none !important; }
+  [data-reveal],
+  .caps__grid .cap, .proof__grid .proof__item, .approach__grid .step,
+  .principals__grid .principal, .issues__grid .issue, .insights__grid .insight,
+  .tilegrid .tile, .hero__copy, .pagehero__inner {
+    opacity: 1 !important;
+    transform: none !important;
   }
 }
 
