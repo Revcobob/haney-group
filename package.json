@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
-    "seed": "tsx --env-file=.env.local scripts/seed.ts"
+    "seed": "tsx scripts/seed.ts"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.39.5",
