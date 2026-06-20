@@ -25,6 +25,7 @@ type Defaults = {
   date_label?: string;
   read_time_minutes?: number;
   status?: "draft" | "published";
+  scheduled_publish_at?: string | null;
 };
 
 export function ArticleForm({
@@ -52,6 +53,19 @@ export function ArticleForm({
     : state.error;
 
   const hadSlug = Boolean(defaults?.slug);
+  // Format an ISO/UTC timestamp into the local YYYY-MM-DDTHH:mm shape that
+  // <input type="datetime-local"> expects. Defined inline to keep the form
+  // self-contained.
+  function toLocalDateTimeValue(iso: string | null | undefined) {
+    if (!iso) return "";
+    const d = new Date(iso);
+    if (Number.isNaN(d.getTime())) return "";
+    const pad = (n: number) => String(n).padStart(2, "0");
+    return (
+      `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}` +
+      `T${pad(d.getHours())}:${pad(d.getMinutes())}`
+    );
+  }
 
   // Tiny inline behaviour: while editing a NEW article (no existing slug),
   // auto-derive the slug from the title until the editor types in the
@@ -113,6 +127,29 @@ export function ArticleForm({
             error={errors.date_label}
             placeholder="Interim 2026"
           />
+        </div>
+        <div className="adminfield">
+          <label className="adminfield__label" htmlFor="scheduled_publish_at">
+            Scheduled publish (optional)
+          </label>
+          <input
+            id="scheduled_publish_at"
+            name="scheduled_publish_at"
+            type="datetime-local"
+            className="adminfield__input"
+            defaultValue={toLocalDateTimeValue(defaults?.scheduled_publish_at)}
+            style={{ maxWidth: 280 }}
+          />
+          <p className="adminfield__help">
+            With status = <em>Published</em>, the article stays hidden from the
+            public Insights list until this date. Leave blank to publish
+            immediately when status flips to <em>Published</em>.
+          </p>
+          {errors.scheduled_publish_at ? (
+            <p className="adminfield__error" role="alert">
+              {errors.scheduled_publish_at}
+            </p>
+          ) : null}
         </div>
       </section>
 

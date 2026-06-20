@@ -195,5 +195,12 @@ export const ArticleSchema = z.object({
     z.coerce.number().int().min(1).max(120).optional()
   ),
   status: z.enum(["draft", "published"]).default("draft"),
+  // ISO datetime string from a <input type="datetime-local">. When set
+  // and in the future, public reads suppress the article until that
+  // moment passes. Blank means "publish immediately based on status".
+  scheduled_publish_at: z.preprocess(
+    (v) => (typeof v === "string" && v.trim().length > 0 ? v : undefined),
+    z.string().optional()
+  ),
 });
 export type ArticleInput = z.infer<typeof ArticleSchema>;

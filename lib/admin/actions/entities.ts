@@ -12,6 +12,7 @@ import {
 import { requireAdmin } from "@/lib/auth";
 import { serverSupabase } from "@/lib/supabase/server";
 import { supabaseServerConfigured } from "@/lib/env";
+import { recordAudit } from "@/lib/admin/audit";
 
 type EntityTable =
   | "cms_services"
@@ -50,15 +51,26 @@ export async function createEntityAction(
   formData: FormData
 ): Promise<ActionResult> {
   const schema = schemaFor[table];
-  const result = await adminFormAction(schema, formData, async (input, sb) => {
+  let createdLabel: string | null = null;
+  const result = await adminFormAction(schema, formData, async (input, sb, adminId) => {
     const { error } = await sb.from(table).insert(input as never);
     if (error) return { ok: false, error: error.message };
+    const i = input as Record<string, unknown>;
+    createdLabel =
+      (i.title as string) || (i.client_name as string) || (i.label as string) || null;
+    void adminId;
     return { ok: true };
   });
   if (result.ok) {
     revalidatePath("/", "layout");
     revalidatePath(adminListPathFor[table]);
     for (const p of revalidationPathsFor[table]) revalidatePath(p);
+    const admin = await requireAdmin();
+    await recordAudit(admin, {
+      table,
+      action: "create",
+      detail: createdLabel ?? undefined,
+    });
   }
   return result;
 }
@@ -70,15 +82,26 @@ export async function updateEntityAction(
   formData: FormData
 ): Promise<ActionResult> {
   const schema = schemaFor[table];
+  let updatedLabel: string | null = null;
   const result = await adminFormAction(schema, formData, async (input, sb) => {
     const { error } = await sb.from(table).update(input as never).eq("id", id);
     if (error) return { ok: false, error: error.message };
+    const i = input as Record<string, unknown>;
+    updatedLabel =
+      (i.title as string) || (i.client_name as string) || (i.label as string) || null;
     return { ok: true };
   });
   if (result.ok) {
     revalidatePath("/", "layout");
     revalidatePath(adminListPathFor[table]);
     for (const p of revalidationPathsFor[table]) revalidatePath(p);
+    const admin = await requireAdmin();
+    await recordAudit(admin, {
+      table,
+      rowId: id,
+      action: "update",
+      detail: updatedLabel ?? undefined,
+    });
   }
   return result;
 }
@@ -87,7 +110,7 @@ export async function deleteEntityAction(
   table: EntityTable,
   id: string
 ): Promise<ActionResult> {
-  await requireAdmin();
+  const admin = await requireAdmin();
   if (!supabaseServerConfigured) {
     return { ok: false, error: "Supabase is not configured." };
   }
@@ -97,6 +120,7 @@ export async function deleteEntityAction(
   revalidatePath("/", "layout");
   revalidatePath(adminListPathFor[table]);
   for (const p of revalidationPathsFor[table]) revalidatePath(p);
+  await recordAudit(admin, { table, rowId: id, action: "delete" });
   return { ok: true };
 }
 
@@ -105,7 +129,7 @@ export async function toggleVisibilityAction(
   id: string,
   next: boolean
 ): Promise<ActionResult> {
-  await requireAdmin();
+  const admin = await requireAdmin();
   if (!supabaseServerConfigured) {
     return { ok: false, error: "Supabase is not configured." };
   }
@@ -115,6 +139,11 @@ export async function toggleVisibilityAction(
   revalidatePath("/", "layout");
   revalidatePath(adminListPathFor[table]);
   for (const p of revalidationPathsFor[table]) revalidatePath(p);
+  await recordAudit(admin, {
+    table,
+    rowId: id,
+    action: next ? "publish" : "unpublish",
+  });
   return { ok: true };
 }
 
@@ -124,7 +153,7 @@ export async function reorderEntityAction(
   table: EntityTable,
   orderedIds: string[]
 ): Promise<ActionResult> {
-  await requireAdmin();
+  const admin = await requireAdmin();
   if (!supabaseServerConfigured) {
     return { ok: false, error: "Supabase is not configured." };
   }
@@ -140,6 +169,11 @@ export async function reorderEntityAction(
   revalidatePath("/", "layout");
   revalidatePath(adminListPathFor[table]);
   for (const p of revalidationPathsFor[table]) revalidatePath(p);
+  await recordAudit(admin, {
+    table,
+    action: "reorder",
+    detail: `${orderedIds.length} rows`,
+  });
   return { ok: true };
 }
 
@@ -149,7 +183,7 @@ export async function bulkEntityAction(
   ids: string[],
   op: "hide" | "show" | "delete"
 ): Promise<ActionResult> {
-  await requireAdmin();
+  const admin = await requireAdmin();
   if (!supabaseServerConfigured) {
     return { ok: false, error: "Supabase is not configured." };
   }
@@ -168,5 +202,10 @@ export async function bulkEntityAction(
   revalidatePath("/", "layout");
   revalidatePath(adminListPathFor[table]);
   for (const p of revalidationPathsFor[table]) revalidatePath(p);
+  await recordAudit(admin, {
+    table,
+    action: "bulk",
+    detail: `${op} · ${ids.length} rows`,
+  });
   return { ok: true };
 }

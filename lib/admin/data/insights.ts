@@ -17,6 +17,7 @@ export type AdminArticleRow = {
   read_time_minutes: number | null;
   status: "draft" | "published";
   published_at: string | null;
+  scheduled_publish_at: string | null;
   created_at: string;
   updated_at: string;
 };

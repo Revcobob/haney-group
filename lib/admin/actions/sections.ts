@@ -7,6 +7,7 @@ import { supabaseServerConfigured } from "@/lib/env";
 import { getSectionType } from "@/lib/sections/types";
 import { getPageFallback } from "@/content/fallbacks/pages";
 import { sanitizeArticleHtml } from "@/lib/sanitize";
+import { recordAudit } from "@/lib/admin/audit";
 import type { ActionResult } from "./_helpers";
 
 const SLUG_TO_PUBLIC_PATH: Record<string, string> = {
@@ -122,7 +123,7 @@ export async function saveSectionAction(
   _prev: ActionResult | undefined,
   formData: FormData
 ): Promise<ActionResult> {
-  await requireAdmin();
+  const admin = await requireAdmin();
   if (!supabaseServerConfigured) {
     return {
       ok: false,
@@ -215,6 +216,11 @@ export async function saveSectionAction(
   revalidatePath(publicPath);
   revalidatePath(`/admin/pages/${args.pageSlug}`);
   revalidatePath(`/admin/pages/${args.pageSlug}/visual`);
+  await recordAudit(admin, {
+    table: "cms_page_sections",
+    action: "update",
+    detail: `${args.pageSlug} · ${args.sectionLabel || args.sectionKey}`,
+  });
   return { ok: true };
 }
 
@@ -230,7 +236,7 @@ export async function reorderSectionsAction(
   pageSlug: string,
   orderedKeys: string[]
 ): Promise<ActionResult> {
-  await requireAdmin();
+  const admin = await requireAdmin();
   if (!supabaseServerConfigured) {
     return { ok: false, error: "Supabase is not connected." };
   }
@@ -283,6 +289,11 @@ export async function reorderSectionsAction(
   revalidatePath(publicPathForSlug(pageSlug));
   revalidatePath(`/admin/pages/${pageSlug}`);
   revalidatePath(`/admin/pages/${pageSlug}/visual`);
+  await recordAudit(admin, {
+    table: "cms_page_sections",
+    action: "reorder",
+    detail: `${pageSlug} · ${orderedKeys.length} sections`,
+  });
   return { ok: true };
 }
 
@@ -294,7 +305,7 @@ export async function resetSectionToDefaultAction(
   pageSlug: string,
   sectionKey: string
 ): Promise<ActionResult> {
-  await requireAdmin();
+  const admin = await requireAdmin();
   if (!supabaseServerConfigured) {
     return { ok: false, error: "Supabase is not connected." };
   }
@@ -341,6 +352,11 @@ export async function resetSectionToDefaultAction(
   revalidatePath(publicPathForSlug(pageSlug));
   revalidatePath(`/admin/pages/${pageSlug}`);
   revalidatePath(`/admin/pages/${pageSlug}/visual`);
+  await recordAudit(admin, {
+    table: "cms_page_sections",
+    action: "reset",
+    detail: `${pageSlug} · ${fbSection.section_label}`,
+  });
   return { ok: true };
 }
 
@@ -350,7 +366,7 @@ export async function setPageStatusAction(
   pageSlug: string,
   status: "draft" | "published"
 ): Promise<ActionResult> {
-  await requireAdmin();
+  const admin = await requireAdmin();
   if (!supabaseServerConfigured) {
     return { ok: false, error: "Supabase is not connected." };
   }
@@ -363,6 +379,11 @@ export async function setPageStatusAction(
   if (error) return { ok: false, error: error.message };
   revalidatePath(publicPathForSlug(pageSlug));
   revalidatePath("/admin/pages");
+  await recordAudit(admin, {
+    table: "cms_pages",
+    action: status === "published" ? "publish" : "unpublish",
+    detail: pageSlug,
+  });
   return { ok: true };
 }
 

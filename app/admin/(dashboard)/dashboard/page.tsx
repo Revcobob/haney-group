@@ -3,6 +3,7 @@ import Link from "next/link";
 import { supabaseServerConfigured } from "@/lib/env";
 import { listAdminArticles } from "@/lib/admin/data/insights";
 import { countNewInquiries } from "@/lib/admin/data/inquiries";
+import { listRecentAudit } from "@/lib/admin/audit";
 
 export const metadata: Metadata = { title: "Dashboard" };
 
@@ -19,9 +20,10 @@ const quickLinks: QuickLink[] = [
 
 export default async function DashboardPage() {
   const supabaseReady = supabaseServerConfigured;
-  const [articles, newInquiryCount] = await Promise.all([
+  const [articles, newInquiryCount, recentActivity] = await Promise.all([
     supabaseReady ? listAdminArticles() : Promise.resolve([]),
     supabaseReady ? countNewInquiries() : Promise.resolve(0),
+    supabaseReady ? listRecentAudit(10) : Promise.resolve([]),
   ]);
   const draftCount = articles.filter((a) => a.status === "draft").length;
   const publishedCount = articles.filter((a) => a.status === "published").length;
@@ -95,10 +97,94 @@ export default async function DashboardPage() {
         </div>
         <div className="admin__card">
           <div className="admin__stat">
-            <span className="admin__stat-num">—</span>
-            <span className="admin__stat-label">Pages edited (last 30d)</span>
+            <span className="admin__stat-num">{supabaseReady ? recentActivity.length : "—"}</span>
+            <span className="admin__stat-label">Recent edits (this list)</span>
           </div>
         </div>
+      </div>
+
+      <div className="admin__pagehead" style={{ marginTop: 48 }}>
+        <p className="admin__pagehead-eyebrow">Audit log</p>
+        <h1 style={{ fontSize: 22 }}>Recent activity</h1>
+        <p>
+          Every save, publish, reorder, and delete the admin makes is
+          recorded here so you can see who changed what.
+        </p>
+      </div>
+
+      <div className="admin__card" style={{ padding: 0, overflow: "hidden" }}>
+        {recentActivity.length === 0 ? (
+          <p style={{ padding: 18, color: "var(--text-3)", margin: 0 }}>
+            {supabaseReady
+              ? "No activity yet — try saving a section to start the log."
+              : "Connect Supabase to see activity here."}
+          </p>
+        ) : (
+          <ul
+            style={{
+              listStyle: "none",
+              margin: 0,
+              padding: 0,
+            }}
+          >
+            {recentActivity.map((row) => (
+              <li
+                key={row.id}
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "auto 1fr auto",
+                  gap: 14,
+                  padding: "12px 18px",
+                  borderTop: "1px solid var(--line-1)",
+                  alignItems: "baseline",
+                  fontSize: 13.5,
+                }}
+              >
+                <span
+                  className="admintable__pill"
+                  style={{ textTransform: "uppercase", fontSize: 10 }}
+                >
+                  {row.action}
+                </span>
+                <span style={{ color: "var(--text-1)", minWidth: 0 }}>
+                  <strong>{row.table_name.replace(/^cms_/, "")}</strong>
+                  {row.detail ? ` · ${row.detail}` : ""}
+                  {row.actor_email ? (
+                    <span style={{ color: "var(--text-3)" }}>
+                      {" "}
+                      — {row.actor_email}
+                    </span>
+                  ) : null}
+                </span>
+                <time
+                  dateTime={row.created_at}
+                  style={{ color: "var(--text-3)", whiteSpace: "nowrap" }}
+                >
+                  {new Date(row.created_at).toLocaleString()}
+                </time>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+
+      <div className="admin__pagehead" style={{ marginTop: 48 }}>
+        <p className="admin__pagehead-eyebrow">Backup</p>
+        <h1 style={{ fontSize: 22 }}>Download a content snapshot</h1>
+        <p>
+          One-click JSON export of every cms_ table — useful as a backup
+          before a big edit, or to move content between environments.
+          Storage objects (uploaded media files) are not included.
+        </p>
+        <p style={{ marginTop: 12 }}>
+          <a
+            href="/api/admin/export"
+            download
+            className="adminbtn adminbtn--primary"
+          >
+            Download JSON snapshot
+          </a>
+        </p>
       </div>
     </>
   );
