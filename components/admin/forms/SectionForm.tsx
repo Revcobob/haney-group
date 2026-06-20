@@ -1,7 +1,12 @@
 "use client";
 
-import { useActionState, useEffect, useRef } from "react";
-import { SaveBar } from "./SaveBar";
+import { useActionState, useEffect, useRef, useState, useTransition } from "react";
+import { useFormStatus } from "react-dom";
+import { useUnsavedChangesGuard } from "./useUnsavedChangesGuard";
+import {
+  publishSectionDraftAction,
+  discardSectionDraftAction,
+} from "@/lib/admin/actions/sections";
 import {
   SectionTextField,
   SectionTextareaField,
@@ -280,6 +285,8 @@ export function SectionForm({
   cancelHref,
   onSaved,
   compact,
+  hasDraft = false,
+  draftUpdatedAt,
 }: {
   typeDef: SectionTypeClient;
   content: Record<string, unknown>;
@@ -288,11 +295,17 @@ export function SectionForm({
   cancelHref?: string;
   onSaved?: () => void;
   compact?: boolean;
+  /** True when a saved draft is currently overlaying the live content. */
+  hasDraft?: boolean;
+  /** ISO timestamp of the most recent draft save. */
+  draftUpdatedAt?: string | null;
 }) {
   const [state, formAction] = useActionState<ActionResult | undefined, FormData>(
     action,
     undefined
   );
+  const formRef = useRef<HTMLFormElement>(null);
+  const { markClean } = useUnsavedChangesGuard(formRef);
   const status = !state ? "idle" : state.ok ? "success" : "error";
   const message = !state ? undefined : state.ok ? "Saved." : state.error;
 
@@ -301,14 +314,15 @@ export function SectionForm({
   // prevents the iframe-reload from looping when the parent re-renders.
   const lastNotifiedState = useRef<typeof state | undefined>(undefined);
   useEffect(() => {
-    if (state?.ok && onSaved && lastNotifiedState.current !== state) {
+    if (state?.ok && lastNotifiedState.current !== state) {
       lastNotifiedState.current = state;
-      onSaved();
+      markClean();
+      onSaved?.();
     }
-  }, [state, onSaved]);
+  }, [state, onSaved, markClean]);
 
   return (
-    <form action={formAction} className="adminform">
+    <form ref={formRef} action={formAction} className="adminform">
       {/* Hidden context for the server action — no per-call bind required */}
       <input type="hidden" name="_meta_page_id" value={meta.pageId} />
       <input type="hidden" name="_meta_page_slug" value={meta.pageSlug} />
@@ -327,24 +341,183 @@ export function SectionForm({
           <h2>{typeDef.label}</h2>
           {!compact ? <p>{typeDef.description}</p> : null}
         </div>
+
+        {hasDraft && meta.pageId ? (
+          <DraftNotice
+            pageId={meta.pageId}
+            pageSlug={meta.pageSlug}
+            sectionKey={meta.sectionKey}
+            sectionLabel={meta.sectionLabel}
+            updatedAt={draftUpdatedAt ?? undefined}
+            onChanged={onSaved}
+          />
+        ) : null}
+
         {typeDef.fields.map((f) => renderField(f, content))}
       </section>
-      <SaveBar
-        status={status}
-        message={message}
-        cancelHref={cancelHref}
-        secondary={
-          meta.pageId ? (
-            <ResetSectionButton
-              pageId={meta.pageId}
-              pageSlug={meta.pageSlug}
-              sectionKey={meta.sectionKey}
-              sectionLabel={meta.sectionLabel}
-              onReset={onSaved}
-            />
-          ) : null
-        }
-      />
+
+      <div className="adminsavebar" role="status">
+        {message ? (
+          <span
+            className={`adminsavebar__msg${
+              status === "error"
+                ? " adminsavebar__msg--error"
+                : status === "success"
+                ? " adminsavebar__msg--success"
+                : ""
+            }`}
+          >
+            {message}
+          </span>
+        ) : (
+          <span />
+        )}
+        <div className="adminsavebar__actions">
+          {meta.pageId ? (
+            <span className="adminsavebar__secondary">
+              <ResetSectionButton
+                pageId={meta.pageId}
+                pageSlug={meta.pageSlug}
+                sectionKey={meta.sectionKey}
+                sectionLabel={meta.sectionLabel}
+                onReset={onSaved}
+              />
+            </span>
+          ) : null}
+          {cancelHref ? (
+            <a className="adminbtn adminbtn--ghost" href={cancelHref}>
+              Cancel
+            </a>
+          ) : null}
+          <SectionSaveButtons />
+        </div>
+      </div>
     </form>
+  );
+}
+
+// Two-state submit pair. Both buttons set _meta_publish via their own
+// name/value pair so a single click decides whether the form writes to
+// the draft column or to live content.
+function SectionSaveButtons() {
+  const { pending } = useFormStatus();
+  return (
+    <>
+      <button
+        type="submit"
+        name="_meta_publish"
+        value="0"
+        className="adminbtn adminbtn--ghost"
+        disabled={pending}
+      >
+        {pending ? "Saving…" : "Save draft"}
+      </button>
+      <button
+        type="submit"
+        name="_meta_publish"
+        value="1"
+        className="adminbtn adminbtn--primary"
+        disabled={pending}
+      >
+        {pending ? "Saving…" : "Save and publish"}
+      </button>
+    </>
+  );
+}
+
+function DraftNotice({
+  pageId,
+  pageSlug,
+  sectionKey,
+  sectionLabel,
+  updatedAt,
+  onChanged,
+}: {
+  pageId: string;
+  pageSlug: string;
+  sectionKey: string;
+  sectionLabel: string;
+  updatedAt?: string;
+  onChanged?: () => void;
+}) {
+  const [pending, startTransition] = useTransition();
+  const [error, setError] = useState<string | null>(null);
+
+  function publish() {
+    setError(null);
+    startTransition(async () => {
+      const r = await publishSectionDraftAction(pageId, pageSlug, sectionKey);
+      if (!r.ok) {
+        setError(r.error ?? "Publish failed");
+        return;
+      }
+      onChanged?.();
+    });
+  }
+  function discard() {
+    if (
+      !window.confirm(
+        `Throw away the draft for "${sectionLabel}"? The live copy stays as it is.`
+      )
+    ) {
+      return;
+    }
+    setError(null);
+    startTransition(async () => {
+      const r = await discardSectionDraftAction(pageId, pageSlug, sectionKey);
+      if (!r.ok) {
+        setError(r.error ?? "Discard failed");
+        return;
+      }
+      onChanged?.();
+    });
+  }
+
+  return (
+    <div className="adminform__draftnotice" role="status">
+      <div>
+        <strong>You're editing a draft.</strong>
+        <p>
+          The public site is still showing the last-published version of this
+          section.{" "}
+          {updatedAt ? (
+            <>
+              Draft last saved{" "}
+              <time dateTime={updatedAt}>
+                {new Date(updatedAt).toLocaleString()}
+              </time>
+              .
+            </>
+          ) : null}
+        </p>
+      </div>
+      <div className="adminform__draftnotice-actions">
+        <button
+          type="button"
+          className="adminbtn adminbtn--primary adminbtn--small"
+          onClick={publish}
+          disabled={pending}
+        >
+          {pending ? "…" : "Publish draft"}
+        </button>
+        <button
+          type="button"
+          className="adminbtn adminbtn--ghost adminbtn--small"
+          onClick={discard}
+          disabled={pending}
+        >
+          Discard draft
+        </button>
+      </div>
+      {error ? (
+        <p
+          className="adminfield__error"
+          role="alert"
+          style={{ marginTop: 8, gridColumn: "1 / -1" }}
+        >
+          {error}
+        </p>
+      ) : null}
+    </div>
   );
 }

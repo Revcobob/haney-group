@@ -61,6 +61,13 @@ function Toolbar({ editor }: { editor: Editor | null }) {
           H3
         </ToolbarButton>
         <ToolbarButton
+          label="Heading 4"
+          onClick={() => editor.chain().focus().toggleHeading({ level: 4 }).run()}
+          active={editor.isActive("heading", { level: 4 })}
+        >
+          H4
+        </ToolbarButton>
+        <ToolbarButton
           label="Paragraph"
           onClick={() => editor.chain().focus().setParagraph().run()}
           active={editor.isActive("paragraph")}
@@ -84,11 +91,25 @@ function Toolbar({ editor }: { editor: Editor | null }) {
           <em>I</em>
         </ToolbarButton>
         <ToolbarButton
+          label="Strikethrough"
+          onClick={() => editor.chain().focus().toggleStrike().run()}
+          active={editor.isActive("strike")}
+        >
+          <s>S</s>
+        </ToolbarButton>
+        <ToolbarButton
           label="Inline code"
           onClick={() => editor.chain().focus().toggleCode().run()}
           active={editor.isActive("code")}
         >
           <code>{"<>"}</code>
+        </ToolbarButton>
+        <ToolbarButton
+          label="Code block"
+          onClick={() => editor.chain().focus().toggleCodeBlock().run()}
+          active={editor.isActive("codeBlock")}
+        >
+          {"{ }"}
         </ToolbarButton>
       </div>
       <div className="tiptap__group">
@@ -180,6 +201,7 @@ export function TiptapEditor({ name, defaultHtml, placeholder }: Props) {
     extensions: [
       StarterKit.configure({
         heading: { levels: [2, 3, 4] },
+        codeBlock: {},
       }),
       Link.configure({
         openOnClick: false,

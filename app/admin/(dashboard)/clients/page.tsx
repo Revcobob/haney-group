@@ -1,14 +1,36 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { listAdminRows } from "@/lib/admin/data/entities";
-import { RowActions } from "@/components/admin/RowActions";
+import {
+  EntityListClient,
+  type EntityListRow,
+} from "@/components/admin/EntityListClient";
 import { EntityListEmpty } from "@/components/admin/EntityListEmpty";
 import { supabaseServerConfigured } from "@/lib/env";
 
 export const metadata: Metadata = { title: "Client Logos" };
 
+type ClientRow = EntityListRow & {
+  client_name: string;
+  website_url: string | null;
+  client_status: string;
+  alt_missing: boolean;
+};
+
 export default async function AdminClientsPage() {
-  const rows = supabaseServerConfigured ? await listAdminRows("cms_client_logos") : [];
+  const raw = supabaseServerConfigured
+    ? await listAdminRows("cms_client_logos")
+    : [];
+  const rows: ClientRow[] = raw.map((r) => ({
+    id: r.id as string,
+    is_visible: (r.is_visible as boolean) ?? true,
+    display_order: (r.display_order as number) ?? 0,
+    client_name: (r.client_name as string) ?? "Untitled",
+    website_url: (r.website_url as string | null) ?? null,
+    client_status: (r.client_status as string) ?? "current",
+    alt_missing: !(r.alt_text as string | null),
+  }));
+
   return (
     <>
       <div className="adminheaderbar">
@@ -38,56 +60,46 @@ export default async function AdminClientsPage() {
           newLabel="Add the first client logo"
         />
       ) : (
-        <div className="admintable">
-          <div className="admintable__row admintable__row--header">
-            <div>Client</div>
-            <div>Actions</div>
-          </div>
-          {rows.map((r) => {
-            const id = r.id as string;
-            const name = (r.client_name as string) ?? "Untitled";
-            const status = (r.client_status as string) ?? "current";
-            const isVisible = (r.is_visible as boolean) ?? true;
-            const altMissing = !r.alt_text;
-            return (
-              <div key={id} className="admintable__row">
-                <div>
-                  <Link href={`/admin/clients/${id}`} className="admintable__title">
-                    {name}
-                  </Link>
-                  {r.website_url ? (
-                    <p className="admintable__sub">{r.website_url as string}</p>
-                  ) : null}
-                  <div style={{ marginTop: 6 }}>
-                    <span className={`admintable__pill admintable__pill--${isVisible ? "published" : "hidden"}`}>
-                      {isVisible ? "Visible" : "Hidden"}
-                    </span>{" "}
-                    <span className="admintable__pill">{status === "past" ? "Past" : "Current"}</span>{" "}
-                    <span className="admintable__pill">Order {r.display_order as number}</span>
-                    {altMissing ? (
-                      <>
-                        {" "}
-                        <span
-                          className="admintable__pill"
-                          style={{ color: "#B25C2E", borderColor: "#E5C0C0" }}
-                        >
-                          Missing alt text
-                        </span>
-                      </>
-                    ) : null}
-                  </div>
-                </div>
-                <RowActions
-                  table="cms_client_logos"
-                  id={id}
-                  isVisible={isVisible}
-                  editHref={`/admin/clients/${id}`}
-                  deleteConfirmLabel="client logo"
-                />
+        <EntityListClient
+          table="cms_client_logos"
+          rows={rows}
+          editHref={(r) => `/admin/clients/${r.id}`}
+          deleteConfirmLabel="client logo"
+          renderRow={(r) => (
+            <>
+              <Link href={`/admin/clients/${r.id}`} className="admintable__title">
+                {r.client_name}
+              </Link>
+              {r.website_url ? (
+                <p className="admintable__sub">{r.website_url}</p>
+              ) : null}
+              <div style={{ marginTop: 6 }}>
+                <span
+                  className={`admintable__pill admintable__pill--${
+                    r.is_visible ? "published" : "hidden"
+                  }`}
+                >
+                  {r.is_visible ? "Visible" : "Hidden"}
+                </span>{" "}
+                <span className="admintable__pill">
+                  {r.client_status === "past" ? "Past" : "Current"}
+                </span>{" "}
+                <span className="admintable__pill">Order {r.display_order}</span>
+                {r.alt_missing ? (
+                  <>
+                    {" "}
+                    <span
+                      className="admintable__pill"
+                      style={{ color: "#B25C2E", borderColor: "#E5C0C0" }}
+                    >
+                      Missing alt text
+                    </span>
+                  </>
+                ) : null}
               </div>
-            );
-          })}
-        </div>
+            </>
+          )}
+        />
       )}
     </>
   );

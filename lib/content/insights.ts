@@ -56,6 +56,7 @@ export async function listPublishedArticles(): Promise<InsightArticle[]> {
       "slug, title, category, article_label, summary, lede, body_html, author, date_label, read_time_minutes, cms_media:featured_image_id(public_url)"
     )
     .eq("status", "published")
+    .or(`scheduled_publish_at.is.null,scheduled_publish_at.lte.${new Date().toISOString()}`)
     .or(`published_at.is.null,published_at.lte.${new Date().toISOString()}`)
     .order("published_at", { ascending: false, nullsFirst: false });
   if (!data || data.length === 0) return fallbackArticles;
@@ -72,6 +73,9 @@ export async function getArticle(slug: string): Promise<InsightArticle | null> {
       )
       .eq("slug", slug)
       .eq("status", "published")
+      .or(
+        `scheduled_publish_at.is.null,scheduled_publish_at.lte.${new Date().toISOString()}`
+      )
       .maybeSingle();
     if (data) return mapDbRow(data as unknown as DbArticleRow);
   }
@@ -84,7 +88,10 @@ export async function listArticleSlugs(): Promise<string[]> {
     const { data } = await sb
       .from("cms_articles")
       .select("slug")
-      .eq("status", "published");
+      .eq("status", "published")
+      .or(
+        `scheduled_publish_at.is.null,scheduled_publish_at.lte.${new Date().toISOString()}`
+      );
     if (data && data.length > 0) {
       return data.map((r) => r.slug as string);
     }

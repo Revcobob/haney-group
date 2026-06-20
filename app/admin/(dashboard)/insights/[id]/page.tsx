@@ -77,6 +77,7 @@ export default async function AdminInsightEditPage({
           date_label: article.date_label ?? undefined,
           read_time_minutes: article.read_time_minutes ?? undefined,
           status: article.status,
+          scheduled_publish_at: article.scheduled_publish_at ?? null,
         }}
       />
     </>

@@ -1,14 +1,29 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { listAdminRows } from "@/lib/admin/data/entities";
-import { RowActions } from "@/components/admin/RowActions";
+import {
+  EntityListClient,
+  type EntityListRow,
+} from "@/components/admin/EntityListClient";
 import { EntityListEmpty } from "@/components/admin/EntityListEmpty";
 import { supabaseServerConfigured } from "@/lib/env";
 
 export const metadata: Metadata = { title: "Industries" };
 
+type IndustryRow = EntityListRow & {
+  title: string;
+  description: string;
+};
+
 export default async function AdminIndustriesPage() {
-  const rows = supabaseServerConfigured ? await listAdminRows("cms_industries") : [];
+  const raw = supabaseServerConfigured ? await listAdminRows("cms_industries") : [];
+  const rows: IndustryRow[] = raw.map((r) => ({
+    id: r.id as string,
+    is_visible: (r.is_visible as boolean) ?? true,
+    display_order: (r.display_order as number) ?? 0,
+    title: (r.title as string) ?? "Untitled",
+    description: (r.description as string) ?? "",
+  }));
 
   return (
     <>
@@ -16,7 +31,7 @@ export default async function AdminIndustriesPage() {
         <div className="admin__pagehead" style={{ marginBottom: 0 }}>
           <p className="admin__pagehead-eyebrow">Structure</p>
           <h1>Industry cards</h1>
-          <p>The nine sector cards on the Clients page. Reorder via display order.</p>
+          <p>The nine sector cards on the Clients page. Reorder via the arrows.</p>
         </div>
         <div className="adminheaderbar__actions">
           <Link href="/admin/industries/new" className="adminbtn adminbtn--primary">
@@ -39,43 +54,34 @@ export default async function AdminIndustriesPage() {
           newLabel="Add the first industry"
         />
       ) : (
-        <div className="admintable">
-          <div className="admintable__row admintable__row--header">
-            <div>Industry</div>
-            <div>Actions</div>
-          </div>
-          {rows.map((r) => {
-            const id = r.id as string;
-            const title = (r.title as string) ?? "Untitled";
-            const description = (r.description as string) ?? "";
-            const isVisible = (r.is_visible as boolean) ?? true;
-            return (
-              <div key={id} className="admintable__row">
-                <div>
-                  <Link href={`/admin/industries/${id}`} className="admintable__title">
-                    {title}
-                  </Link>
-                  <p className="admintable__sub">
-                    {description.length > 140 ? description.slice(0, 140) + "…" : description}
-                  </p>
-                  <div style={{ marginTop: 6 }}>
-                    <span className={`admintable__pill admintable__pill--${isVisible ? "published" : "hidden"}`}>
-                      {isVisible ? "Visible" : "Hidden"}
-                    </span>{" "}
-                    <span className="admintable__pill">Order {r.display_order as number}</span>
-                  </div>
-                </div>
-                <RowActions
-                  table="cms_industries"
-                  id={id}
-                  isVisible={isVisible}
-                  editHref={`/admin/industries/${id}`}
-                  deleteConfirmLabel="industry"
-                />
+        <EntityListClient
+          table="cms_industries"
+          rows={rows}
+          editHref={(r) => `/admin/industries/${r.id}`}
+          deleteConfirmLabel="industry"
+          renderRow={(r) => (
+            <>
+              <Link href={`/admin/industries/${r.id}`} className="admintable__title">
+                {r.title}
+              </Link>
+              <p className="admintable__sub">
+                {r.description.length > 140
+                  ? r.description.slice(0, 140) + "…"
+                  : r.description}
+              </p>
+              <div style={{ marginTop: 6 }}>
+                <span
+                  className={`admintable__pill admintable__pill--${
+                    r.is_visible ? "published" : "hidden"
+                  }`}
+                >
+                  {r.is_visible ? "Visible" : "Hidden"}
+                </span>{" "}
+                <span className="admintable__pill">Order {r.display_order}</span>
               </div>
-            );
-          })}
-        </div>
+            </>
+          )}
+        />
       )}
     </>
   );

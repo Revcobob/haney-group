@@ -1,16 +1,29 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { listAdminRows } from "@/lib/admin/data/entities";
-import { RowActions } from "@/components/admin/RowActions";
+import {
+  EntityListClient,
+  type EntityListRow,
+} from "@/components/admin/EntityListClient";
 import { EntityListEmpty } from "@/components/admin/EntityListEmpty";
 import { supabaseServerConfigured } from "@/lib/env";
 
 export const metadata: Metadata = { title: "Services" };
 
+type ServiceRow = EntityListRow & {
+  title: string;
+  description: string;
+};
+
 export default async function AdminServicesPage() {
-  const rows = supabaseServerConfigured
-    ? await listAdminRows("cms_services")
-    : [];
+  const raw = supabaseServerConfigured ? await listAdminRows("cms_services") : [];
+  const rows: ServiceRow[] = raw.map((r) => ({
+    id: r.id as string,
+    is_visible: (r.is_visible as boolean) ?? true,
+    display_order: (r.display_order as number) ?? 0,
+    title: (r.title as string) ?? "Untitled",
+    description: (r.description as string) ?? "",
+  }));
 
   return (
     <>
@@ -35,7 +48,10 @@ export default async function AdminServicesPage() {
         <div className="admin__notice admin__notice--warning">
           <div>
             <strong>Supabase not connected.</strong>
-            <p>The public site is rendering from built-in fallback content. Connect Supabase to manage these rows here.</p>
+            <p>
+              The public site is rendering from built-in fallback content. Connect
+              Supabase to manage these rows here.
+            </p>
           </div>
         </div>
       ) : rows.length === 0 ? (
@@ -45,51 +61,34 @@ export default async function AdminServicesPage() {
           newLabel="Add the first service"
         />
       ) : (
-        <div className="admintable">
-          <div className="admintable__row admintable__row--header">
-            <div>Service</div>
-            <div>Actions</div>
-          </div>
-          {rows.map((r) => {
-            const id = r.id as string;
-            const title = (r.title as string) ?? "Untitled";
-            const description = (r.description as string) ?? "";
-            const isVisible = (r.is_visible as boolean) ?? true;
-            return (
-              <div key={id} className="admintable__row">
-                <div>
-                  <Link href={`/admin/services/${id}`} className="admintable__title">
-                    {title}
-                  </Link>
-                  <p className="admintable__sub">
-                    {description.length > 120
-                      ? description.slice(0, 120) + "…"
-                      : description}
-                  </p>
-                  <div style={{ marginTop: 6 }}>
-                    <span
-                      className={`admintable__pill admintable__pill--${
-                        isVisible ? "published" : "hidden"
-                      }`}
-                    >
-                      {isVisible ? "Visible" : "Hidden"}
-                    </span>{" "}
-                    <span className="admintable__pill">
-                      Order {r.display_order as number}
-                    </span>
-                  </div>
-                </div>
-                <RowActions
-                  table="cms_services"
-                  id={id}
-                  isVisible={isVisible}
-                  editHref={`/admin/services/${id}`}
-                  deleteConfirmLabel="service"
-                />
+        <EntityListClient
+          table="cms_services"
+          rows={rows}
+          editHref={(r) => `/admin/services/${r.id}`}
+          deleteConfirmLabel="service"
+          renderRow={(r) => (
+            <>
+              <Link href={`/admin/services/${r.id}`} className="admintable__title">
+                {r.title}
+              </Link>
+              <p className="admintable__sub">
+                {r.description.length > 120
+                  ? r.description.slice(0, 120) + "…"
+                  : r.description}
+              </p>
+              <div style={{ marginTop: 6 }}>
+                <span
+                  className={`admintable__pill admintable__pill--${
+                    r.is_visible ? "published" : "hidden"
+                  }`}
+                >
+                  {r.is_visible ? "Visible" : "Hidden"}
+                </span>{" "}
+                <span className="admintable__pill">Order {r.display_order}</span>
               </div>
-            );
-          })}
-        </div>
+            </>
+          )}
+        />
       )}
     </>
   );

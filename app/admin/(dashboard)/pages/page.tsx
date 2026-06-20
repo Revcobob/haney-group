@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { supabaseServerConfigured } from "@/lib/env";
+import { getPageStatusBySlug } from "@/lib/admin/data/pages";
+import { PageStatusToggle } from "@/components/admin/PageStatusToggle";
 
 export const metadata: Metadata = { title: "Pages" };
 
@@ -110,7 +112,8 @@ const PAGES: PageRow[] = [
   },
 ];
 
-export default function AdminPagesPage() {
+export default async function AdminPagesPage() {
+  const statusBySlug = await getPageStatusBySlug();
   return (
     <>
       <div className="admin__pagehead">
@@ -141,52 +144,64 @@ export default function AdminPagesPage() {
           <div>Page</div>
           <div>Actions</div>
         </div>
-        {PAGES.map((p) => (
-          <div key={p.slug} className="admintable__row">
-            <div>
-              <Link href={p.editorHref} className="admintable__title">
-                {p.title}
-              </Link>
-              <p className="admintable__sub">
-                <Link
-                  href={p.publicHref}
-                  target="_blank"
-                  style={{ color: "var(--text-3)" }}
-                >
-                  {p.publicHref}
+        {PAGES.map((p) => {
+          const status = statusBySlug.get(p.slug) ?? "published";
+          const isDraft = status === "draft";
+          return (
+            <div key={p.slug} className="admintable__row">
+              <div>
+                <Link href={p.editorHref} className="admintable__title">
+                  {p.title}
                 </Link>{" "}
-                — {p.description}
-              </p>
-              <div style={{ marginTop: 6 }}>
-                {p.pills.map((pill) => (
-                  <span
-                    key={pill}
-                    className="admintable__pill"
-                    style={{ marginRight: 4 }}
-                  >
-                    {pill}
+                {isDraft ? (
+                  <span className="admintable__pill admintable__pill--draft">
+                    Draft · not public
                   </span>
-                ))}
+                ) : null}
+                <p className="admintable__sub">
+                  <Link
+                    href={p.publicHref}
+                    target="_blank"
+                    style={{ color: "var(--text-3)" }}
+                  >
+                    {p.publicHref}
+                  </Link>{" "}
+                  — {p.description}
+                </p>
+                <div style={{ marginTop: 6 }}>
+                  {p.pills.map((pill) => (
+                    <span
+                      key={pill}
+                      className="admintable__pill"
+                      style={{ marginRight: 4 }}
+                    >
+                      {pill}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              <div className="admintable__actions">
+                {supabaseServerConfigured ? (
+                  <PageStatusToggle pageSlug={p.slug} status={status} />
+                ) : null}
+                {p.visualHref ? (
+                  <Link
+                    href={p.visualHref}
+                    className="adminbtn adminbtn--ghost adminbtn--small"
+                  >
+                    Visual editor
+                  </Link>
+                ) : null}
+                <Link
+                  href={p.editorHref}
+                  className="adminbtn adminbtn--primary adminbtn--small"
+                >
+                  {p.editLabel}
+                </Link>
               </div>
             </div>
-            <div className="admintable__actions">
-              {p.visualHref ? (
-                <Link
-                  href={p.visualHref}
-                  className="adminbtn adminbtn--ghost adminbtn--small"
-                >
-                  Visual editor
-                </Link>
-              ) : null}
-              <Link
-                href={p.editorHref}
-                className="adminbtn adminbtn--primary adminbtn--small"
-              >
-                {p.editLabel}
-              </Link>
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </>
   );

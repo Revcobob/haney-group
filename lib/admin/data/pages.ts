@@ -19,10 +19,27 @@ export type AdminSectionRow = {
   section_label: string;
   section_type: string;
   content_json: Record<string, unknown>;
+  draft_content_json: Record<string, unknown> | null;
+  has_draft: boolean;
+  draft_updated_at: string | null;
   display_order: number;
   is_visible: boolean;
   updated_at: string;
 };
+
+// Returns every cms_pages row keyed by slug so the admin Pages index
+// can show live "Published / Draft" badges per row.
+export async function getPageStatusBySlug(): Promise<Map<string, "draft" | "published">> {
+  if (!supabaseServerConfigured) return new Map();
+  const sb = serverSupabase();
+  const { data } = await sb.from("cms_pages").select("slug, status");
+  return new Map(
+    (data ?? []).map((r) => [
+      r.slug as string,
+      (r.status as "draft" | "published") ?? "published",
+    ])
+  );
+}
 
 export async function getOrCreatePageBySlug(slug: string): Promise<AdminPageRow | null> {
   if (!supabaseServerConfigured) return null;
@@ -87,6 +104,9 @@ export async function listEditorSections(
       section_label: s.section_label,
       section_type: s.section_type,
       content_json: s.content_json,
+      draft_content_json: null,
+      has_draft: false,
+      draft_updated_at: null,
       display_order: s.display_order,
       is_visible: true,
       updated_at: "",

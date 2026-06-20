@@ -5,7 +5,13 @@ import { BrandMark } from "@/components/admin/BrandMark";
 
 export const metadata: Metadata = { title: "Access denied" };
 
-export default function ForbiddenPage() {
+export default async function ForbiddenPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ need?: string }>;
+}) {
+  const { need } = await searchParams;
+  const needsFullAdmin = need === "admin";
   return (
     <div className="admin__authshell">
       <div className="admin__authcard">
@@ -14,13 +20,29 @@ export default function ForbiddenPage() {
         </div>
         <div className="admin__authcard-rule" aria-hidden="true"></div>
         <div>
-          <h1>This account is not authorized.</h1>
-          <p>
-            You signed in successfully, but this email is not on the admin
-            allowlist for The Haney Group site. If you should have access, ask a
-            firm principal to add your address to the <code>ADMIN_EMAILS</code>{" "}
-            list and try again.
-          </p>
+          {needsFullAdmin ? (
+            <>
+              <h1>That action requires full admin access.</h1>
+              <p>
+                Your account has the <strong>editor</strong> role, which can
+                edit pages, cards, articles, and media — but not Site Settings,
+                Navigation, page publish status, or row deletes. Ask a firm
+                principal to move your email from <code>ADMIN_EDITORS</code> to{" "}
+                <code>ADMIN_EMAILS</code> if you should have full access.
+              </p>
+            </>
+          ) : (
+            <>
+              <h1>This account is not authorized.</h1>
+              <p>
+                You signed in successfully, but this email is not on the admin
+                or editor allowlist for The Haney Group site. If you should
+                have access, ask a firm principal to add your address to{" "}
+                <code>ADMIN_EMAILS</code> (full access) or{" "}
+                <code>ADMIN_EDITORS</code> (content-only access) and try again.
+              </p>
+            </>
+          )}
         </div>
         <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
           <SignOutButton redirectUrl="/admin/login">
