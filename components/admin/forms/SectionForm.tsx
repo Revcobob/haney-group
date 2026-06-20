@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useEffect, useRef } from "react";
 import { SaveBar } from "./SaveBar";
 import {
   SectionTextField,
@@ -295,11 +295,16 @@ export function SectionForm({
   const status = !state ? "idle" : state.ok ? "success" : "error";
   const message = !state ? undefined : state.ok ? "Saved." : state.error;
 
-  // Fire the onSaved callback on the *transition* to a success state so the
-  // visual editor can reload the iframe right after a successful save.
-  if (state?.ok && onSaved) {
-    queueMicrotask(onSaved);
-  }
+  // Fire onSaved exactly once per state object — useActionState returns the
+  // same reference until the next submit, so an identity check on `state`
+  // prevents the iframe-reload from looping when the parent re-renders.
+  const lastNotifiedState = useRef<typeof state | undefined>(undefined);
+  useEffect(() => {
+    if (state?.ok && onSaved && lastNotifiedState.current !== state) {
+      lastNotifiedState.current = state;
+      onSaved();
+    }
+  }, [state, onSaved]);
 
   return (
     <form action={formAction} className="adminform">

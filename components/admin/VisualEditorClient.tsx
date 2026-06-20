@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import {
   SectionForm,
@@ -86,9 +86,9 @@ export function VisualEditorClient({
 
   const active = sections.find((s) => s.section_key === activeKey) ?? null;
 
-  function reloadIframe() {
+  const reloadIframe = useCallback(() => {
     setIframeKey((k) => k + 1);
-  }
+  }, []);
 
   return (
     <div className={`visualeditor${collapsed ? " visualeditor--collapsed" : ""}`}>
