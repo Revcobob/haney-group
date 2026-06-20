@@ -93,15 +93,31 @@ function setDeep(
   }
 }
 
+export type SaveSectionArgs = {
+  pageId: string;
+  pageSlug: string;
+  sectionKey: string;
+  sectionLabel: string;
+  sectionType: string;
+  displayOrder: number;
+};
+
+// Section meta is now carried by hidden form inputs (prefixed `_meta_`)
+// so a single server action can serve any section without rebinding —
+// the dashboard editor and the visual editor both call it the same way.
+function readSectionArgs(formData: FormData): SaveSectionArgs {
+  const get = (k: string) => String(formData.get(k) ?? "").trim();
+  return {
+    pageId: get("_meta_page_id"),
+    pageSlug: get("_meta_page_slug"),
+    sectionKey: get("_meta_section_key"),
+    sectionLabel: get("_meta_section_label"),
+    sectionType: get("_meta_section_type"),
+    displayOrder: Number(get("_meta_display_order")) || 0,
+  };
+}
+
 export async function saveSectionAction(
-  args: {
-    pageId: string;
-    pageSlug: string;
-    sectionKey: string;
-    sectionLabel: string;
-    sectionType: string;
-    displayOrder: number;
-  },
   _prev: ActionResult | undefined,
   formData: FormData
 ): Promise<ActionResult> {
@@ -111,6 +127,13 @@ export async function saveSectionAction(
       ok: false,
       error:
         "Supabase is not connected. Set the env vars then try again.",
+    };
+  }
+  const args = readSectionArgs(formData);
+  if (!args.pageId || !args.sectionKey || !args.sectionType) {
+    return {
+      ok: false,
+      error: "Section context was missing from the form. Reload and try again.",
     };
   }
   const typeDef = getSectionType(args.sectionType);

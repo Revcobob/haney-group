@@ -5,7 +5,11 @@ import {
   getOrCreatePageBySlug,
   listEditorSections,
 } from "@/lib/admin/data/pages";
-import { VisualEditorClient } from "@/components/admin/VisualEditorClient";
+import { getSectionType } from "@/lib/sections/types";
+import {
+  VisualEditorClient,
+  type EditorSectionData,
+} from "@/components/admin/VisualEditorClient";
 import { supabaseServerConfigured } from "@/lib/env";
 
 export const metadata: Metadata = { title: "Visual editor" };
@@ -31,30 +35,60 @@ export default async function VisualEditorPage({
   if (!fb) notFound();
 
   const publicPath = SLUG_TO_PATH[slug] ?? `/${slug}`;
-  let sections: Array<{ section_key: string; section_label: string; section_type: string }> = [];
+  let pageId = "";
+  let editorRows: EditorSectionData[] = [];
+
   if (supabaseServerConfigured) {
     const page = await getOrCreatePageBySlug(slug);
     if (page) {
+      pageId = page.id;
       const rows = await listEditorSections(page.id, slug);
-      sections = rows.map((s) => ({
+      editorRows = rows.map((s) => {
+        const typeDef = getSectionType(s.section_type);
+        return {
+          section_key: s.section_key,
+          section_label: s.section_label,
+          section_type: s.section_type,
+          display_order: s.display_order,
+          content_json: s.content_json,
+          type_def: typeDef
+            ? {
+                type: typeDef.type,
+                label: typeDef.label,
+                description: typeDef.description,
+                fields: typeDef.fields,
+              }
+            : null,
+        };
+      });
+    }
+  }
+  if (editorRows.length === 0) {
+    editorRows = fb.sections.map((s) => {
+      const typeDef = getSectionType(s.section_type);
+      return {
         section_key: s.section_key,
         section_label: s.section_label,
         section_type: s.section_type,
-      }));
-    }
-  }
-  if (sections.length === 0) {
-    sections = fb.sections.map((s) => ({
-      section_key: s.section_key,
-      section_label: s.section_label,
-      section_type: s.section_type,
-    }));
+        display_order: s.display_order,
+        content_json: s.content_json,
+        type_def: typeDef
+          ? {
+              type: typeDef.type,
+              label: typeDef.label,
+              description: typeDef.description,
+              fields: typeDef.fields,
+            }
+          : null,
+      };
+    });
   }
 
   return (
     <VisualEditorClient
+      pageId={pageId}
       pageSlug={slug}
-      sections={sections}
+      sections={editorRows}
       previewSrc={`/preview${publicPath === "/" ? "/home" : publicPath}?edit=1`}
     />
   );
