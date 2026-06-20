@@ -233,6 +233,14 @@ export const AudienceGridSchema = z.object({
 });
 export type AudienceGridContent = z.infer<typeof AudienceGridSchema>;
 
+export const FinalCtaSchema = z.object({
+  eyebrow: text,
+  heading: text,
+  body: text,
+  cta: CtaSchema.default({ label: "", href: "" }),
+});
+export type FinalCtaContent = z.infer<typeof FinalCtaSchema>;
+
 // ---------- field UI configuration ----------
 export type FieldType =
   | "text"
@@ -583,6 +591,20 @@ const audienceGridDef: SectionTypeDef = {
   empty: () => AudienceGridSchema.parse({}),
 };
 
+const finalCtaDef: SectionTypeDef = {
+  type: "final_cta",
+  label: "Final conversion band",
+  description: "A centered, single-button conversion call placed just before the footer.",
+  schema: FinalCtaSchema,
+  fields: [
+    { key: "eyebrow", label: "Eyebrow (optional)", type: "text", maxLength: 60 },
+    { key: "heading", label: "Heading", type: "textarea", maxLength: 200 },
+    { key: "body", label: "Body", type: "textarea", maxLength: 600 },
+    { key: "cta", label: "Button", type: "cta" },
+  ],
+  empty: () => FinalCtaSchema.parse({}),
+};
+
 export const SECTION_TYPES: Record<string, SectionTypeDef> = {
   hero: heroDef,
   problem: problemDef,
@@ -606,6 +628,7 @@ export const SECTION_TYPES: Record<string, SectionTypeDef> = {
   contact_right_col: contactRightDef,
   quote_card: quoteCardDef,
   audience_grid: audienceGridDef,
+  final_cta: finalCtaDef,
 };
 
 export function getSectionType(type: string): SectionTypeDef | undefined {

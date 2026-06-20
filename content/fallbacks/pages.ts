@@ -245,6 +245,23 @@ export const pageFallbacks: PageFallback[] = [
           },
         },
       },
+      {
+        section_key: "final_cta",
+        section_label: "Final conversion band",
+        section_type: "final_cta",
+        display_order: 12,
+        content_json: {
+          eyebrow: "",
+          heading:
+            "Have a Texas legislative issue that needs a disciplined strategy?",
+          body:
+            "Whether you are preparing for session, responding to a bill, pursuing a budget request, or building support for a policy objective, The Haney Group can help you evaluate the path forward.",
+          cta: {
+            label: "Start a Confidential Conversation",
+            href: "/contact",
+          },
+        },
+      },
     ],
   },
 
