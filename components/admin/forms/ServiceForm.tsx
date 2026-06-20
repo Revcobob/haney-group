@@ -16,6 +16,7 @@ type Defaults = {
   description?: string;
   href?: string;
   icon_media_id?: string;
+  icon_hint?: string;
   display_order?: number;
   is_visible?: boolean;
 };
@@ -80,9 +81,23 @@ export function ServiceForm({
         <MediaPickerField
           name="icon_media_id"
           label="Icon"
-          help="Pick the SVG / PNG icon shown above the title on the card."
+          help={
+            defaults?.icon_hint
+              ? `Expected: ${defaults.icon_hint}`
+              : "Pick the SVG / PNG icon shown above the title on the card."
+          }
           defaultId={defaults?.icon_media_id}
           error={errors.icon_media_id}
+        />
+        <TextField
+          id="icon_hint"
+          name="icon_hint"
+          label="Icon hint (admin-only)"
+          help="A short note describing the concrete visual this slot expects. Shown as helper text above the icon picker — never published to the public site."
+          defaultValue={defaults?.icon_hint ?? ""}
+          error={errors.icon_hint}
+          maxLength={160}
+          placeholder="Bill draft — printed bill or markup document"
         />
       </section>
 

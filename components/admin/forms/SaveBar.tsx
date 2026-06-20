@@ -7,11 +7,15 @@ export function SaveBar({
   status,
   cancelHref,
   primaryLabel = "Save changes",
+  secondary,
 }: {
   message?: string;
   status?: "idle" | "success" | "error";
   cancelHref?: string;
   primaryLabel?: string;
+  /** Optional left-aligned secondary action (e.g. "Reset to default").
+   *  Rendered before the cancel/save cluster. */
+  secondary?: React.ReactNode;
 }) {
   const { pending } = useFormStatus();
   return (
@@ -30,6 +34,9 @@ export function SaveBar({
         </span>
       ) : <span />}
       <div className="adminsavebar__actions">
+        {secondary ? (
+          <span className="adminsavebar__secondary">{secondary}</span>
+        ) : null}
         {cancelHref ? (
           <a className="adminbtn adminbtn--ghost" href={cancelHref}>
             Cancel

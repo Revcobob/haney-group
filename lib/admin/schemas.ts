@@ -73,6 +73,7 @@ export const ServiceSchema = z.object({
   title: requiredText("Title is required"),
   description: requiredText("Description is required"),
   icon_media_id: optionalUuid,
+  icon_hint: optionalText,
   href: optionalHref,
   display_order: orderField,
   is_visible: booleanField,

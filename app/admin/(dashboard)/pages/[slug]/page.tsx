@@ -9,6 +9,7 @@ import {
 } from "@/lib/admin/data/pages";
 import { getSectionType } from "@/lib/sections/types";
 import { SectionForm } from "@/components/admin/forms/SectionForm";
+import { SectionReorderList } from "@/components/admin/SectionReorderList";
 import { saveSectionAction } from "@/lib/admin/actions/sections";
 import { supabaseServerConfigured } from "@/lib/env";
 
@@ -101,27 +102,39 @@ export default async function AdminPageEditor({
       ) : null}
 
       <div style={{ display: "grid", gridTemplateColumns: "260px 1fr", gap: 24, alignItems: "flex-start" }}>
-        <aside className="admin__card" style={{ padding: 6 }}>
-          <div className="admin__side-group" style={{ margin: 0 }}>
-            <div className="admin__side-label">Sections</div>
-            {sections.map((s) => {
-              const isActive = s.section_key === activeKey;
-              return (
-                <Link
-                  key={s.section_key}
-                  href={`/admin/pages/${slug}?section=${s.section_key}`}
-                  className={`admin__side-link${isActive ? " is-active" : ""}`}
-                >
-                  <span style={{ flex: 1 }}>{s.section_label}</span>
-                  {s.isNew ? (
-                    <span className="admintable__pill admintable__pill--draft" style={{ fontSize: 9 }}>
-                      Default
-                    </span>
-                  ) : null}
-                </Link>
-              );
-            })}
+        <aside style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+          <div className="admin__card" style={{ padding: 6 }}>
+            <div className="admin__side-group" style={{ margin: 0 }}>
+              <div className="admin__side-label">Sections</div>
+              {sections.map((s) => {
+                const isActive = s.section_key === activeKey;
+                return (
+                  <Link
+                    key={s.section_key}
+                    href={`/admin/pages/${slug}?section=${s.section_key}`}
+                    className={`admin__side-link${isActive ? " is-active" : ""}`}
+                  >
+                    <span style={{ flex: 1 }}>{s.section_label}</span>
+                    {s.isNew ? (
+                      <span className="admintable__pill admintable__pill--draft" style={{ fontSize: 9 }}>
+                        Default
+                      </span>
+                    ) : null}
+                  </Link>
+                );
+              })}
+            </div>
           </div>
+          {page?.id && sections.length > 1 ? (
+            <SectionReorderList
+              pageId={page.id}
+              pageSlug={slug}
+              items={sections.map((s) => ({
+                section_key: s.section_key,
+                section_label: s.section_label,
+              }))}
+            />
+          ) : null}
         </aside>
 
         <div style={{ minWidth: 0 }}>

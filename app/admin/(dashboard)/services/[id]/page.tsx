@@ -31,6 +31,7 @@ export default async function AdminServiceEditPage({
           description: row.description as string,
           href: (row.href as string | null) ?? undefined,
           icon_media_id: (row.icon_media_id as string | null) ?? undefined,
+          icon_hint: (row.icon_hint as string | null) ?? undefined,
           display_order: row.display_order as number,
           is_visible: row.is_visible as boolean,
         }}

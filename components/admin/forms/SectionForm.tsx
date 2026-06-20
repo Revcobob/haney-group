@@ -16,6 +16,7 @@ import {
 } from "./SectionFields";
 import { TiptapEditor } from "../TiptapEditor";
 import { FieldShell } from "./Fields";
+import { ResetSectionButton } from "./ResetSectionButton";
 import type { ActionResult } from "@/lib/admin/actions/_helpers";
 import type { FieldConfig } from "@/lib/sections/types";
 
@@ -328,7 +329,22 @@ export function SectionForm({
         </div>
         {typeDef.fields.map((f) => renderField(f, content))}
       </section>
-      <SaveBar status={status} message={message} cancelHref={cancelHref} />
+      <SaveBar
+        status={status}
+        message={message}
+        cancelHref={cancelHref}
+        secondary={
+          meta.pageId ? (
+            <ResetSectionButton
+              pageId={meta.pageId}
+              pageSlug={meta.pageSlug}
+              sectionKey={meta.sectionKey}
+              sectionLabel={meta.sectionLabel}
+              onReset={onSaved}
+            />
+          ) : null
+        }
+      />
     </form>
   );
 }
