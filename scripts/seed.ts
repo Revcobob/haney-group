@@ -13,8 +13,45 @@
  * static files working — Phase 4 lets you re-upload through the Media
  * Library to migrate into Supabase Storage proper.
  */
+import { readFileSync, existsSync } from "node:fs";
+import { resolve } from "node:path";
 import { createClient } from "@supabase/supabase-js";
 import { serviceCards } from "../content/fallbacks/services";
+
+// Load .env.local manually so we can give a friendly error if it's missing
+// or doesn't have the keys this script needs.
+(function loadEnvLocal() {
+  const path = resolve(process.cwd(), ".env.local");
+  if (!existsSync(path)) {
+    console.error(
+      "\n❌  Missing .env.local in " + process.cwd() + "\n\n" +
+      "    Create it with at minimum:\n" +
+      "      NEXT_PUBLIC_SUPABASE_URL=https://xxxx.supabase.co\n" +
+      "      SUPABASE_SERVICE_ROLE_KEY=eyJ...\n\n" +
+      "    Copy .env.example to .env.local as a starting point:\n" +
+      "      Copy-Item .env.example .env.local     (PowerShell)\n" +
+      "      cp .env.example .env.local            (bash)\n"
+    );
+    process.exit(1);
+  }
+  const text = readFileSync(path, "utf8");
+  for (const line of text.split(/\r?\n/)) {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith("#")) continue;
+    const eq = trimmed.indexOf("=");
+    if (eq < 0) continue;
+    const key = trimmed.slice(0, eq).trim();
+    let value = trimmed.slice(eq + 1).trim();
+    // Strip optional wrapping quotes
+    if (
+      (value.startsWith('"') && value.endsWith('"')) ||
+      (value.startsWith("'") && value.endsWith("'"))
+    ) {
+      value = value.slice(1, -1);
+    }
+    if (key && !(key in process.env)) process.env[key] = value;
+  }
+})();
 import { industryCards } from "../content/fallbacks/industries";
 import { experienceItems } from "../content/fallbacks/experience";
 import { clientLogos, clientDisclaimer } from "../content/fallbacks/clients";
@@ -140,6 +177,21 @@ async function seedNavigation() {
     ...footerFirmNav.map((n) => ({ ...n, nav_area: "utility_bar", is_visible: true })),
     ...utilityNav.map((n) => ({ ...n, nav_area: "footer_utility", is_visible: true })),
   ];
+
+  // Build the set of (area, label) pairs that SHOULD exist after this seed.
+  // Any row in the DB whose (area, label) isn't in this set gets pruned —
+  // that's how stale rows like the removed TEC link disappear on next seed.
+  const want = new Set(all.map((n) => `${n.nav_area}::${n.label}`));
+  const { data: existing } = await sb
+    .from("cms_navigation_items")
+    .select("id, nav_area, label");
+  for (const row of existing ?? []) {
+    const key = `${row.nav_area}::${row.label}`;
+    if (!want.has(key)) {
+      await sb.from("cms_navigation_items").delete().eq("id", row.id);
+    }
+  }
+
   for (const n of all) {
     await upsertOne(
       "cms_navigation_items",
@@ -147,7 +199,7 @@ async function seedNavigation() {
       n
     );
   }
-  console.log(`✓ Navigation (${all.length} links)`);
+  console.log(`✓ Navigation (${all.length} links, stale pruned)`);
 }
 
 async function seedServices() {
