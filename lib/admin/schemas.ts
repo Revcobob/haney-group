@@ -53,6 +53,18 @@ export const SettingsSchema = z.object({
   accessibility_link: optionalHref,
   default_og_image: optionalText,
   consent_language: requiredText("Consent language is required"),
+
+  // Contact page + form
+  contact_notification_email: requiredEmail("Please enter a valid email for contact-form alerts"),
+  contact_page_eyebrow: optionalText,
+  contact_page_headline: optionalText,
+  contact_page_lede: optionalText,
+  contact_left_eyebrow: optionalText,
+  contact_left_heading: optionalText,
+  contact_left_body_html: optionalText,
+  contact_right_eyebrow: optionalText,
+  contact_right_heading: optionalText,
+  contact_form_submit_label: optionalText,
 });
 export type SettingsInput = z.infer<typeof SettingsSchema>;
 
