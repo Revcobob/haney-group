@@ -39,3 +39,15 @@ export function getAdminEmails(): string[] {
     .map((s) => s.trim().toLowerCase())
     .filter(Boolean);
 }
+
+// Editors can edit content (cards, sections, articles, media) but
+// cannot touch Site Settings, Navigation, page publish status, or
+// delete rows. Empty list means "no editor-only users".
+export function getEditorEmails(): string[] {
+  const raw = read("ADMIN_EDITORS");
+  if (!raw) return [];
+  return raw
+    .split(",")
+    .map((s) => s.trim().toLowerCase())
+    .filter(Boolean);
+}

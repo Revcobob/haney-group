@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { requireAdmin } from "@/lib/auth";
+import { requireAdmin, requireFullAdmin } from "@/lib/auth";
 import { serverSupabase } from "@/lib/supabase/server";
 import { supabaseServerConfigured } from "@/lib/env";
 import { getSectionType } from "@/lib/sections/types";
@@ -366,7 +366,7 @@ export async function setPageStatusAction(
   pageSlug: string,
   status: "draft" | "published"
 ): Promise<ActionResult> {
-  const admin = await requireAdmin();
+  const admin = await requireFullAdmin();
   if (!supabaseServerConfigured) {
     return { ok: false, error: "Supabase is not connected." };
   }

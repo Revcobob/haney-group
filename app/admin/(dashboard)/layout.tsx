@@ -14,7 +14,7 @@ export default async function AuthedAdminLayout({
   return (
     <div className="admin">
       <AdminHeader user={user} />
-      <AdminSidebar />
+      <AdminSidebar role={user.role} />
       <div className="admin__main">{children}</div>
     </div>
   );

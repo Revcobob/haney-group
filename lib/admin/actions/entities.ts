@@ -9,7 +9,7 @@ import {
   ClientLogoSchema,
   NavItemSchema,
 } from "@/lib/admin/schemas";
-import { requireAdmin } from "@/lib/auth";
+import { requireAdmin, requireFullAdmin } from "@/lib/auth";
 import { serverSupabase } from "@/lib/supabase/server";
 import { supabaseServerConfigured } from "@/lib/env";
 import { recordAudit } from "@/lib/admin/audit";
@@ -45,11 +45,15 @@ const adminListPathFor: Record<EntityTable, string> = {
   cms_navigation_items: "/admin/navigation",
 };
 
+// Tables an "editor" role cannot create/update — only full admins.
+const ADMIN_ONLY: ReadonlySet<EntityTable> = new Set(["cms_navigation_items"]);
+
 export async function createEntityAction(
   table: EntityTable,
   _prev: ActionResult | undefined,
   formData: FormData
 ): Promise<ActionResult> {
+  if (ADMIN_ONLY.has(table)) await requireFullAdmin();
   const schema = schemaFor[table];
   let createdLabel: string | null = null;
   const result = await adminFormAction(schema, formData, async (input, sb, adminId) => {
@@ -81,6 +85,7 @@ export async function updateEntityAction(
   _prev: ActionResult | undefined,
   formData: FormData
 ): Promise<ActionResult> {
+  if (ADMIN_ONLY.has(table)) await requireFullAdmin();
   const schema = schemaFor[table];
   let updatedLabel: string | null = null;
   const result = await adminFormAction(schema, formData, async (input, sb) => {
@@ -110,7 +115,7 @@ export async function deleteEntityAction(
   table: EntityTable,
   id: string
 ): Promise<ActionResult> {
-  const admin = await requireAdmin();
+  const admin = await requireFullAdmin();
   if (!supabaseServerConfigured) {
     return { ok: false, error: "Supabase is not configured." };
   }
