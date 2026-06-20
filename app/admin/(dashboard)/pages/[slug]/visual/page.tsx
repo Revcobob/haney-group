@@ -45,12 +45,20 @@ export default async function VisualEditorPage({
       const rows = await listEditorSections(page.id, slug);
       editorRows = rows.map((s) => {
         const typeDef = getSectionType(s.section_type);
+        // Editing always works against the draft when one exists, so
+        // the form prefills with whatever's staged rather than the
+        // last-published copy.
+        const content = s.has_draft && s.draft_content_json
+          ? s.draft_content_json
+          : s.content_json;
         return {
           section_key: s.section_key,
           section_label: s.section_label,
           section_type: s.section_type,
           display_order: s.display_order,
-          content_json: s.content_json,
+          content_json: content,
+          has_draft: s.has_draft,
+          draft_updated_at: s.draft_updated_at,
           type_def: typeDef
             ? {
                 type: typeDef.type,
@@ -72,6 +80,8 @@ export default async function VisualEditorPage({
         section_type: s.section_type,
         display_order: s.display_order,
         content_json: s.content_json,
+        has_draft: false,
+        draft_updated_at: null,
         type_def: typeDef
           ? {
               type: typeDef.type,
