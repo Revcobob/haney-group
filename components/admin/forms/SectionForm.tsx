@@ -9,7 +9,12 @@ import {
   SectionImageField,
   SectionParagraphList,
   SectionCardList,
+  SectionStatList,
+  SectionPrinciplesList,
+  SectionFounderList,
 } from "./SectionFields";
+import { TiptapEditor } from "../TiptapEditor";
+import { FieldShell } from "./Fields";
 import type { ActionResult } from "@/lib/admin/actions/_helpers";
 import type { FieldConfig } from "@/lib/sections/types";
 
@@ -29,6 +34,9 @@ type Action = (
 
 type Cta = { label?: string; href?: string };
 type CardArrItem = { image_id: string; image_url: string; title: string; body: string };
+type StatItem = { num: string; label: string };
+type PrincipleItem = { num: string; title: string; body: string };
+type FounderItem = { name: string; role: string; bio: string };
 
 function asString(v: unknown): string {
   return typeof v === "string" ? v : "";
@@ -53,6 +61,44 @@ function asCardArray(v: unknown): CardArrItem[] {
       };
     }
     return { image_id: "", image_url: "", title: "", body: "" };
+  });
+}
+function asStatArray(v: unknown): StatItem[] {
+  if (!Array.isArray(v)) return [];
+  return v.map((c) => {
+    if (c && typeof c === "object") {
+      const o = c as Record<string, unknown>;
+      return { num: asString(o.num), label: asString(o.label) };
+    }
+    return { num: "", label: "" };
+  });
+}
+function asPrinciplesArray(v: unknown): PrincipleItem[] {
+  if (!Array.isArray(v)) return [];
+  return v.map((c) => {
+    if (c && typeof c === "object") {
+      const o = c as Record<string, unknown>;
+      return {
+        num: asString(o.num),
+        title: asString(o.title),
+        body: asString(o.body),
+      };
+    }
+    return { num: "", title: "", body: "" };
+  });
+}
+function asFounderArray(v: unknown): FounderItem[] {
+  if (!Array.isArray(v)) return [];
+  return v.map((c) => {
+    if (c && typeof c === "object") {
+      const o = c as Record<string, unknown>;
+      return {
+        name: asString(o.name),
+        role: asString(o.role),
+        bio: asString(o.bio),
+      };
+    }
+    return { name: "", role: "", bio: "" };
   });
 }
 
@@ -147,6 +193,48 @@ function renderField(field: FieldConfig, content: Record<string, unknown>) {
           help={field.help}
         />
       );
+    case "stat-list":
+      return (
+        <SectionStatList
+          key={field.key}
+          name={field.key}
+          label={field.label}
+          defaultValue={asStatArray(v)}
+          help={field.help}
+        />
+      );
+    case "principles-list":
+      return (
+        <SectionPrinciplesList
+          key={field.key}
+          name={field.key}
+          label={field.label}
+          defaultValue={asPrinciplesArray(v)}
+          help={field.help}
+        />
+      );
+    case "founder-list":
+      return (
+        <SectionFounderList
+          key={field.key}
+          name={field.key}
+          label={field.label}
+          defaultValue={asFounderArray(v)}
+          help={field.help}
+        />
+      );
+    case "rich-text": {
+      const id = `f-${field.key.replace(/[^a-z0-9]/gi, "-")}`;
+      return (
+        <FieldShell key={field.key} id={id} label={field.label} help={field.help}>
+          <TiptapEditor
+            name={field.key}
+            defaultHtml={asString(v)}
+            placeholder={field.placeholder}
+          />
+        </FieldShell>
+      );
+    }
     default:
       return null;
   }

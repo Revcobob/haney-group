@@ -1,8 +1,16 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ClosingCTA } from "@/components/site/ClosingCTA";
+import { EditableRegion } from "@/components/site/EditableRegion";
+import { PageHeroBlock } from "@/components/site/PageBlocks";
 import { getServiceCards } from "@/lib/content/site";
+import { getPageWithSections, type PageSection } from "@/lib/content/pages";
 import { resolveMetadata } from "@/lib/content/seo";
+import type {
+  PageHeroContent,
+  SectionHeaderContent,
+  ProcessBreakContent,
+} from "@/lib/sections/types";
 
 export async function generateMetadata(): Promise<Metadata> {
   return resolveMetadata({
@@ -42,131 +50,185 @@ const practiceAreas = [
   },
 ];
 
+function findSection(sections: PageSection[], key: string): PageSection | null {
+  return sections.find((s) => s.section_key === key) ?? null;
+}
+
 export default async function ServicesPage() {
-  const capabilities = await getServiceCards();
+  const [page, capabilities] = await Promise.all([
+    getPageWithSections("services"),
+    getServiceCards(),
+  ]);
+  const sections = page?.sections ?? [];
+  const hero = findSection(sections, "page_hero");
+  const capsHeader = findSection(sections, "capabilities_intro");
+  const srbreak = findSection(sections, "srbreak");
+  const practiceHeader = findSection(sections, "practice_areas_intro");
+  const closing = findSection(sections, "closing_cta");
+
   return (
     <>
-      <section className="pagehero pagehero--photo" aria-labelledby="ph-h1">
-        <div
-          className="pagehero__bg"
-          style={{ backgroundImage: "url('/assets/img/services-hero-web.jpg')" }}
-          aria-hidden="true"
-        ></div>
-        <div className="container pagehero__inner">
-          <p className="pagehero__crumbs">
-            <Link href="/">Home</Link>
-            <span className="sep">/</span>
-            <span>Services</span>
-          </p>
-          <p className="eyebrow" style={{ marginBottom: 22 }}>
-            Services
-          </p>
-          <h1 className="h1" id="ph-h1">
-            Services built around how Texas policy actually moves.
-          </h1>
-          <p className="lede">
-            Six capabilities and four specialized practice areas, organized for
-            the way the Legislature, the appropriations process, the executive
-            agencies, and the press cycle interact during a session.
-          </p>
-        </div>
-      </section>
+      {hero ? (
+        <PageHeroBlock s={hero} c={hero.content_json as PageHeroContent} />
+      ) : null}
 
-      <section className="caps" data-reveal>
-        <div className="container">
-          <div className="section__head">
-            <p className="eyebrow">Capabilities</p>
-            <h2 className="h2">
-              Six capabilities, organized around how policy gets made.
-            </h2>
-          </div>
-          <div className="caps__grid">
-            {capabilities.map((cap) => (
-              <article key={cap.title} className="cap">
-                <img
-                  className="cap__icon"
-                  src={cap.icon}
-                  alt=""
-                  loading="lazy"
-                  width={480}
-                  height={480}
-                />
-                <h3>{cap.title}</h3>
-                <p>{cap.description}</p>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="srbreak" aria-labelledby="srbreak-h" data-reveal>
-        <div className="container">
-          <div className="srbreak__inner">
-            <figure className="srbreak__media">
-              <img
-                src="/assets/img/banner-services-page.png"
-                alt="Professionals in conversation at a conference table"
-                loading="lazy"
-                width={1600}
-                height={686}
-              />
-            </figure>
-            <div className="srbreak__copy">
-              <p className="eyebrow">Senior-Level Representation</p>
-              <h2 id="srbreak-h">
-                Experienced representation when the process starts moving.
-              </h2>
-              <p>
-                The Haney Group provides direct principal-level guidance through
-                the legislative, appropriations, and procedural decisions that
-                shape outcomes. We help clients prepare early, navigate key
-                decision points, and execute with discipline when timing matters.
-              </p>
-              <div className="srbreak__cta">
-                <Link className="btn btn--primary" href="/contact">
-                  Discuss Your Legislative Strategy{" "}
-                  <span className="arrow" aria-hidden="true">
-                    →
-                  </span>
-                </Link>
+      {capsHeader ? (
+        <EditableRegion
+          sectionKey={capsHeader.section_key}
+          sectionLabel={capsHeader.section_label}
+        >
+          <section className="caps" data-reveal>
+            <div className="container">
+              <div className="section__head">
+                {(capsHeader.content_json as SectionHeaderContent).eyebrow ? (
+                  <p className="eyebrow">
+                    {(capsHeader.content_json as SectionHeaderContent).eyebrow}
+                  </p>
+                ) : null}
+                {(capsHeader.content_json as SectionHeaderContent).heading ? (
+                  <h2 className="h2">
+                    {(capsHeader.content_json as SectionHeaderContent).heading}
+                  </h2>
+                ) : null}
+              </div>
+              <div className="caps__grid">
+                {capabilities.map((cap) => (
+                  <article key={cap.title} className="cap">
+                    <img
+                      className="cap__icon"
+                      src={cap.icon}
+                      alt=""
+                      loading="lazy"
+                      width={480}
+                      height={480}
+                    />
+                    <h3>{cap.title}</h3>
+                    <p>{cap.description}</p>
+                  </article>
+                ))}
               </div>
             </div>
-          </div>
-        </div>
-      </section>
+          </section>
+        </EditableRegion>
+      ) : null}
 
-      <section className="approach" data-reveal>
-        <div className="container">
-          <div className="section__head">
-            <p className="eyebrow">Practice Areas</p>
-            <h2 className="h2">Four practice areas, each led by a principal.</h2>
-          </div>
-          <div className="tilegrid">
-            {practiceAreas.map((p) => (
-              <Link key={p.href} className="tile" href={p.href}>
-                <img
-                  className="tile__icon"
-                  src={p.icon}
-                  alt=""
-                  loading="lazy"
-                  width={480}
-                  height={480}
-                />
-                <h3>{p.title}</h3>
-                <p>{p.body}</p>
-                <span className="tile__more">
-                  Read more{" "}
-                  <span className="arrow" aria-hidden="true">
-                    →
-                  </span>
-                </span>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
+      {srbreak ? (
+        <EditableRegion
+          sectionKey={srbreak.section_key}
+          sectionLabel={srbreak.section_label}
+        >
+          <section className="srbreak" aria-labelledby="srbreak-h" data-reveal>
+            <div className="container">
+              <div className="srbreak__inner">
+                <figure className="srbreak__media">
+                  {(srbreak.content_json as ProcessBreakContent).image_url ? (
+                    <img
+                      src={
+                        (srbreak.content_json as ProcessBreakContent).image_url
+                      }
+                      alt={
+                        (srbreak.content_json as ProcessBreakContent).image_alt
+                      }
+                      loading="lazy"
+                      width={1600}
+                      height={686}
+                    />
+                  ) : null}
+                </figure>
+                <div className="srbreak__copy">
+                  {(srbreak.content_json as ProcessBreakContent).eyebrow ? (
+                    <p className="eyebrow">
+                      {(srbreak.content_json as ProcessBreakContent).eyebrow}
+                    </p>
+                  ) : null}
+                  {(srbreak.content_json as ProcessBreakContent).heading ? (
+                    <h2 id="srbreak-h">
+                      {(srbreak.content_json as ProcessBreakContent).heading}
+                    </h2>
+                  ) : null}
+                  {(srbreak.content_json as ProcessBreakContent).body ? (
+                    <p>{(srbreak.content_json as ProcessBreakContent).body}</p>
+                  ) : null}
+                  {(srbreak.content_json as ProcessBreakContent).primary_cta
+                    ?.label ? (
+                    <div className="srbreak__cta">
+                      <Link
+                        className="btn btn--primary"
+                        href={
+                          (srbreak.content_json as ProcessBreakContent)
+                            .primary_cta?.href || "#"
+                        }
+                      >
+                        {
+                          (srbreak.content_json as ProcessBreakContent)
+                            .primary_cta?.label
+                        }{" "}
+                        <span className="arrow" aria-hidden="true">
+                          →
+                        </span>
+                      </Link>
+                    </div>
+                  ) : null}
+                </div>
+              </div>
+            </div>
+          </section>
+        </EditableRegion>
+      ) : null}
 
-      <ClosingCTA />
+      {practiceHeader ? (
+        <EditableRegion
+          sectionKey={practiceHeader.section_key}
+          sectionLabel={practiceHeader.section_label}
+        >
+          <section className="approach" data-reveal>
+            <div className="container">
+              <div className="section__head">
+                {(practiceHeader.content_json as SectionHeaderContent).eyebrow ? (
+                  <p className="eyebrow">
+                    {
+                      (practiceHeader.content_json as SectionHeaderContent)
+                        .eyebrow
+                    }
+                  </p>
+                ) : null}
+                {(practiceHeader.content_json as SectionHeaderContent).heading ? (
+                  <h2 className="h2">
+                    {
+                      (practiceHeader.content_json as SectionHeaderContent)
+                        .heading
+                    }
+                  </h2>
+                ) : null}
+              </div>
+              <div className="tilegrid">
+                {practiceAreas.map((p) => (
+                  <Link key={p.href} className="tile" href={p.href}>
+                    <img
+                      className="tile__icon"
+                      src={p.icon}
+                      alt=""
+                      loading="lazy"
+                      width={480}
+                      height={480}
+                    />
+                    <h3>{p.title}</h3>
+                    <p>{p.body}</p>
+                    <span className="tile__more">
+                      Read more{" "}
+                      <span className="arrow" aria-hidden="true">
+                        →
+                      </span>
+                    </span>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </section>
+        </EditableRegion>
+      ) : null}
+
+      {closing ? <ClosingCTA section={closing} /> : <ClosingCTA />}
     </>
   );
 }
