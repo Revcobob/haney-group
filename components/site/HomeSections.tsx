@@ -9,6 +9,7 @@ import type {
   SectionHeaderContent,
   IssuesContent,
   ClosingCtaContent,
+  AudienceGridContent,
 } from "@/lib/sections/types";
 import type { PageSection } from "@/lib/content/pages";
 import type { ServiceCard } from "@/content/fallbacks/services";
@@ -268,6 +269,37 @@ function ApproachBlock({ s, c }: { s: PageSection; c: ApproachContent }) {
   );
 }
 
+function AudienceBlock({ s, c }: { s: PageSection; c: AudienceGridContent }) {
+  return (
+    <Region sectionKey={s.section_key} sectionLabel={s.section_label}>
+      <section className="audience" data-reveal>
+        <div className="container">
+          <div className="section__head">
+            {c.eyebrow ? <p className="eyebrow">{c.eyebrow}</p> : null}
+            {c.heading ? <h2 className="h2">{c.heading}</h2> : null}
+            {c.lede ? (
+              <p className="lede" style={{ marginTop: 0 }}>
+                {c.lede}
+              </p>
+            ) : null}
+          </div>
+          <div className="audience__grid">
+            {c.items.map((item, i) => (
+              <article key={i} className="audience__card">
+                <span className="audience__mark" aria-hidden="true">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <h3 className="audience__title">{item.title}</h3>
+                <p className="audience__body">{item.body}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+    </Region>
+  );
+}
+
 function PrincipalsBlock({ s, c }: { s: PageSection; c: SectionHeaderContent }) {
   // Principal cards themselves are hardcoded for now (Phase 4 punted on them
   // intentionally). The editable section is the intro heading + lede.
@@ -499,6 +531,10 @@ export function HomeSections({
           case "approach": {
             const f = findSection<ApproachContent>([s], s.section_key);
             return f ? <ApproachBlock key={s.section_key} s={s} c={f.content} /> : null;
+          }
+          case "audience_grid": {
+            const f = findSection<AudienceGridContent>([s], s.section_key);
+            return f ? <AudienceBlock key={s.section_key} s={s} c={f.content} /> : null;
           }
           case "principals_intro": {
             const f = findSection<SectionHeaderContent>([s], s.section_key);

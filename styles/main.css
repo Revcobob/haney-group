@@ -577,6 +577,58 @@ section.tight { padding-block: clamp(48px, 6vw, 72px); }
 .step h3 { font-size: 17px; font-weight: 600; }
 .step p { color: var(--text-2); font-size: 14.5px; line-height: 1.55; margin: 0; }
 
+/* ---------- Who We Help ---------- */
+.audience {
+  background: var(--paper);
+  border-bottom: 1px solid var(--line-1);
+}
+.audience__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+@media (min-width: 720px) {
+  .audience__grid { grid-template-columns: repeat(2, 1fr); gap: 32px; }
+}
+.audience__card {
+  position: relative;
+  background: var(--paper);
+  border: 1px solid var(--line-1);
+  border-radius: var(--radius-md);
+  padding: 36px 32px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  transition: border-color .2s var(--ease), transform .2s var(--ease);
+}
+.audience__card:hover {
+  border-color: var(--amber-500);
+  transform: translateY(-2px);
+}
+.audience__mark {
+  display: inline-block;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--amber-600);
+  letter-spacing: 0.04em;
+  line-height: 1;
+}
+.audience__title {
+  font-size: 19px;
+  font-weight: 600;
+  color: var(--text-1);
+  margin: 0;
+  text-wrap: balance;
+}
+.audience__body {
+  color: var(--text-2);
+  font-size: 15px;
+  line-height: 1.6;
+  margin: 0;
+  max-width: 56ch;
+}
+
 /* ---------- Principals ---------- */
 .firm { background: var(--paper); border-bottom: 1px solid var(--line-1); }
 .firm__top {
@@ -2573,6 +2625,10 @@ body.body--visual-editor .admin__header { position: sticky; top: 0; }
   outline-offset: -2px;
   cursor: pointer;
   transition: outline-color .15s var(--ease);
+  /* The public-site header is sticky (~80px). Without scroll-margin-top
+     a scrollIntoView({block:"start"}) on a region tucks the eyebrow
+     under the header. Keep the first field of the section visible. */
+  scroll-margin-top: 96px;
 }
 .editable-region:hover,
 .editable-region.is-targeted {

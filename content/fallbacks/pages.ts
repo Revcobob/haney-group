@@ -153,10 +153,44 @@ export const pageFallbacks: PageFallback[] = [
         },
       },
       {
+        section_key: "audience_grid",
+        section_label: "Who We Help",
+        section_type: "audience_grid",
+        display_order: 7,
+        content_json: {
+          eyebrow: "Who We Help",
+          heading: "Built for the organizations that move policy in Texas.",
+          lede:
+            "The firm represents clients whose priorities require senior judgment, procedural fluency, and disciplined execution at the Capitol — from corporate boards to lobby firms that need an extra hand on the floor.",
+          items: [
+            {
+              title: "Corporations",
+              body:
+                "Legislative risk analysis, issue advocacy, regulatory strategy, and appropriations positioning.",
+            },
+            {
+              title: "Associations",
+              body:
+                "Member-driven policy agendas, coalition building, bill strategy, and Capitol representation.",
+            },
+            {
+              title: "Lobby Firms",
+              body:
+                "Procedural analysis, House Rules guidance, amendment strategy, and backup capacity during session.",
+            },
+            {
+              title: "Policy Shops & Think Tanks",
+              body:
+                "Bill development, legislative education, author strategy, and stakeholder alignment.",
+            },
+          ],
+        },
+      },
+      {
         section_key: "principals_intro",
         section_label: "Principals intro",
         section_type: "principals_intro",
-        display_order: 7,
+        display_order: 8,
         content_json: {
           eyebrow: "The Principals",
           heading: "Proven expertise. Focused results. Unmatched influence.",
@@ -168,7 +202,7 @@ export const pageFallbacks: PageFallback[] = [
         section_key: "issues",
         section_label: "Industries we serve",
         section_type: "issues",
-        display_order: 8,
+        display_order: 9,
         content_json: {
           eyebrow: "Experience",
           heading: "Experience across the issues that shape Texas.",
@@ -183,7 +217,7 @@ export const pageFallbacks: PageFallback[] = [
         section_key: "insights_intro",
         section_label: "Insights teaser",
         section_type: "insights_intro",
-        display_order: 9,
+        display_order: 10,
         content_json: {
           eyebrow: "Insights",
           heading: "Legislative perspective for clients preparing ahead.",
@@ -195,7 +229,7 @@ export const pageFallbacks: PageFallback[] = [
         section_key: "closing_cta",
         section_label: "Closing CTA",
         section_type: "closing_cta",
-        display_order: 10,
+        display_order: 11,
         content_json: {
           eyebrow: "Contact",
           heading: "Preparing for the next legislative session?",

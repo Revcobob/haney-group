@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useEffect, useRef } from "react";
 import { SaveBar } from "./SaveBar";
 import {
   SectionTextField,
@@ -12,6 +12,7 @@ import {
   SectionStatList,
   SectionPrinciplesList,
   SectionFounderList,
+  SectionAudienceList,
 } from "./SectionFields";
 import { TiptapEditor } from "../TiptapEditor";
 import { FieldShell } from "./Fields";
@@ -37,6 +38,7 @@ type CardArrItem = { image_id: string; image_url: string; title: string; body: s
 type StatItem = { num: string; label: string };
 type PrincipleItem = { num: string; title: string; body: string };
 type FounderItem = { name: string; role: string; bio: string };
+type AudienceItem = { title: string; body: string };
 
 function asString(v: unknown): string {
   return typeof v === "string" ? v : "";
@@ -99,6 +101,16 @@ function asFounderArray(v: unknown): FounderItem[] {
       };
     }
     return { name: "", role: "", bio: "" };
+  });
+}
+function asAudienceArray(v: unknown): AudienceItem[] {
+  if (!Array.isArray(v)) return [];
+  return v.map((c) => {
+    if (c && typeof c === "object") {
+      const o = c as Record<string, unknown>;
+      return { title: asString(o.title), body: asString(o.body) };
+    }
+    return { title: "", body: "" };
   });
 }
 
@@ -223,6 +235,16 @@ function renderField(field: FieldConfig, content: Record<string, unknown>) {
           help={field.help}
         />
       );
+    case "audience-list":
+      return (
+        <SectionAudienceList
+          key={field.key}
+          name={field.key}
+          label={field.label}
+          defaultValue={asAudienceArray(v)}
+          help={field.help}
+        />
+      );
     case "rich-text": {
       const id = `f-${field.key.replace(/[^a-z0-9]/gi, "-")}`;
       return (
@@ -273,11 +295,16 @@ export function SectionForm({
   const status = !state ? "idle" : state.ok ? "success" : "error";
   const message = !state ? undefined : state.ok ? "Saved." : state.error;
 
-  // Fire the onSaved callback on the *transition* to a success state so the
-  // visual editor can reload the iframe right after a successful save.
-  if (state?.ok && onSaved) {
-    queueMicrotask(onSaved);
-  }
+  // Fire onSaved exactly once per state object — useActionState returns the
+  // same reference until the next submit, so an identity check on `state`
+  // prevents the iframe-reload from looping when the parent re-renders.
+  const lastNotifiedState = useRef<typeof state | undefined>(undefined);
+  useEffect(() => {
+    if (state?.ok && onSaved && lastNotifiedState.current !== state) {
+      lastNotifiedState.current = state;
+      onSaved();
+    }
+  }, [state, onSaved]);
 
   return (
     <form action={formAction} className="adminform">
