@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState, useEffect, useRef } from "react";
+import { useUnsavedChangesGuard } from "./useUnsavedChangesGuard";
 import { SaveBar } from "./SaveBar";
 import {
   SectionTextField,
@@ -293,6 +294,8 @@ export function SectionForm({
     action,
     undefined
   );
+  const formRef = useRef<HTMLFormElement>(null);
+  const { markClean } = useUnsavedChangesGuard(formRef);
   const status = !state ? "idle" : state.ok ? "success" : "error";
   const message = !state ? undefined : state.ok ? "Saved." : state.error;
 
@@ -301,14 +304,15 @@ export function SectionForm({
   // prevents the iframe-reload from looping when the parent re-renders.
   const lastNotifiedState = useRef<typeof state | undefined>(undefined);
   useEffect(() => {
-    if (state?.ok && onSaved && lastNotifiedState.current !== state) {
+    if (state?.ok && lastNotifiedState.current !== state) {
       lastNotifiedState.current = state;
-      onSaved();
+      markClean();
+      onSaved?.();
     }
-  }, [state, onSaved]);
+  }, [state, onSaved, markClean]);
 
   return (
-    <form action={formAction} className="adminform">
+    <form ref={formRef} action={formAction} className="adminform">
       {/* Hidden context for the server action — no per-call bind required */}
       <input type="hidden" name="_meta_page_id" value={meta.pageId} />
       <input type="hidden" name="_meta_page_slug" value={meta.pageSlug} />

@@ -6,6 +6,7 @@ import { serverSupabase } from "@/lib/supabase/server";
 import { supabaseServerConfigured } from "@/lib/env";
 import { getSectionType } from "@/lib/sections/types";
 import { getPageFallback } from "@/content/fallbacks/pages";
+import { sanitizeArticleHtml } from "@/lib/sanitize";
 import type { ActionResult } from "./_helpers";
 
 const SLUG_TO_PUBLIC_PATH: Record<string, string> = {
@@ -140,6 +141,14 @@ export async function saveSectionAction(
   if (!typeDef) return { ok: false, error: `Unknown section type: ${args.sectionType}` };
 
   const raw = formDataToJson(formData);
+  // Sanitize every rich-text field on the type before validation so the
+  // body_html columns never carry script tags or unsafe attributes.
+  for (const field of typeDef.fields) {
+    if (field.type === "rich-text") {
+      const v = raw[field.key];
+      if (typeof v === "string") raw[field.key] = sanitizeArticleHtml(v);
+    }
+  }
   // Always normalize through the schema so optional fields get their defaults
   // and unrecognized keys get dropped.
   const parsed = typeDef.schema.safeParse(raw);
@@ -332,6 +341,28 @@ export async function resetSectionToDefaultAction(
   revalidatePath(publicPathForSlug(pageSlug));
   revalidatePath(`/admin/pages/${pageSlug}`);
   revalidatePath(`/admin/pages/${pageSlug}/visual`);
+  return { ok: true };
+}
+
+// Toggle a page between "published" (live) and "draft" (hidden from
+// the public site). Public reads filter on status='published'.
+export async function setPageStatusAction(
+  pageSlug: string,
+  status: "draft" | "published"
+): Promise<ActionResult> {
+  await requireAdmin();
+  if (!supabaseServerConfigured) {
+    return { ok: false, error: "Supabase is not connected." };
+  }
+  if (!pageSlug) return { ok: false, error: "Missing page slug." };
+  const sb = serverSupabase();
+  const { error } = await sb
+    .from("cms_pages")
+    .update({ status } as never)
+    .eq("slug", pageSlug);
+  if (error) return { ok: false, error: error.message };
+  revalidatePath(publicPathForSlug(pageSlug));
+  revalidatePath("/admin/pages");
   return { ok: true };
 }
 

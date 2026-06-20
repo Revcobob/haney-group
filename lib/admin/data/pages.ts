@@ -24,6 +24,20 @@ export type AdminSectionRow = {
   updated_at: string;
 };
 
+// Returns every cms_pages row keyed by slug so the admin Pages index
+// can show live "Published / Draft" badges per row.
+export async function getPageStatusBySlug(): Promise<Map<string, "draft" | "published">> {
+  if (!supabaseServerConfigured) return new Map();
+  const sb = serverSupabase();
+  const { data } = await sb.from("cms_pages").select("slug, status");
+  return new Map(
+    (data ?? []).map((r) => [
+      r.slug as string,
+      (r.status as "draft" | "published") ?? "published",
+    ])
+  );
+}
+
 export async function getOrCreatePageBySlug(slug: string): Promise<AdminPageRow | null> {
   if (!supabaseServerConfigured) return null;
   const sb = serverSupabase();

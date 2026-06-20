@@ -11,7 +11,7 @@ import sanitizeHtml, { type IOptions } from "sanitize-html";
 
 const OPTIONS: IOptions = {
   allowedTags: [
-    "p", "br", "strong", "em", "u", "s", "code",
+    "p", "br", "strong", "em", "u", "s", "code", "pre",
     "h1", "h2", "h3", "h4",
     "ul", "ol", "li",
     "blockquote",
