@@ -10,7 +10,6 @@ import type {
   IssuesContent,
   ClosingCtaContent,
   AudienceGridContent,
-  FinalCtaContent,
 } from "@/lib/sections/types";
 import type { PageSection } from "@/lib/content/pages";
 import type { ServiceCard } from "@/content/fallbacks/services";
@@ -456,32 +455,6 @@ function InsightsTeaserBlock({
   );
 }
 
-function FinalCtaBlock({ s, c }: { s: PageSection; c: FinalCtaContent }) {
-  return (
-    <Region sectionKey={s.section_key} sectionLabel={s.section_label}>
-      <section className="finalcta" data-reveal aria-labelledby={`finalcta-${s.section_key}`}>
-        <div className="container">
-          <div className="finalcta__inner">
-            {c.eyebrow ? <p className="finalcta__eyebrow">{c.eyebrow}</p> : null}
-            <h2 className="finalcta__heading" id={`finalcta-${s.section_key}`}>
-              {c.heading}
-            </h2>
-            {c.body ? <p className="finalcta__body">{c.body}</p> : null}
-            {c.cta.label ? (
-              <div className="finalcta__cta">
-                <Link className="btn btn--primary btn--lg" href={c.cta.href || "#"}>
-                  {c.cta.label}
-                  <span className="arrow" aria-hidden="true">→</span>
-                </Link>
-              </div>
-            ) : null}
-          </div>
-        </div>
-      </section>
-    </Region>
-  );
-}
-
 function ClosingCtaBlock({ s, c }: { s: PageSection; c: ClosingCtaContent }) {
   return (
     <Region sectionKey={s.section_key} sectionLabel={s.section_label}>
@@ -587,10 +560,6 @@ export function HomeSections({
           case "closing_cta": {
             const f = findSection<ClosingCtaContent>([s], s.section_key);
             return f ? <ClosingCtaBlock key={s.section_key} s={s} c={f.content} /> : null;
-          }
-          case "final_cta": {
-            const f = findSection<FinalCtaContent>([s], s.section_key);
-            return f ? <FinalCtaBlock key={s.section_key} s={s} c={f.content} /> : null;
           }
           default:
             return null;
