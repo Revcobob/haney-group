@@ -152,10 +152,6 @@ h1, h2, h3, h4 {
   color: var(--paper);
 }
 .btn--primary:hover { background: var(--navy-800); }
-.btn--lg {
-  padding: 17px 30px;
-  font-size: 15.5px;
-}
 .btn--ghost {
   background: transparent;
   color: var(--navy-900);
@@ -822,49 +818,6 @@ section.tight { padding-block: clamp(48px, 6vw, 72px); }
 .closing p { color: rgba(245,241,232,0.78); font-size: 17px; line-height: 1.65; max-width: 56ch; }
 .closing__ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 0; }
 .closing .btn--primary { background: var(--amber-500); color: var(--ink-1000); }
-
-/* ---------- Final conversion band ---------- */
-.finalcta {
-  background: var(--paper-3);
-  border-top: 1px solid var(--line-1);
-  padding-block: clamp(64px, 9vw, 112px);
-}
-.finalcta__inner {
-  max-width: 64ch;
-  margin: 0 auto;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 18px;
-}
-.finalcta__eyebrow {
-  color: var(--amber-600);
-  font-size: 12.5px;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  margin: 0;
-}
-.finalcta__heading {
-  font-size: clamp(26px, 3.4vw, 38px);
-  font-weight: 600;
-  line-height: 1.18;
-  color: var(--text-1);
-  margin: 0;
-  text-wrap: balance;
-  max-width: 22ch;
-}
-.finalcta__body {
-  color: var(--text-2);
-  font-size: 17px;
-  line-height: 1.65;
-  margin: 4px 0 0;
-  max-width: 56ch;
-}
-.finalcta__cta {
-  margin-top: 14px;
-}
 .closing .btn--primary:hover { background: var(--amber-400); }
 .closing .btn--ghost { color: var(--paper); border-color: rgba(255,255,255,0.28); }
 .closing .btn--ghost:hover { border-color: var(--paper); }
