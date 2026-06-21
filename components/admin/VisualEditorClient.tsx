@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState, useTransition } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import {
   SectionForm,
@@ -8,10 +8,7 @@ import {
 } from "./forms/SectionForm";
 import { SectionReorderList } from "./SectionReorderList";
 import type { FieldConfig } from "@/lib/sections/types";
-import {
-  saveSectionAction,
-  publishAllDraftsAction,
-} from "@/lib/admin/actions/sections";
+import { saveSectionAction } from "@/lib/admin/actions/sections";
 
 export type EditorSectionData = {
   section_key: string;
@@ -19,8 +16,6 @@ export type EditorSectionData = {
   section_type: string;
   display_order: number;
   content_json: Record<string, unknown>;
-  has_draft: boolean;
-  draft_updated_at: string | null;
   type_def: {
     type: string;
     label: string;
@@ -92,7 +87,6 @@ export function VisualEditorClient({
   }, [activeKey, iframeKey]);
 
   const active = sections.find((s) => s.section_key === activeKey) ?? null;
-  const draftCount = sections.filter((s) => s.has_draft).length;
 
   const reloadIframe = useCallback(() => {
     setIframeKey((k) => k + 1);
@@ -171,20 +165,10 @@ export function VisualEditorClient({
                 {sections.map((s) => (
                   <option key={s.section_key} value={s.section_key}>
                     {s.section_label}
-                    {s.has_draft ? " — draft" : ""}
                   </option>
                 ))}
               </select>
             </div>
-
-            {pageId && draftCount > 0 ? (
-              <PublishAllDraftsButton
-                pageId={pageId}
-                pageSlug={pageSlug}
-                count={draftCount}
-                onPublished={reloadIframe}
-              />
-            ) : null}
 
             {pageId && sections.length > 1 ? (
               <details
@@ -247,8 +231,6 @@ export function VisualEditorClient({
                     sectionType: active.section_type,
                     displayOrder: active.display_order,
                   }}
-                  hasDraft={active.has_draft}
-                  draftUpdatedAt={active.draft_updated_at}
                   onSaved={reloadIframe}
                   onPreviewChange={pushPreview}
                   compact
@@ -268,75 +250,6 @@ export function VisualEditorClient({
         >
           ◀ Edit
         </button>
-      ) : null}
-    </div>
-  );
-}
-
-function PublishAllDraftsButton({
-  pageId,
-  pageSlug,
-  count,
-  onPublished,
-}: {
-  pageId: string;
-  pageSlug: string;
-  count: number;
-  onPublished?: () => void;
-}) {
-  const [pending, start] = useTransition();
-  const [error, setError] = useState<string | null>(null);
-  function publish() {
-    if (
-      !window.confirm(
-        `Publish ${count} pending draft${count === 1 ? "" : "s"} on this page?`
-      )
-    ) {
-      return;
-    }
-    setError(null);
-    start(async () => {
-      const r = await publishAllDraftsAction(pageId, pageSlug);
-      if (!r.ok) {
-        setError(r.error ?? "Publish failed");
-        return;
-      }
-      onPublished?.();
-    });
-  }
-  return (
-    <div
-      style={{
-        marginBottom: 14,
-        padding: "10px 12px",
-        background: "#FFF5DD",
-        border: "1px solid #E6CC85",
-        borderRadius: "var(--radius-sm)",
-        display: "flex",
-        gap: 10,
-        alignItems: "center",
-        justifyContent: "space-between",
-        fontSize: 13,
-      }}
-    >
-      <span>
-        <strong>
-          {count} draft{count === 1 ? "" : "s"} pending
-        </strong>{" "}
-        on this page.
-      </span>
-      <button
-        type="button"
-        className="adminbtn adminbtn--primary adminbtn--small"
-        onClick={publish}
-        disabled={pending}
-      >
-        {pending ? "Publishing…" : `Publish all`}
-      </button>
-      {error ? (
-        <p className="adminfield__error" role="alert" style={{ width: "100%", margin: 0 }}>
-          {error}
-        </p>
       ) : null}
     </div>
   );

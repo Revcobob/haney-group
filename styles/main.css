@@ -2201,36 +2201,6 @@ section.article-section { padding-top: clamp(14px, 2vw, 28px); padding-bottom: c
 .adminimg__name { font-size: 13.5px; font-weight: 600; color: var(--text-1); margin: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .adminimg__alt { font-size: 12.5px; color: var(--text-3); margin: 2px 0 0; line-height: 1.4; }
 
-/* ---------- Section editor: "you're editing a draft" notice ---------- */
-.adminform__draftnotice {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 16px;
-  align-items: center;
-  padding: 12px 14px;
-  margin-bottom: 14px;
-  background: #FFF5DD;
-  border: 1px solid #E6CC85;
-  border-radius: var(--radius-sm);
-  font-size: 13.5px;
-  color: var(--text-1);
-}
-.adminform__draftnotice p {
-  margin: 2px 0 0;
-  color: var(--text-2);
-  font-size: 12.5px;
-}
-.adminform__draftnotice-actions {
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-}
-.admintable__pill--draft-pending {
-  color: #8E5F18;
-  border-color: #E6CC85;
-  background: #FFF5DD;
-}
-
 /* ---------- Admin command palette (Cmd-K) ---------- */
 .cmdk {
   position: fixed;

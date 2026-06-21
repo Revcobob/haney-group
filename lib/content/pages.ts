@@ -1,5 +1,4 @@
 import "server-only";
-import { headers } from "next/headers";
 import { publicSupabase } from "@/lib/supabase/public";
 import {
   pageFallbacks,
@@ -7,18 +6,6 @@ import {
   type PageFallback,
   type PageSectionFallback,
 } from "@/content/fallbacks/pages";
-
-// /preview/* requests carry an x-preview-drafts header set by middleware.
-// Public visitors never have it set, so this only flips on inside the
-// visual editor iframe.
-async function inPreviewContext(): Promise<boolean> {
-  try {
-    const h = await headers();
-    return h.get("x-preview-drafts") === "1";
-  } catch {
-    return false;
-  }
-}
 
 export type PageSection = PageSectionFallback;
 export type Page = PageFallback;
@@ -35,8 +22,6 @@ type DbSectionRow = {
   section_label: string;
   section_type: string;
   content_json: Record<string, unknown>;
-  draft_content_json: Record<string, unknown> | null;
-  has_draft: boolean | null;
   display_order: number;
   is_visible: boolean;
 };
@@ -137,18 +122,10 @@ function deepMergeWithFallback(
   return primary;
 }
 
-export async function getPageWithSections(
-  slug: string,
-  opts?: { preferDraft?: boolean }
-): Promise<Page | null> {
+export async function getPageWithSections(slug: string): Promise<Page | null> {
   const sb = publicSupabase();
   const fallback = getPageFallback(slug) ?? null;
   if (!sb) return fallback;
-
-  // Auto-detect preview iframe via the middleware-set header so every
-  // public page rendered via /preview/* sees its drafts without having
-  // to be aware of preview at all.
-  const preferDraft = opts?.preferDraft ?? (await inPreviewContext());
 
   const { data: pageRow } = await sb
     .from("cms_pages")
@@ -162,21 +139,13 @@ export async function getPageWithSections(
   const { data: sectionRows } = await sb
     .from("cms_page_sections")
     .select(
-      "section_key, section_label, section_type, content_json, draft_content_json, has_draft, display_order, is_visible"
+      "section_key, section_label, section_type, content_json, display_order, is_visible"
     )
     .eq("page_id", (pageRow as DbPageRow).id)
     .eq("is_visible", true)
     .order("display_order", { ascending: true });
 
   if (!sectionRows || sectionRows.length === 0) return fallback;
-
-  // Choose live or draft content per row. Draft preference is only
-  // honored when explicitly requested (preview iframe), so public
-  // visitors never see in-flight content.
-  const pickContent = (row: DbSectionRow): Record<string, unknown> =>
-    preferDraft && row.has_draft && row.draft_content_json
-      ? row.draft_content_json
-      : row.content_json;
 
   // Index fallback sections by key so per-section merging is O(1).
   const fallbackByKey = new Map(
@@ -198,7 +167,7 @@ export async function getPageWithSections(
       continue;
     }
     const mergedContent = deepMergeWithFallback(
-      pickContent(dbSection) ?? {},
+      dbSection.content_json ?? {},
       fbSection.content_json ?? {}
     ) as Record<string, unknown>;
     merged.push({
@@ -218,7 +187,7 @@ export async function getPageWithSections(
       section_key: dbSection.section_key,
       section_label: dbSection.section_label,
       section_type: dbSection.section_type,
-      content_json: await resolveImageUrls(pickContent(dbSection) ?? {}),
+      content_json: await resolveImageUrls(dbSection.content_json ?? {}),
       display_order: dbSection.display_order,
     });
   }
