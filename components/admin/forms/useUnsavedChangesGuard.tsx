@@ -1,49 +1,66 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 // Attach a beforeunload guard to a <form>. Snapshots the form's initial
 // FormData and compares it on every change; when dirty, the browser
 // confirm appears if the user tries to leave or close the tab.
 //
-// Reset via the returned `markClean` callback after a successful save.
+// Returns:
+//   isDirty   — live state, true while the form differs from baseline;
+//   markClean — call after a successful save to reset the baseline.
+//
+// The DirtyFormProvider consumes `isDirty` via useDirtyFormRegistration
+// so in-app navigation can also prompt before discarding edits.
 export function useUnsavedChangesGuard(formRef: React.RefObject<HTMLFormElement | null>) {
   const baselineRef = useRef<string>("");
-  const dirtyRef = useRef<boolean>(false);
+  const [isDirty, setIsDirty] = useState(false);
+  const dirtyRef = useRef(false);
 
   useEffect(() => {
     const form = formRef.current;
     if (!form) return;
     baselineRef.current = serialize(form);
+    if (dirtyRef.current) {
+      dirtyRef.current = false;
+      setIsDirty(false);
+    }
 
-    function onInput() {
+    function recompute() {
       const form = formRef.current;
       if (!form) return;
-      dirtyRef.current = serialize(form) !== baselineRef.current;
+      const next = serialize(form) !== baselineRef.current;
+      if (next !== dirtyRef.current) {
+        dirtyRef.current = next;
+        setIsDirty(next);
+      }
     }
     function onBeforeUnload(e: BeforeUnloadEvent) {
       if (!dirtyRef.current) return;
       e.preventDefault();
-      // Spec requires returnValue to be set; modern browsers ignore the string.
       e.returnValue = "";
     }
-    form.addEventListener("input", onInput);
-    form.addEventListener("change", onInput);
+    form.addEventListener("input", recompute);
+    form.addEventListener("change", recompute);
     window.addEventListener("beforeunload", onBeforeUnload);
     return () => {
-      form.removeEventListener("input", onInput);
-      form.removeEventListener("change", onInput);
+      form.removeEventListener("input", recompute);
+      form.removeEventListener("change", recompute);
       window.removeEventListener("beforeunload", onBeforeUnload);
     };
   }, [formRef]);
 
-  function markClean() {
+  const markClean = useCallback(() => {
     const form = formRef.current;
     if (!form) return;
     baselineRef.current = serialize(form);
-    dirtyRef.current = false;
-  }
-  return { markClean };
+    if (dirtyRef.current) {
+      dirtyRef.current = false;
+      setIsDirty(false);
+    }
+  }, [formRef]);
+
+  return { markClean, isDirty };
 }
 
 function serialize(form: HTMLFormElement): string {

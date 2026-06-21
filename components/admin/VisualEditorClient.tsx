@@ -7,6 +7,7 @@ import {
   type SectionMeta,
 } from "./forms/SectionForm";
 import { SectionReorderList } from "./SectionReorderList";
+import { useDirtyConfirm } from "./DirtyFormProvider";
 import type { FieldConfig } from "@/lib/sections/types";
 import { saveSectionAction } from "@/lib/admin/actions/sections";
 
@@ -52,6 +53,19 @@ export function VisualEditorClient({
   const [reorderOpen, setReorderOpen] = useState(false);
   const [iframeKey, setIframeKey] = useState(0); // bump to reload iframe
   const iframeRef = useRef<HTMLIFrameElement>(null);
+  const confirmIfDirty = useDirtyConfirm();
+
+  // Wrap the activeKey setter so picking a different section also
+  // honors the unsaved-changes guard. Without this, the dropdown would
+  // silently swap forms and lose pending edits.
+  const setActiveKeyGuarded = useCallback(
+    (next: string | null) => {
+      if (next === activeKey) return;
+      if (!confirmIfDirty()) return;
+      setActiveKey(next);
+    },
+    [activeKey, confirmIfDirty]
+  );
 
   // Add a body class so the (dashboard) layout can collapse its sidebar
   // for the duration of the visual editor view.
@@ -67,14 +81,14 @@ export function VisualEditorClient({
     function onMessage(ev: MessageEvent) {
       if (iframeRef.current?.contentWindow !== ev.source) return;
       if (isEditMessage(ev.data)) {
-        setActiveKey(ev.data.sectionKey);
+        setActiveKeyGuarded(ev.data.sectionKey);
         // If the panel was hidden, open it on click.
         setCollapsed(false);
       }
     }
     window.addEventListener("message", onMessage);
     return () => window.removeEventListener("message", onMessage);
-  }, []);
+  }, [setActiveKeyGuarded]);
 
   // Highlight whatever's active over in the iframe.
   useEffect(() => {
@@ -157,7 +171,7 @@ export function VisualEditorClient({
                 id="visualeditor-section-select"
                 className="adminfield__select"
                 value={activeKey ?? ""}
-                onChange={(e) => setActiveKey(e.target.value || null)}
+                onChange={(e) => setActiveKeyGuarded(e.target.value || null)}
               >
                 {sections.length === 0 ? (
                   <option value="">No sections yet</option>
