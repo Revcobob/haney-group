@@ -1,7 +1,8 @@
 "use client";
 
-import { useActionState, useEffect, useRef } from "react";
+import { useActionState, useEffect, useId, useRef } from "react";
 import { useUnsavedChangesGuard } from "./useUnsavedChangesGuard";
+import { useDirtyFormRegistration } from "../DirtyFormProvider";
 import { SaveBar } from "./SaveBar";
 import {
   SectionTextField,
@@ -299,7 +300,9 @@ export function SectionForm({
     undefined
   );
   const formRef = useRef<HTMLFormElement>(null);
-  const { markClean } = useUnsavedChangesGuard(formRef);
+  const { markClean, isDirty } = useUnsavedChangesGuard(formRef);
+  const formId = useId();
+  useDirtyFormRegistration(`section:${formId}`, isDirty);
   const status = !state ? "idle" : state.ok ? "success" : "error";
   const message = !state ? undefined : state.ok ? "Saved." : state.error;
 
