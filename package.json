@@ -9,8 +9,7 @@
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
     "seed": "tsx scripts/seed.ts",
-    "seed:icon-hints": "tsx scripts/seed-service-icon-hints.ts",
-    "seed:icons": "tsx scripts/seed-service-icons.ts"
+    "seed:icon-hints": "tsx scripts/seed-service-icon-hints.ts"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.39.5",
