@@ -54,17 +54,20 @@ export async function POST(request: Request) {
     );
   }
 
-  // 4) If Supabase isn't configured, fail soft — accept the message but tell the
-  //    visitor we'll be in touch by phone or email. This matches the visitor's
-  //    expectation while keeping operations from breaking during setup.
+  // 4) If Supabase isn't configured, refuse to silently swallow the note —
+  //    tell the visitor to use phone or email so the firm doesn't lose
+  //    inquiries during a misconfiguration. The admin /admin/inquiries
+  //    inbox depends on this row landing in cms_contact_inquiries.
   if (!supabaseServerConfigured) {
+    console.error(
+      "[/api/contact] Supabase server env not configured. Set NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY so inquiries are recorded."
+    );
     return NextResponse.json(
       {
-        ok: true,
-        notice:
-          "Saved locally; database not yet connected. The firm will follow up directly.",
+        error:
+          "We can’t record your note right now. Please email info@haney-group.com or call (512) 925-5000.",
       },
-      { status: 200 }
+      { status: 503 }
     );
   }
 
@@ -89,6 +92,12 @@ export async function POST(request: Request) {
     .select("id")
     .single();
   if (error) {
+    console.error("[/api/contact] cms_contact_inquiries insert failed", {
+      message: error.message,
+      code: (error as { code?: string }).code,
+      details: (error as { details?: string }).details,
+      hint: (error as { hint?: string }).hint,
+    });
     return NextResponse.json(
       { error: "We couldn’t save your note. Please call (512) 925-5000." },
       { status: 500 }
