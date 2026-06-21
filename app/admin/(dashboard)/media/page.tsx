@@ -5,11 +5,15 @@ import { MediaList, type MediaListItem } from "@/components/admin/MediaList";
 import { supabaseServerConfigured } from "@/lib/env";
 
 export const metadata: Metadata = { title: "Media Library" };
+export const dynamic = "force-dynamic";
 
 export default async function AdminMediaPage() {
-  const rows = supabaseServerConfigured
+  const raw = supabaseServerConfigured
     ? await listAdminRows("cms_media", "created_at")
     : [];
+  // listAdminRows sorts ascending; flip so the most recent uploads appear
+  // at the top of the grid where the editor will look for them.
+  const rows = [...raw].reverse();
 
   return (
     <>
