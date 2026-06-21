@@ -1,0 +1,16 @@
+<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Capitol hallway with three columns">
+  <title>Lobbying & Advocacy</title>
+  <polygon points="256,40 472,116 40,116" fill="#0B1228"/>
+  <rect x="40" y="116" width="432" height="36" fill="#0B1228"/>
+  <polygon points="256,72 248,90 230,92 244,104 240,122 256,114 272,122 268,104 282,92 264,90" fill="#C9892A"/>
+  <rect x="76" y="160" width="80" height="20" fill="#0B1228"/>
+  <rect x="216" y="160" width="80" height="20" fill="#0B1228"/>
+  <rect x="356" y="160" width="80" height="20" fill="#0B1228"/>
+  <rect x="92" y="180" width="48" height="236" fill="#0B1228" fill-opacity="0.85"/>
+  <rect x="232" y="180" width="48" height="236" fill="#0B1228"/>
+  <rect x="372" y="180" width="48" height="236" fill="#0B1228" fill-opacity="0.85"/>
+  <rect x="84" y="416" width="64" height="22" fill="#0B1228"/>
+  <rect x="224" y="416" width="64" height="22" fill="#0B1228"/>
+  <rect x="364" y="416" width="64" height="22" fill="#0B1228"/>
+  <rect x="32" y="438" width="448" height="24" fill="#0B1228"/>
+</svg>

@@ -147,7 +147,7 @@ export const serviceCards: ServiceCard[] = [
   {
     title: "Legislative Strategy",
     description: "Translate a policy objective into a practical, member-by-member path through committee, calendar, floor, and conference.",
-    icon: "/assets/img/icon-legislative-strategy.png",
+    icon: "/assets/img/icons/legislative-strategy.svg",
     href: "/services/legislative-strategy",
     display_order: 1,
     icon_hint: "Calendar — timing and scheduling cues for the legislative arc.",
@@ -155,21 +155,21 @@ export const serviceCards: ServiceCard[] = [
   {
     title: "Lobbying & Advocacy",
     description: "Represent client interests at the Capitol with preparation, credibility, and direct communication grounded in long-standing member relationships.",
-    icon: "/assets/img/icon-lobbying-advocacy.png",
+    icon: "/assets/img/icons/lobbying-advocacy.svg",
     display_order: 2,
     icon_hint: "Capitol hallway — direct, in-person representation imagery.",
   },
   {
     title: "Bill Drafting & Analysis",
     description: "Review, draft, and refine legislative language with close attention to process, timing, germaneness, and downstream risk.",
-    icon: "/assets/img/icon-bill-drafting.png",
+    icon: "/assets/img/icons/bill-drafting.svg",
     display_order: 3,
     icon_hint: "Bill draft — a printed bill or markup document.",
   },
   {
     title: "Appropriations & Budget Riders",
     description: "Article and rider strategy, LBB engagement, agency coordination, and interim work where the state budget is actually decided.",
-    icon: "/assets/img/icon-appropriations.png",
+    icon: "/assets/img/icons/appropriations.svg",
     href: "/services/appropriations",
     display_order: 4,
     icon_hint: "Budget document — appropriations ledger, rider sheet, or article header.",
@@ -177,7 +177,7 @@ export const serviceCards: ServiceCard[] = [
   {
     title: "Parliamentary Procedure",
     description: "House Rules, points of order, amendments, germaneness, and floor process, advised by the firm’s former Chief Clerk of the Texas House.",
-    icon: "/assets/img/icon-procedural-2.png",
+    icon: "/assets/img/icons/parliamentary.svg",
     href: "/services/parliamentary",
     display_order: 5,
     icon_hint: "Hearing room — committee chamber, gavel, or rostrum motif.",
@@ -185,7 +185,7 @@ export const serviceCards: ServiceCard[] = [
   {
     title: "Coalition & Stakeholder Management",
     description: "Build durable support, manage organized opposition, and align boards, members, and partners around achievable outcomes.",
-    icon: "/assets/img/icon-coalitions.png",
+    icon: "/assets/img/icons/coalitions.svg",
     display_order: 6,
     icon_hint: "Coalition map — connected nodes or stakeholder network.",
   },
