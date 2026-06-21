@@ -1,0 +1,25 @@
+<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Calendar marking a legislative date">
+  <title>Legislative Strategy</title>
+  <rect x="64" y="112" width="384" height="336" rx="20" fill="#FFFFFF" stroke="#0B1228" stroke-width="20"/>
+  <rect x="64" y="112" width="384" height="80" fill="#0B1228"/>
+  <path d="M64 132 a20 20 0 0 1 20 -20 H428 a20 20 0 0 1 20 20 V192 H64 Z" fill="#0B1228"/>
+  <rect x="136" y="68" width="36" height="80" rx="8" fill="#0B1228"/>
+  <rect x="340" y="68" width="36" height="80" rx="8" fill="#0B1228"/>
+  <g fill="#0B1228" fill-opacity="0.22">
+    <circle cx="128" cy="252" r="16"/>
+    <circle cx="192" cy="252" r="16"/>
+    <circle cx="256" cy="252" r="16"/>
+    <circle cx="320" cy="252" r="16"/>
+    <circle cx="384" cy="252" r="16"/>
+    <circle cx="128" cy="316" r="16"/>
+    <circle cx="192" cy="316" r="16"/>
+    <circle cx="320" cy="316" r="16"/>
+    <circle cx="384" cy="316" r="16"/>
+    <circle cx="128" cy="380" r="16"/>
+    <circle cx="192" cy="380" r="16"/>
+    <circle cx="256" cy="380" r="16"/>
+    <circle cx="320" cy="380" r="16"/>
+    <circle cx="384" cy="380" r="16"/>
+  </g>
+  <circle cx="256" cy="316" r="24" fill="#C9892A"/>
+</svg>

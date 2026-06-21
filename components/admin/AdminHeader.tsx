@@ -15,6 +15,11 @@ export function AdminHeader({ user }: { user: AdminUser | null }) {
           <BrandMark size="md" />
         </Link>
         <div className="admin__userbar">
+          <span className="admin__kbdhint" aria-hidden="true">
+            <kbd>⌘</kbd>
+            <kbd>K</kbd>
+            <span>to search</span>
+          </span>
           <Link href="/">View site →</Link>
           {user ? (
             <>

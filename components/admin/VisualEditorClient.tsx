@@ -98,6 +98,20 @@ export function VisualEditorClient({
     setIframeKey((k) => k + 1);
   }, []);
 
+  // Pipe the SectionForm's debounced text snapshots into the iframe so
+  // the rendered preview updates in real time without saving.
+  const pushPreview = useCallback(
+    (sectionKey: string, fields: Record<string, string>) => {
+      const win = iframeRef.current?.contentWindow;
+      if (!win) return;
+      win.postMessage(
+        { type: "preview-overlay", sectionKey, fields },
+        window.location.origin
+      );
+    },
+    []
+  );
+
   return (
     <div className={`visualeditor${collapsed ? " visualeditor--collapsed" : ""}`}>
       <div className="visualeditor__frame">
@@ -236,6 +250,7 @@ export function VisualEditorClient({
                   hasDraft={active.has_draft}
                   draftUpdatedAt={active.draft_updated_at}
                   onSaved={reloadIframe}
+                  onPreviewChange={pushPreview}
                   compact
                 />
               )}

@@ -1,6 +1,7 @@
 import { requireAdmin } from "@/lib/auth";
 import { AdminHeader } from "@/components/admin/AdminHeader";
 import { AdminSidebar } from "@/components/admin/AdminSidebar";
+import { CommandPalette } from "@/components/admin/CommandPalette";
 
 // Every page rendered through this layout is gated by requireAdmin().
 // Unauthorized requests redirect to /admin/login or /admin/forbidden
@@ -16,6 +17,7 @@ export default async function AuthedAdminLayout({
       <AdminHeader user={user} />
       <AdminSidebar role={user.role} />
       <div className="admin__main">{children}</div>
+      <CommandPalette />
     </div>
   );
 }

@@ -284,6 +284,7 @@ export function SectionForm({
   meta,
   cancelHref,
   onSaved,
+  onPreviewChange,
   compact,
   hasDraft = false,
   draftUpdatedAt,
@@ -294,6 +295,9 @@ export function SectionForm({
   meta: SectionMeta;
   cancelHref?: string;
   onSaved?: () => void;
+  /** Called with debounced text-field snapshots as the admin types,
+   *  so the visual editor iframe can patch its DOM in place. */
+  onPreviewChange?: (sectionKey: string, fields: Record<string, string>) => void;
   compact?: boolean;
   /** True when a saved draft is currently overlaying the live content. */
   hasDraft?: boolean;
@@ -320,6 +324,44 @@ export function SectionForm({
       onSaved?.();
     }
   }, [state, onSaved, markClean]);
+
+  // Live-preview pipe. Watch the form for input/change events, debounce
+  // 250ms, and forward a snapshot of plain text-field values to the
+  // visual editor so its iframe can patch the rendered DOM in place.
+  useEffect(() => {
+    if (!onPreviewChange || !formRef.current) return;
+    const form = formRef.current;
+    let handle: number | null = null;
+    function snapshot() {
+      const fields: Record<string, string> = {};
+      const ctrls = form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>(
+        'input[type="text"], input[type="email"], input[type="url"], textarea'
+      );
+      ctrls.forEach((el) => {
+        const name = el.name;
+        if (!name) return;
+        // Skip meta context, nested / array fields, hidden picker IDs.
+        if (name.startsWith("_meta_")) return;
+        if (name.includes(".") || name.includes("[")) return;
+        fields[name] = el.value;
+      });
+      onPreviewChange!(meta.sectionKey, fields);
+    }
+    function onInput() {
+      if (handle) window.clearTimeout(handle);
+      handle = window.setTimeout(snapshot, 250);
+    }
+    form.addEventListener("input", onInput);
+    form.addEventListener("change", onInput);
+    // Push the initial snapshot so the iframe immediately reflects what
+    // the form is showing (helpful when a draft was preloaded).
+    snapshot();
+    return () => {
+      form.removeEventListener("input", onInput);
+      form.removeEventListener("change", onInput);
+      if (handle) window.clearTimeout(handle);
+    };
+  }, [onPreviewChange, meta.sectionKey]);
 
   return (
     <form ref={formRef} action={formAction} className="adminform">

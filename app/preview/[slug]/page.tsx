@@ -4,6 +4,7 @@ import { getPageWithSections } from "@/lib/content/pages";
 import { getServiceCards, getIndustryCards } from "@/lib/content/site";
 import { listPublishedArticles } from "@/lib/content/insights";
 import { HomeSections } from "@/components/site/HomeSections";
+import { PreviewLiveBridge } from "@/components/site/PreviewLiveBridge";
 import AboutPage from "@/app/(public)/about/page";
 import ServicesPage from "@/app/(public)/services/page";
 import IndustriesPage from "@/app/(public)/industries/page";
@@ -27,6 +28,20 @@ export default async function PreviewPage({
   await requireAdmin();
   const { slug } = await params;
 
+  const body = await renderBody(slug);
+  if (body === null) notFound();
+  return (
+    <>
+      {body}
+      {/* Patches plain-text fields in-place when the parent admin posts
+          a preview-overlay message — gives admins typing-fast feedback
+          without a save round-trip. */}
+      <PreviewLiveBridge />
+    </>
+  );
+}
+
+async function renderBody(slug: string): Promise<React.ReactNode | null> {
   if (slug === "home") {
     const [page, capabilities, industries, articles] = await Promise.all([
       getPageWithSections("home"),
@@ -43,27 +58,14 @@ export default async function PreviewPage({
       />
     );
   }
-
-  // For every other slug, reuse the public page component directly so the
-  // preview always matches what visitors see. Each page reads sections via
-  // getPageWithSections and wraps editable regions in EditableRegion — that
-  // wrapper auto-detects the visual editor iframe and turns on click-to-edit.
   switch (slug) {
-    case "about":
-      return <AboutPage />;
-    case "services":
-      return <ServicesPage />;
-    case "industries":
-      return <IndustriesPage />;
-    case "experience":
-      return <ExperiencePage />;
-    case "insights":
-      return <InsightsIndexPage />;
-    case "contact":
-      return <ContactPage />;
-    case "privacy":
-      return <PrivacyPage />;
-    default:
-      notFound();
+    case "about":      return <AboutPage />;
+    case "services":   return <ServicesPage />;
+    case "industries": return <IndustriesPage />;
+    case "experience": return <ExperiencePage />;
+    case "insights":   return <InsightsIndexPage />;
+    case "contact":    return <ContactPage />;
+    case "privacy":    return <PrivacyPage />;
+    default:           return null;
   }
 }
