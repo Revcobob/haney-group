@@ -2789,17 +2789,43 @@ section.article-section { padding-top: clamp(14px, 2vw, 28px); padding-bottom: c
 .visualeditor__panel-body .adminfield__select { max-width: 100%; }
 
 /* Sticky save bar pinned to the panel bottom so admins always see it
-   without scrolling all the way down a long form */
+   without scrolling all the way down a long form. The bar stretches
+   to the panel edges via negative left/right margins, then re-adds
+   that padding on the inside so the contents stay column-aligned.
+   No negative bottom margin — that was extending the bar below the
+   scrollport and letting form content peek out underneath. */
 .visualeditor__panel-body .adminsavebar {
   position: sticky;
   bottom: 0;
-  margin: 12px -18px -18px;
-  padding-inline: 18px;
+  z-index: 5;
+  margin: 18px -18px 0;
+  padding: 14px 18px env(safe-area-inset-bottom, 14px);
+  border: 0;
+  border-top: 1px solid var(--line-2);
   border-radius: 0;
-  border-left: 0;
-  border-right: 0;
-  border-bottom: 0;
   background: var(--paper);
+  box-shadow: 0 -12px 20px -8px rgba(11, 18, 40, 0.12);
+  /* Centered, gentle, deliberate — reads as a footer for the form. */
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+/* The default left-spacer empty <span /> can shrink to zero so the
+   action group truly centers in panel mode. */
+.visualeditor__panel-body .adminsavebar > span:empty {
+  display: none;
+}
+.visualeditor__panel-body .adminsavebar__msg {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 4px;
+}
+.visualeditor__panel-body .adminsavebar__secondary {
+  margin-right: 0;
+}
+.visualeditor__panel-body .adminsavebar__actions {
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 .visualeditor__hint {
