@@ -102,18 +102,13 @@ export type SaveSectionArgs = {
   sectionLabel: string;
   sectionType: string;
   displayOrder: number;
-  /** "publish" writes straight to the live content_json and clears any
-   *  pending draft. "draft" (default) writes to draft_content_json and
-   *  leaves the live copy alone. */
-  mode: "draft" | "publish";
 };
 
-// Section meta is now carried by hidden form inputs (prefixed `_meta_`)
+// Section meta is carried by hidden form inputs (prefixed `_meta_`)
 // so a single server action can serve any section without rebinding —
 // the dashboard editor and the visual editor both call it the same way.
 function readSectionArgs(formData: FormData): SaveSectionArgs {
   const get = (k: string) => String(formData.get(k) ?? "").trim();
-  const mode = get("_meta_publish") === "1" ? "publish" : "draft";
   return {
     pageId: get("_meta_page_id"),
     pageSlug: get("_meta_page_slug"),
@@ -121,7 +116,6 @@ function readSectionArgs(formData: FormData): SaveSectionArgs {
     sectionLabel: get("_meta_section_label"),
     sectionType: get("_meta_section_type"),
     displayOrder: Number(get("_meta_display_order")) || 0,
-    mode,
   };
 }
 
@@ -170,25 +164,21 @@ export async function saveSectionAction(
 
   const sb = serverSupabase();
 
-  // Look up the existing row so we can merge new field values into
-  // either the live content_json (publish mode) or the draft column
-  // (draft mode) without wiping fields the form didn't render.
+  // Upsert by (page_id, section_key). When updating, merge new field
+  // values into the existing content_json instead of replacing it —
+  // fields the form didn't render (e.g. background_image_url resolved
+  // at read time) shouldn't be wiped just because they aren't in the
+  // submit body.
   const { data: existing } = await sb
     .from("cms_page_sections")
-    .select("id, content_json, draft_content_json, has_draft")
+    .select("id, content_json")
     .eq("page_id", args.pageId)
     .eq("section_key", args.sectionKey)
     .maybeSingle();
 
-  // Pick the base copy to merge into: when staging a draft, build from
-  // the existing draft if there is one, otherwise from the live copy
-  // so the admin's first draft starts where the live page left off.
   const incoming = parsed.data as Record<string, unknown>;
-  const liveBase = (existing?.content_json as Record<string, unknown> | null) ?? {};
-  const draftBase =
-    (existing?.draft_content_json as Record<string, unknown> | null) ?? liveBase;
-  const base = args.mode === "publish" ? liveBase : draftBase;
-  const merged: Record<string, unknown> = { ...base };
+  const previous = (existing?.content_json as Record<string, unknown> | null) ?? {};
+  const merged: Record<string, unknown> = { ...previous };
   for (const [k, v] of Object.entries(incoming)) {
     const isBlankString = typeof v === "string" && v.trim().length === 0;
     const isEmptyArray = Array.isArray(v) && v.length === 0;
@@ -199,34 +189,15 @@ export async function saveSectionAction(
     merged[k] = v;
   }
 
-  const baseRow = {
+  const row = {
     page_id: args.pageId,
     section_key: args.sectionKey,
     section_label: args.sectionLabel,
     section_type: args.sectionType,
+    content_json: merged,
     display_order: args.displayOrder,
     is_visible: true,
   };
-  const row =
-    args.mode === "publish"
-      ? {
-          ...baseRow,
-          content_json: merged,
-          // Publishing clears any pending draft for this section.
-          draft_content_json: null,
-          has_draft: false,
-          draft_updated_at: null,
-        }
-      : {
-          ...baseRow,
-          // Live content stays put when saving a draft. For a brand-new
-          // section with no prior live row, seed content_json with the
-          // same payload so something publishable always exists.
-          content_json: existing?.id ? liveBase : merged,
-          draft_content_json: merged,
-          has_draft: true,
-          draft_updated_at: new Date().toISOString(),
-        };
 
   if (existing?.id) {
     const { error } = await sb
@@ -240,15 +211,13 @@ export async function saveSectionAction(
   }
 
   const publicPath = publicPathForSlug(args.pageSlug);
-  if (args.mode === "publish") revalidatePath(publicPath);
+  revalidatePath(publicPath);
   revalidatePath(`/admin/pages/${args.pageSlug}`);
   revalidatePath(`/admin/pages/${args.pageSlug}/visual`);
   await recordAudit(admin, {
     table: "cms_page_sections",
-    action: args.mode === "publish" ? "publish" : "update",
-    detail: `${args.pageSlug} · ${args.sectionLabel || args.sectionKey}${
-      args.mode === "draft" ? " (draft)" : ""
-    }`,
+    action: "update",
+    detail: `${args.pageSlug} · ${args.sectionLabel || args.sectionKey}`,
   });
   return { ok: true };
 }
@@ -363,11 +332,6 @@ export async function resetSectionToDefaultAction(
     section_label: fbSection.section_label,
     section_type: fbSection.section_type,
     content_json: fbSection.content_json,
-    // Reset wipes any pending draft too — the admin asked for "back
-    // to defaults", which would be confusing if a draft remained.
-    draft_content_json: null,
-    has_draft: false,
-    draft_updated_at: null,
     display_order: fbSection.display_order,
     is_visible: true,
   };
@@ -390,137 +354,6 @@ export async function resetSectionToDefaultAction(
     table: "cms_page_sections",
     action: "reset",
     detail: `${pageSlug} · ${fbSection.section_label}`,
-  });
-  return { ok: true };
-}
-
-// Promote a section's pending draft to live, leaving the editor
-// caught up to itself.
-export async function publishSectionDraftAction(
-  pageId: string,
-  pageSlug: string,
-  sectionKey: string
-): Promise<ActionResult> {
-  const admin = await requireAdmin();
-  if (!supabaseServerConfigured) {
-    return { ok: false, error: "Supabase is not connected." };
-  }
-  if (!pageId || !sectionKey) {
-    return { ok: false, error: "Missing page or section key." };
-  }
-  const sb = serverSupabase();
-  const { data: row } = await sb
-    .from("cms_page_sections")
-    .select("id, section_label, draft_content_json, has_draft")
-    .eq("page_id", pageId)
-    .eq("section_key", sectionKey)
-    .maybeSingle();
-  if (!row) return { ok: false, error: "Section not found." };
-  if (!row.has_draft) {
-    return { ok: false, error: "No draft to publish for this section." };
-  }
-  const draft = row.draft_content_json as Record<string, unknown> | null;
-  const { error } = await sb
-    .from("cms_page_sections")
-    .update({
-      content_json: draft ?? {},
-      draft_content_json: null,
-      has_draft: false,
-      draft_updated_at: null,
-    } as never)
-    .eq("id", row.id as string);
-  if (error) return { ok: false, error: error.message };
-
-  revalidatePath(publicPathForSlug(pageSlug));
-  revalidatePath(`/admin/pages/${pageSlug}`);
-  revalidatePath(`/admin/pages/${pageSlug}/visual`);
-  await recordAudit(admin, {
-    table: "cms_page_sections",
-    action: "publish",
-    detail: `${pageSlug} · ${row.section_label || sectionKey}`,
-  });
-  return { ok: true };
-}
-
-// Throw away the draft and keep the live copy unchanged.
-export async function discardSectionDraftAction(
-  pageId: string,
-  pageSlug: string,
-  sectionKey: string
-): Promise<ActionResult> {
-  const admin = await requireAdmin();
-  if (!supabaseServerConfigured) {
-    return { ok: false, error: "Supabase is not connected." };
-  }
-  if (!pageId || !sectionKey) {
-    return { ok: false, error: "Missing page or section key." };
-  }
-  const sb = serverSupabase();
-  const { data: row } = await sb
-    .from("cms_page_sections")
-    .select("id, section_label")
-    .eq("page_id", pageId)
-    .eq("section_key", sectionKey)
-    .maybeSingle();
-  if (!row) return { ok: false, error: "Section not found." };
-  const { error } = await sb
-    .from("cms_page_sections")
-    .update({
-      draft_content_json: null,
-      has_draft: false,
-      draft_updated_at: null,
-    } as never)
-    .eq("id", row.id as string);
-  if (error) return { ok: false, error: error.message };
-
-  revalidatePath(`/admin/pages/${pageSlug}`);
-  revalidatePath(`/admin/pages/${pageSlug}/visual`);
-  await recordAudit(admin, {
-    table: "cms_page_sections",
-    action: "reset",
-    detail: `${pageSlug} · ${row.section_label || sectionKey} (discard draft)`,
-  });
-  return { ok: true };
-}
-
-// Promote every pending draft on a page in one shot. Useful when an
-// admin has staged several edits and wants to release them together.
-export async function publishAllDraftsAction(
-  pageId: string,
-  pageSlug: string
-): Promise<ActionResult> {
-  const admin = await requireAdmin();
-  if (!supabaseServerConfigured) {
-    return { ok: false, error: "Supabase is not connected." };
-  }
-  if (!pageId) return { ok: false, error: "Missing page id." };
-  const sb = serverSupabase();
-  const { data: rows } = await sb
-    .from("cms_page_sections")
-    .select("id, section_label, draft_content_json")
-    .eq("page_id", pageId)
-    .eq("has_draft", true);
-  if (!rows || rows.length === 0) return { ok: true };
-  for (const r of rows) {
-    const draft = r.draft_content_json as Record<string, unknown> | null;
-    const { error } = await sb
-      .from("cms_page_sections")
-      .update({
-        content_json: draft ?? {},
-        draft_content_json: null,
-        has_draft: false,
-        draft_updated_at: null,
-      } as never)
-      .eq("id", r.id as string);
-    if (error) return { ok: false, error: error.message };
-  }
-  revalidatePath(publicPathForSlug(pageSlug));
-  revalidatePath(`/admin/pages/${pageSlug}`);
-  revalidatePath(`/admin/pages/${pageSlug}/visual`);
-  await recordAudit(admin, {
-    table: "cms_page_sections",
-    action: "publish",
-    detail: `${pageSlug} · ${rows.length} drafts`,
   });
   return { ok: true };
 }

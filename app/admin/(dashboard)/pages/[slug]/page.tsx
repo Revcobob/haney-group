@@ -43,9 +43,6 @@ export default async function AdminPageEditor({
       section_label: s.section_label,
       section_type: s.section_type,
       content_json: s.content_json,
-      draft_content_json: null,
-      has_draft: false,
-      draft_updated_at: null,
       display_order: s.display_order,
       is_visible: true,
       updated_at: "",
@@ -118,14 +115,7 @@ export default async function AdminPageEditor({
                     className={`admin__side-link${isActive ? " is-active" : ""}`}
                   >
                     <span style={{ flex: 1 }}>{s.section_label}</span>
-                    {s.has_draft ? (
-                      <span
-                        className="admintable__pill admintable__pill--draft-pending"
-                        style={{ fontSize: 9 }}
-                      >
-                        Draft
-                      </span>
-                    ) : s.isNew ? (
+                    {s.isNew ? (
                       <span className="admintable__pill admintable__pill--draft" style={{ fontSize: 9 }}>
                         Default
                       </span>
@@ -172,15 +162,11 @@ export default async function AdminPageEditor({
                 description: typeDef.description,
                 fields: typeDef.fields,
               };
-              const initialContent =
-                active.has_draft && active.draft_content_json
-                  ? active.draft_content_json
-                  : active.content_json;
               return (
                 <SectionForm
                   key={active.section_key}
                   typeDef={clientTypeDef}
-                  content={initialContent}
+                  content={active.content_json}
                   action={saveSectionAction}
                   meta={{
                     pageId: page?.id ?? "",
@@ -190,8 +176,6 @@ export default async function AdminPageEditor({
                     sectionType: active.section_type,
                     displayOrder: active.display_order,
                   }}
-                  hasDraft={active.has_draft}
-                  draftUpdatedAt={active.draft_updated_at}
                   cancelHref={`/admin/pages/${slug}`}
                 />
               );
