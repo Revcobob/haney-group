@@ -73,7 +73,16 @@ export async function uploadMediaAction(
       cacheControl: "31536000, immutable",
       upsert: false,
     });
-  if (upErr) return { ok: false, error: `Upload failed: ${upErr.message}` };
+  if (upErr) {
+    console.error("[uploadMediaAction] storage upload failed", {
+      bucket,
+      path,
+      mime: file.type,
+      size: file.size,
+      message: upErr.message,
+    });
+    return { ok: false, error: `Upload failed: ${upErr.message}` };
+  }
 
   const { data: pub } = sb.storage.from(bucket).getPublicUrl(path);
 
@@ -89,6 +98,11 @@ export async function uploadMediaAction(
     uploaded_by: admin.id,
   });
   if (insErr) {
+    console.error("[uploadMediaAction] cms_media insert failed", {
+      bucket,
+      path,
+      message: insErr.message,
+    });
     // Best-effort: try to delete the uploaded file so we don't orphan it.
     await sb.storage.from(bucket).remove([path]);
     return { ok: false, error: `Saving metadata failed: ${insErr.message}` };

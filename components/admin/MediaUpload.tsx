@@ -1,6 +1,7 @@
 "use client";
 
-import { useActionState, useRef } from "react";
+import { useActionState, useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
 import { uploadMediaAction } from "@/lib/admin/actions/media";
 import type { ActionResult } from "@/lib/admin/actions/_helpers";
 import { TextField, SelectField } from "./forms/Fields";
@@ -12,11 +13,24 @@ export function MediaUpload() {
     undefined
   );
   const fileRef = useRef<HTMLInputElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
+  const router = useRouter();
   const status = !state ? "idle" : state.ok ? "success" : "error";
   const message = !state ? undefined : state.ok ? "Uploaded." : state.error;
 
+  // Belt-and-braces: revalidatePath in the server action should re-render
+  // the page automatically, but force a router refresh too so the newly
+  // uploaded row reliably shows up in the grid below, and reset the form
+  // so the editor can immediately add another file.
+  useEffect(() => {
+    if (state?.ok) {
+      formRef.current?.reset();
+      router.refresh();
+    }
+  }, [state, router]);
+
   return (
-    <form action={action} className="adminform" encType="multipart/form-data">
+    <form ref={formRef} action={action} className="adminform" encType="multipart/form-data">
       <section className="adminform__section">
         <div className="adminform__section-head">
           <p className="adminform__section-eyebrow">New Upload</p>

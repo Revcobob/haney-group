@@ -3,7 +3,80 @@
 import { useEditor, EditorContent, type Editor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Link from "@tiptap/extension-link";
+import { Node, mergeAttributes } from "@tiptap/core";
+import { DOMSerializer } from "@tiptap/pm/model";
 import { useEffect, useRef, useState } from "react";
+
+// Custom block node that round-trips the "What this article covers" callout
+// box (.article__keypoints in styles/main.css). Without this, the wrapping
+// <div class="article__keypoints"> would be stripped by the default Tiptap
+// schema and the formatting would not survive a save. Children are normal
+// block content (h2 + list), so the editor remains a familiar surface.
+const KeyPointsCallout = Node.create({
+  name: "keyPointsCallout",
+  group: "block",
+  content: "block+",
+  defining: true,
+  parseHTML() {
+    return [{ tag: "div.article__keypoints" }];
+  },
+  renderHTML({ HTMLAttributes }) {
+    return [
+      "div",
+      mergeAttributes(HTMLAttributes, {
+        class: "article__keypoints",
+        "aria-labelledby": "article-keypoints-label",
+      }),
+      0,
+    ];
+  },
+});
+
+const KEYPOINTS_TEMPLATE = `
+<div class="article__keypoints" aria-labelledby="article-keypoints-label">
+  <h2 id="article-keypoints-label">What this article covers</h2>
+  <ul>
+    <li><p><strong>Point one.</strong> One short sentence on what the reader will take away.</p></li>
+    <li><p><strong>Point two.</strong> Another point worth previewing up front.</p></li>
+    <li><p><strong>Point three.</strong> Edit, add, or remove rows as needed.</p></li>
+  </ul>
+</div>
+`;
+
+// Build the "Key points" callout from whatever the editor has selected.
+// If nothing is selected, fall back to KEYPOINTS_TEMPLATE so the button is
+// still useful from an empty cursor. When a selection exists, its HTML is
+// taken verbatim (preserves bold, italic, links, …) and bare paragraphs
+// get rewritten as list items so the callout shows bullets instead of a
+// stack of plain <p> tags.
+function buildKeyPointsHtml(editor: Editor): string {
+  const { state } = editor;
+  if (state.selection.empty) return KEYPOINTS_TEMPLATE;
+
+  const slice = state.selection.content().content;
+  const serializer = DOMSerializer.fromSchema(state.schema);
+  const fragment = serializer.serializeFragment(slice);
+  const tmp = document.createElement("div");
+  tmp.appendChild(fragment);
+  let inner = tmp.innerHTML.trim();
+  if (!inner) return KEYPOINTS_TEMPLATE;
+
+  const hasList = /<\s*(ul|ol)\b/i.test(inner);
+  if (!hasList) {
+    const paragraphs = inner.match(/<p\b[\s\S]*?<\/p>/gi);
+    if (paragraphs && paragraphs.length > 0) {
+      inner = `<ul>${paragraphs.map((p) => `<li>${p}</li>`).join("")}</ul>`;
+    } else {
+      // Plain inline run — wrap in a single bullet so the callout still reads as a list.
+      inner = `<ul><li><p>${inner}</p></li></ul>`;
+    }
+  }
+
+  return `<div class="article__keypoints" aria-labelledby="article-keypoints-label">
+  <h2 id="article-keypoints-label">What this article covers</h2>
+  ${inner}
+</div>`;
+}
 
 type Props = {
   name: string;
@@ -140,6 +213,32 @@ function Toolbar({ editor }: { editor: Editor | null }) {
         >
           ―
         </ToolbarButton>
+        <ToolbarButton
+          label="Key points box — wraps the selected text in the ‘What this article covers’ callout, or inserts a placeholder if nothing is selected"
+          onClick={() => {
+            const html = buildKeyPointsHtml(editor);
+            editor
+              .chain()
+              .focus()
+              .deleteSelection()
+              .insertContent(html)
+              .run();
+          }}
+        >
+          ☷ Key points
+        </ToolbarButton>
+        <ToolbarButton
+          label="Spacer (blank line between sections)"
+          onClick={() =>
+            editor
+              .chain()
+              .focus()
+              .insertContent("<p>&nbsp;</p>")
+              .run()
+          }
+        >
+          ↕ Spacer
+        </ToolbarButton>
       </div>
       <div className="tiptap__group">
         <ToolbarButton
@@ -175,18 +274,18 @@ function Toolbar({ editor }: { editor: Editor | null }) {
       </div>
       <div className="tiptap__group">
         <ToolbarButton
-          label="Undo"
+          label="Undo last change (Ctrl/⌘+Z)"
           onClick={() => editor.chain().focus().undo().run()}
           disabled={!editor.can().undo()}
         >
-          ↶
+          ↶ Undo
         </ToolbarButton>
         <ToolbarButton
-          label="Redo"
+          label="Redo (Ctrl/⌘+Shift+Z)"
           onClick={() => editor.chain().focus().redo().run()}
           disabled={!editor.can().redo()}
         >
-          ↷
+          Redo ↷
         </ToolbarButton>
       </div>
     </div>
@@ -211,6 +310,7 @@ export function TiptapEditor({ name, defaultHtml, placeholder }: Props) {
           target: "_blank",
         },
       }),
+      KeyPointsCallout,
     ],
     content: initial.current || "",
     editorProps: {
@@ -236,6 +336,17 @@ export function TiptapEditor({ name, defaultHtml, placeholder }: Props) {
         </div>
       ) : null}
       <EditorContent editor={editor} />
+      <p className="tiptap__help">
+        Press <kbd>Enter</kbd> for a new paragraph, or{" "}
+        <kbd>Shift</kbd>+<kbd>Enter</kbd> for a soft line break (tighter,
+        no paragraph gap). Use <strong>Spacer</strong> to add an extra
+        blank line between sections, or <strong>Key points</strong> to
+        wrap the selected text in the “What this article covers” callout
+        (select the lines you want as bullets first, or leave the cursor
+        empty to drop in a placeholder). Hit{" "}
+        <strong>Undo</strong> (or <kbd>Ctrl</kbd>/<kbd>⌘</kbd>+<kbd>Z</kbd>)
+        to roll back the last change.
+      </p>
       <textarea name={name} value={html} readOnly hidden />
     </div>
   );
