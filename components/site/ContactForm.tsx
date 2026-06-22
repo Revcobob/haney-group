@@ -32,7 +32,9 @@ export function ContactForm({
       inquiry_type: String(fd.get("inquiry_type") ?? ""),
       message: String(fd.get("message") ?? ""),
       consent: fd.get("consent") === "on",
-      company_website: String(fd.get("company_website") ?? ""), // honeypot
+      // Honeypot: real users never fill this. The field name is opaque
+      // on purpose so password managers / Chrome autofill don't match it.
+      hp_check: String(fd.get("hp_check") ?? ""),
       source_page: typeof window !== "undefined" ? window.location.pathname : "/contact",
     };
 
@@ -75,12 +77,15 @@ export function ContactForm({
 
   return (
     <form className="form" onSubmit={onSubmit} noValidate>
-      {/* honeypot — must stay empty */}
+      {/* Honeypot — must stay empty. Opaque name + autocomplete="off"
+          + tabIndex=-1 + aria-hidden so browser autofill and password
+          managers don't trip it. Bots that fill every input by name
+          still will. */}
       <div className="form__honeypot" aria-hidden="true">
-        <label htmlFor="f-company">Company website</label>
+        <label htmlFor="f-hp">Leave this field blank</label>
         <input
-          id="f-company"
-          name="company_website"
+          id="f-hp"
+          name="hp_check"
           type="text"
           tabIndex={-1}
           autoComplete="off"

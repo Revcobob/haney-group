@@ -1789,6 +1789,31 @@ section.article-section { padding-top: clamp(14px, 2vw, 28px); padding-bottom: c
   font-weight: 600;
 }
 .admin__side-link svg { color: var(--amber-600); flex-shrink: 0; }
+.admin__side-link > span:first-of-type { flex: 1; min-width: 0; }
+.admin__side-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: var(--amber-600);
+  color: var(--paper);
+  font-size: 11px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  /* Subtle pulse so a new arrival catches the eye without nagging. */
+  animation: admin-side-badge-pulse 2.4s ease-in-out infinite;
+}
+@keyframes admin-side-badge-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(168, 116, 31, 0.55); }
+  50%      { box-shadow: 0 0 0 5px rgba(168, 116, 31, 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .admin__side-badge { animation: none; }
+}
 
 .admin__main {
   grid-area: main;

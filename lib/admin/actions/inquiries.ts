@@ -85,6 +85,32 @@ export async function saveInquiryNotesAction(
   return { ok: true };
 }
 
+// Same write, then bounce back to the list. Used by the "Save & return"
+// button — the redirect throws, which React/Next handles natively, so
+// the action signature stays simple and doesn't need useActionState.
+export async function saveInquiryNotesAndReturnAction(
+  id: string,
+  formData: FormData
+): Promise<void> {
+  await requireAdmin();
+  if (!supabaseServerConfigured) {
+    redirect("/admin/inquiries");
+  }
+  const parsed = NotesSchema.safeParse({
+    notes: String(formData.get("notes") ?? ""),
+  });
+  if (parsed.success) {
+    const sb = serverSupabase();
+    await sb
+      .from("cms_contact_inquiries")
+      .update({ notes: parsed.data.notes ?? null } as never)
+      .eq("id", id);
+  }
+  revalidatePath(`/admin/inquiries/${id}`);
+  revalidatePath("/admin/inquiries");
+  redirect("/admin/inquiries");
+}
+
 // CSV export (server action invoked from a form button). Generates a CSV
 // string and triggers a download via redirect to a data-URL-style route.
 // We avoid data URLs at scale by streaming through a one-shot endpoint.

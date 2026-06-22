@@ -1,9 +1,17 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-type NavItem = { href: string; label: string; icon: React.ReactNode };
+type NavItem = {
+  href: string;
+  label: string;
+  icon: React.ReactNode;
+  /** When set, the sidebar renders a small notification badge on the
+   *  link showing the current value (e.g. unread inquiry count). */
+  badgeKey?: "newInquiries";
+};
 
 function Icon({ d }: { d: string }) {
   return (
@@ -30,7 +38,7 @@ const content: NavItem[] = [
   { href: "/admin/pages", label: "Pages", icon: <Icon d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z M14 2v6h6M9 13h6M9 17h6" /> },
   { href: "/admin/insights", label: "Insights", icon: <Icon d="M4 4h13a2 2 0 0 1 2 2v14H6a2 2 0 0 1-2-2zM19 6h2v14a2 2 0 0 1-2 2 M8 8h7M8 12h7M8 16h4" /> },
   { href: "/admin/media", label: "Media Library", icon: <Icon d="M3 5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z M3 17l5-5 4 4 4-4 5 5 M8 9a2 2 0 1 0 0-4 2 2 0 0 0 0 4z" /> },
-  { href: "/admin/inquiries", label: "Inquiries", icon: <Icon d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8z" /> },
+  { href: "/admin/inquiries", label: "Inquiries", icon: <Icon d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8z" />, badgeKey: "newInquiries" },
   { href: "/admin/seo", label: "SEO", icon: <Icon d="M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16zM21 21l-4.35-4.35" /> },
 ];
 const structure: NavItem[] = [
@@ -45,7 +53,17 @@ const settings: NavItem[] = [
   { href: "/admin/health", label: "Site Health", icon: <Icon d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" /> },
 ];
 
-function Section({ label, items }: { label: string; items: NavItem[] }) {
+type Badges = { newInquiries: number };
+
+function Section({
+  label,
+  items,
+  badges,
+}: {
+  label: string;
+  items: NavItem[];
+  badges: Badges;
+}) {
   const pathname = usePathname();
   return (
     <div className="admin__side-group">
@@ -54,6 +72,7 @@ function Section({ label, items }: { label: string; items: NavItem[] }) {
         const active =
           pathname === item.href ||
           (item.href !== "/admin/dashboard" && pathname.startsWith(item.href));
+        const badge = item.badgeKey ? badges[item.badgeKey] : 0;
         return (
           <Link
             key={item.href}
@@ -62,6 +81,14 @@ function Section({ label, items }: { label: string; items: NavItem[] }) {
           >
             {item.icon}
             <span>{item.label}</span>
+            {badge > 0 ? (
+              <span
+                className="admin__side-badge"
+                aria-label={`${badge} new`}
+              >
+                {badge > 99 ? "99+" : badge}
+              </span>
+            ) : null}
           </Link>
         );
       })}
@@ -69,7 +96,42 @@ function Section({ label, items }: { label: string; items: NavItem[] }) {
   );
 }
 
-export function AdminSidebar({ role }: { role: "admin" | "editor" }) {
+export function AdminSidebar({
+  role,
+  initialNewInquiryCount = 0,
+}: {
+  role: "admin" | "editor";
+  initialNewInquiryCount?: number;
+}) {
+  // Live-refresh the inquiry badge every 60s without a full reload.
+  // The initial value comes from the layout (server-rendered) so the
+  // badge is correct on first paint; the poll keeps it fresh while the
+  // admin is parked on one page. Updates also refetch on tab-focus.
+  const [newInquiries, setNewInquiries] = useState(initialNewInquiryCount);
+  useEffect(() => {
+    let cancelled = false;
+    async function refresh() {
+      try {
+        const r = await fetch("/api/admin/inquiries/count", {
+          cache: "no-store",
+        });
+        if (!r.ok) return;
+        const d = (await r.json()) as { count: number };
+        if (!cancelled && typeof d.count === "number") setNewInquiries(d.count);
+      } catch {
+        // Network blip — leave the last good value in place.
+      }
+    }
+    const handle = window.setInterval(refresh, 60_000);
+    const onFocus = () => refresh();
+    window.addEventListener("focus", onFocus);
+    return () => {
+      cancelled = true;
+      window.clearInterval(handle);
+      window.removeEventListener("focus", onFocus);
+    };
+  }, []);
+
   // Editors get the same content + structure surfaces, but the admin-only
   // entries (Navigation, Site Settings) are filtered out — they'd 403
   // anyway, so don't tease them.
@@ -77,12 +139,17 @@ export function AdminSidebar({ role }: { role: "admin" | "editor" }) {
     role === "admin"
       ? settings
       : settings.filter((s) => s.href === "/admin/health");
+  const badges: Badges = { newInquiries };
   return (
     <aside className="admin__side" aria-label="Admin navigation">
-      <Section label="Overview" items={overview} />
-      <Section label="Content" items={content} />
-      <Section label="Structure" items={structure} />
-      <Section label={role === "admin" ? "Site" : "Ops"} items={visibleSettings} />
+      <Section label="Overview" items={overview} badges={badges} />
+      <Section label="Content" items={content} badges={badges} />
+      <Section label="Structure" items={structure} badges={badges} />
+      <Section
+        label={role === "admin" ? "Site" : "Ops"}
+        items={visibleSettings}
+        badges={badges}
+      />
     </aside>
   );
 }
