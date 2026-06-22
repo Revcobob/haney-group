@@ -3,7 +3,44 @@
 import { useEditor, EditorContent, type Editor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Link from "@tiptap/extension-link";
+import { Node, mergeAttributes } from "@tiptap/core";
 import { useEffect, useRef, useState } from "react";
+
+// Custom block node that round-trips the "What this article covers" callout
+// box (.article__keypoints in styles/main.css). Without this, the wrapping
+// <div class="article__keypoints"> would be stripped by the default Tiptap
+// schema and the formatting would not survive a save. Children are normal
+// block content (h2 + list), so the editor remains a familiar surface.
+const KeyPointsCallout = Node.create({
+  name: "keyPointsCallout",
+  group: "block",
+  content: "block+",
+  defining: true,
+  parseHTML() {
+    return [{ tag: "div.article__keypoints" }];
+  },
+  renderHTML({ HTMLAttributes }) {
+    return [
+      "div",
+      mergeAttributes(HTMLAttributes, {
+        class: "article__keypoints",
+        "aria-labelledby": "article-keypoints-label",
+      }),
+      0,
+    ];
+  },
+});
+
+const KEYPOINTS_TEMPLATE = `
+<div class="article__keypoints" aria-labelledby="article-keypoints-label">
+  <h2 id="article-keypoints-label">What this article covers</h2>
+  <ul>
+    <li><p><strong>Point one.</strong> One short sentence on what the reader will take away.</p></li>
+    <li><p><strong>Point two.</strong> Another point worth previewing up front.</p></li>
+    <li><p><strong>Point three.</strong> Edit, add, or remove rows as needed.</p></li>
+  </ul>
+</div>
+`;
 
 type Props = {
   name: string;
@@ -140,6 +177,30 @@ function Toolbar({ editor }: { editor: Editor | null }) {
         >
           ―
         </ToolbarButton>
+        <ToolbarButton
+          label="Key points box (inserts the ‘What this article covers’ callout)"
+          onClick={() =>
+            editor
+              .chain()
+              .focus()
+              .insertContent(KEYPOINTS_TEMPLATE)
+              .run()
+          }
+        >
+          ☷ Key points
+        </ToolbarButton>
+        <ToolbarButton
+          label="Spacer (blank line between sections)"
+          onClick={() =>
+            editor
+              .chain()
+              .focus()
+              .insertContent("<p>&nbsp;</p>")
+              .run()
+          }
+        >
+          ↕ Spacer
+        </ToolbarButton>
       </div>
       <div className="tiptap__group">
         <ToolbarButton
@@ -211,6 +272,7 @@ export function TiptapEditor({ name, defaultHtml, placeholder }: Props) {
           target: "_blank",
         },
       }),
+      KeyPointsCallout,
     ],
     content: initial.current || "",
     editorProps: {
@@ -236,6 +298,13 @@ export function TiptapEditor({ name, defaultHtml, placeholder }: Props) {
         </div>
       ) : null}
       <EditorContent editor={editor} />
+      <p className="tiptap__help">
+        Press <kbd>Enter</kbd> for a new paragraph, or{" "}
+        <kbd>Shift</kbd>+<kbd>Enter</kbd> for a soft line break (tighter,
+        no paragraph gap). Use <strong>Spacer</strong> to add an extra
+        blank line between sections, or <strong>Key points</strong> to
+        insert the “What this article covers” callout box.
+      </p>
       <textarea name={name} value={html} readOnly hidden />
     </div>
   );

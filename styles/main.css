@@ -2449,6 +2449,23 @@ section.article-section { padding-top: clamp(14px, 2vw, 28px); padding-bottom: c
   border-top: 1px solid var(--line-1);
   margin: 24px 0;
 }
+.tiptap__help {
+  margin: 10px 2px 0;
+  font-size: 12.5px;
+  color: var(--text-3);
+  line-height: 1.55;
+}
+.tiptap__help kbd {
+  display: inline-block;
+  padding: 1px 6px;
+  border: 1px solid var(--line-2);
+  border-bottom-width: 2px;
+  border-radius: 4px;
+  font-family: var(--font-sans);
+  font-size: 11.5px;
+  background: var(--paper);
+  color: var(--text-1);
+}
 
 /* ---------- Inquiry inbox ---------- */
 .inqfilter {
