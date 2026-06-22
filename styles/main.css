@@ -1644,7 +1644,12 @@ section.article-section { padding-top: clamp(14px, 2vw, 28px); padding-bottom: c
 .article__keypoints li { margin: 0 0 8px; font-size: 15.5px; line-height: 1.5; }
 .article__keypoints li:last-child { margin-bottom: 0; }
 .article__keypoints li strong { color: var(--text-1); }
-.article__lead p:first-child::first-letter {
+/* Drop cap is scoped to the FIRST paragraph that is a direct child of the
+   article body wrapper. Previously this used `.article__lead p:first-child`,
+   which also matched the <p> that Tiptap wraps every <li> in — giving each
+   bullet a giant drop-cap letter. The `> p:first-of-type` selector pins it
+   to one paragraph at the top of the body. */
+.article__body > p:first-of-type::first-letter {
   font-size: 3.2em;
   float: left;
   line-height: 0.95;
