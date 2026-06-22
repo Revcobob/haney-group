@@ -236,18 +236,18 @@ function Toolbar({ editor }: { editor: Editor | null }) {
       </div>
       <div className="tiptap__group">
         <ToolbarButton
-          label="Undo"
+          label="Undo last change (Ctrl/⌘+Z)"
           onClick={() => editor.chain().focus().undo().run()}
           disabled={!editor.can().undo()}
         >
-          ↶
+          ↶ Undo
         </ToolbarButton>
         <ToolbarButton
-          label="Redo"
+          label="Redo (Ctrl/⌘+Shift+Z)"
           onClick={() => editor.chain().focus().redo().run()}
           disabled={!editor.can().redo()}
         >
-          ↷
+          Redo ↷
         </ToolbarButton>
       </div>
     </div>
@@ -303,7 +303,9 @@ export function TiptapEditor({ name, defaultHtml, placeholder }: Props) {
         <kbd>Shift</kbd>+<kbd>Enter</kbd> for a soft line break (tighter,
         no paragraph gap). Use <strong>Spacer</strong> to add an extra
         blank line between sections, or <strong>Key points</strong> to
-        insert the “What this article covers” callout box.
+        insert the “What this article covers” callout box. Hit{" "}
+        <strong>Undo</strong> (or <kbd>Ctrl</kbd>/<kbd>⌘</kbd>+<kbd>Z</kbd>)
+        to roll back the last change.
       </p>
       <textarea name={name} value={html} readOnly hidden />
     </div>
