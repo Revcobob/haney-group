@@ -167,7 +167,10 @@ export default async function ArticlePage({
               </span>
             </div>
 
-            <div dangerouslySetInnerHTML={{ __html: article.body_html }} />
+            <div
+              className="article__body"
+              dangerouslySetInnerHTML={{ __html: article.body_html }}
+            />
 
             <div className="article__close">
               <p>

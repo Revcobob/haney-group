@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { uploadMediaAction } from "@/lib/admin/actions/media";
 
 export type MediaPickerItem = {
@@ -91,6 +92,11 @@ export function MediaPickerModal({
   }, [open, onClose]);
 
   if (!open) return null;
+  // Portal to document.body so the upload <form> inside the modal isn't
+  // nested inside a caller's <form> (e.g. ArticleForm). Nested forms are
+  // invalid HTML — browsers drop the inner form tag and the upload submit
+  // ends up submitting the article form instead, blanking it out.
+  if (typeof document === "undefined") return null;
   const filtered =
     items?.filter((i) =>
       !query
@@ -100,7 +106,7 @@ export function MediaPickerModal({
             .includes(query.toLowerCase())
     ) ?? null;
 
-  return (
+  return createPortal(
     <div className="mediapicker" role="dialog" aria-modal="true" aria-label="Choose media">
       <div className="mediapicker__backdrop" onClick={onClose} />
       <div className="mediapicker__panel">
@@ -241,6 +247,7 @@ export function MediaPickerModal({
           )}
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
