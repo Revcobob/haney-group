@@ -16,7 +16,10 @@ const PayloadSchema = z.object({
   message: z.string().trim().min(1, "Message is required").max(5000),
   consent: z.boolean().refine((v) => v === true, "Consent is required"),
   source_page: z.string().trim().max(300).optional().or(z.literal("")),
-  company_website: z.string().optional(), // honeypot
+  // Honeypot — see ContactForm. New + old names accepted so a stale
+  // cached client doesn't get false-flagged during rollout.
+  hp_check: z.string().optional(),
+  company_website: z.string().optional(),
 });
 
 export async function POST(request: Request) {
@@ -39,7 +42,19 @@ export async function POST(request: Request) {
   const input = parsed.data;
 
   // 2) Honeypot — silently accept then drop so bots think they succeeded.
-  if (input.company_website && input.company_website.trim().length > 0) {
+  // Log the drop so a real visitor unexpectedly tripping the trap shows
+  // up in Vercel logs instead of vanishing into the void.
+  const hpTripped =
+    (input.hp_check && input.hp_check.trim().length > 0) ||
+    (input.company_website && input.company_website.trim().length > 0);
+  if (hpTripped) {
+    // eslint-disable-next-line no-console
+    console.warn("[contact] honeypot tripped — dropping submission", {
+      email: input.email,
+      hp_check: input.hp_check?.slice(0, 40),
+      company_website: input.company_website?.slice(0, 40),
+      ua: request.headers.get("user-agent")?.slice(0, 120),
+    });
     return NextResponse.json({ ok: true }, { status: 200 });
   }
 
@@ -58,6 +73,12 @@ export async function POST(request: Request) {
   //    visitor we'll be in touch by phone or email. This matches the visitor's
   //    expectation while keeping operations from breaking during setup.
   if (!supabaseServerConfigured) {
+    // Loud in production: this should never happen on a deployed site.
+    // eslint-disable-next-line no-console
+    console.error(
+      "[contact] Supabase env not configured at submit time — message NOT persisted",
+      { email: input.email }
+    );
     return NextResponse.json(
       {
         ok: true,
@@ -89,6 +110,14 @@ export async function POST(request: Request) {
     .select("id")
     .single();
   if (error) {
+    // eslint-disable-next-line no-console
+    console.error("[contact] cms_contact_inquiries insert failed", {
+      message: error.message,
+      code: error.code,
+      details: error.details,
+      hint: error.hint,
+      email: input.email,
+    });
     return NextResponse.json(
       { error: "We couldn’t save your note. Please call (512) 925-5000." },
       { status: 500 }

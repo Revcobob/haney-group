@@ -21,7 +21,7 @@ const TABLES = [
   "cms_articles",
   "cms_media",
   "cms_seo_paths",
-  "cms_inquiries",
+  "cms_contact_inquiries",
 ] as const;
 
 export async function GET() {
