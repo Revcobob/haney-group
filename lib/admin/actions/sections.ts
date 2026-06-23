@@ -120,9 +120,9 @@ function readSectionArgs(formData: FormData): SaveSectionArgs {
 }
 
 export async function saveSectionAction(
-  _prev: ActionResult | undefined,
+  _prev: ActionResult<{ content: Record<string, unknown> }> | undefined,
   formData: FormData
-): Promise<ActionResult> {
+): Promise<ActionResult<{ content: Record<string, unknown> }>> {
   const admin = await requireAdmin();
   if (!supabaseServerConfigured) {
     return {
@@ -212,14 +212,18 @@ export async function saveSectionAction(
 
   const publicPath = publicPathForSlug(args.pageSlug);
   revalidatePath(publicPath);
-  revalidatePath(`/admin/pages/${args.pageSlug}`);
-  revalidatePath(`/admin/pages/${args.pageSlug}/visual`);
+  // Admin routes are force-dynamic (see app/admin/layout.tsx), so calling
+  // revalidatePath on them busts no cache — it only forces a router
+  // refresh of the page the editor is *currently on*, which keeps the
+  // server action's pending state alive until that refresh completes.
+  // The visual editor mirrors saved content into local state, so we
+  // don't need the router refresh for data freshness either.
   await recordAudit(admin, {
     table: "cms_page_sections",
     action: "update",
     detail: `${args.pageSlug} · ${args.sectionLabel || args.sectionKey}`,
   });
-  return { ok: true };
+  return { ok: true, data: { content: merged } };
 }
 
 // Reorder every section on a page. Caller submits the new ordering as

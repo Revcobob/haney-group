@@ -31,10 +31,11 @@ export type SectionTypeClient = {
   fields: FieldConfig[];
 };
 
+export type SavedSectionPayload = { content: Record<string, unknown> };
 type Action = (
-  prev: ActionResult | undefined,
+  prev: ActionResult<SavedSectionPayload> | undefined,
   formData: FormData
-) => Promise<ActionResult>;
+) => Promise<ActionResult<SavedSectionPayload>>;
 
 type Cta = { label?: string; href?: string };
 type CardArrItem = { image_id: string; image_url: string; title: string; body: string };
@@ -289,16 +290,20 @@ export function SectionForm({
   action: Action;
   meta: SectionMeta;
   cancelHref?: string;
-  onSaved?: () => void;
+  /** Called after a successful save. `savedContent` is the post-merge
+   *  content_json the server persisted, so callers (e.g. the visual
+   *  editor) can mirror it into their own state without waiting on a
+   *  full route refresh. */
+  onSaved?: (savedContent?: Record<string, unknown>) => void;
   /** Called with debounced text-field snapshots as the admin types,
    *  so the visual editor iframe can patch its DOM in place. */
   onPreviewChange?: (sectionKey: string, fields: Record<string, string>) => void;
   compact?: boolean;
 }) {
-  const [state, formAction] = useActionState<ActionResult | undefined, FormData>(
-    action,
-    undefined
-  );
+  const [state, formAction] = useActionState<
+    ActionResult<SavedSectionPayload> | undefined,
+    FormData
+  >(action, undefined);
   const formRef = useRef<HTMLFormElement>(null);
   const { markClean, isDirty } = useUnsavedChangesGuard(formRef);
   const formId = useId();
@@ -314,7 +319,7 @@ export function SectionForm({
     if (state?.ok && lastNotifiedState.current !== state) {
       lastNotifiedState.current = state;
       markClean();
-      onSaved?.();
+      onSaved?.(state.data?.content);
     }
   }, [state, onSaved, markClean]);
 

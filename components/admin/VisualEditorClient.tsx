@@ -46,6 +46,14 @@ export function VisualEditorClient({
   sections: EditorSectionData[];
   previewSrc: string;
 }) {
+  // Mirror the server-supplied sections into client state so a save can
+  // patch the active section's content_json locally — switching to
+  // another section and back will then show what was just saved instead
+  // of the pre-save defaults (the server action no longer revalidates
+  // this route, which previously kept the Save button pinned on
+  // "Saving…" while Next.js refetched the entire editor page).
+  const [editorSections, setEditorSections] =
+    useState<EditorSectionData[]>(sections);
   const [activeKey, setActiveKey] = useState<string | null>(
     sections[0]?.section_key ?? null
   );
@@ -100,11 +108,31 @@ export function VisualEditorClient({
     );
   }, [activeKey, iframeKey]);
 
-  const active = sections.find((s) => s.section_key === activeKey) ?? null;
+  const active =
+    editorSections.find((s) => s.section_key === activeKey) ?? null;
 
   const reloadIframe = useCallback(() => {
     setIframeKey((k) => k + 1);
   }, []);
+
+  // Called after a successful save: patch the active section's
+  // content_json in local state so the editor stays in sync, then
+  // reload the iframe so the preview matches.
+  const handleSaved = useCallback(
+    (savedContent?: Record<string, unknown>) => {
+      if (savedContent && activeKey) {
+        setEditorSections((prev) =>
+          prev.map((s) =>
+            s.section_key === activeKey
+              ? { ...s, content_json: savedContent }
+              : s
+          )
+        );
+      }
+      reloadIframe();
+    },
+    [activeKey, reloadIframe]
+  );
 
   // Pipe the SectionForm's debounced text snapshots into the iframe so
   // the rendered preview updates in real time without saving.
@@ -173,10 +201,10 @@ export function VisualEditorClient({
                 value={activeKey ?? ""}
                 onChange={(e) => setActiveKeyGuarded(e.target.value || null)}
               >
-                {sections.length === 0 ? (
+                {editorSections.length === 0 ? (
                   <option value="">No sections yet</option>
                 ) : null}
-                {sections.map((s) => (
+                {editorSections.map((s) => (
                   <option key={s.section_key} value={s.section_key}>
                     {s.section_label}
                   </option>
@@ -184,7 +212,7 @@ export function VisualEditorClient({
               </select>
             </div>
 
-            {pageId && sections.length > 1 ? (
+            {pageId && editorSections.length > 1 ? (
               <details
                 style={{ marginBottom: 18 }}
                 open={reorderOpen}
@@ -205,7 +233,7 @@ export function VisualEditorClient({
                   <SectionReorderList
                     pageId={pageId}
                     pageSlug={pageSlug}
-                    items={sections.map((s) => ({
+                    items={editorSections.map((s) => ({
                       section_key: s.section_key,
                       section_label: s.section_label,
                     }))}
@@ -245,7 +273,7 @@ export function VisualEditorClient({
                     sectionType: active.section_type,
                     displayOrder: active.display_order,
                   }}
-                  onSaved={reloadIframe}
+                  onSaved={handleSaved}
                   onPreviewChange={pushPreview}
                   compact
                 />
