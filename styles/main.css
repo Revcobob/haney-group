@@ -971,9 +971,9 @@ section.tight { padding-block: clamp(48px, 6vw, 72px); }
   display: block;
 }
 .person::after { content: ""; display: block; clear: both; }
-.person > div { display: contents; }
+.person > div:not(.person__portrait) { display: contents; }
 @media (max-width: 640px) {
-  .person > div { display: block; }
+  .person > div:not(.person__portrait) { display: block; }
 }
 .person__portrait {
   float: left;
