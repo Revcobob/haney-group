@@ -18,6 +18,8 @@ function fmtDate(iso: string): string {
       year: "numeric",
       hour: "numeric",
       minute: "2-digit",
+      timeZone: "America/Chicago",
+      timeZoneName: "short",
     });
   } catch {
     return iso;
