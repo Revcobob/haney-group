@@ -965,18 +965,29 @@ section.tight { padding-block: clamp(48px, 6vw, 72px); }
 }
 @media (min-width: 880px) { .peoplelist { grid-template-columns: 1fr 1fr; gap: 64px; } }
 .person {
-  display: grid;
-  grid-template-columns: clamp(180px, 22vw, 240px) 1fr;
-  gap: 24px;
+  /* Float the portrait so paragraphs (and the in-flow quote) reclaim
+     the full width once they pass the bottom of the image, instead of
+     staying locked to a right-hand column. */
+  display: block;
 }
-@media (max-width: 640px) { .person { grid-template-columns: 1fr; } }
+.person::after { content: ""; display: block; clear: both; }
+.person > div { display: contents; }
+@media (max-width: 640px) {
+  .person > div { display: block; }
+}
 .person__portrait {
+  float: left;
+  width: clamp(180px, 22vw, 240px);
+  margin: 0 24px 16px 0;
   aspect-ratio: 4 / 5;
   border-radius: var(--radius-md);
   overflow: hidden;
   background: var(--paper-2);
   border: 1px solid var(--line-1);
   position: relative;
+}
+@media (max-width: 640px) {
+  .person__portrait { float: none; width: 100%; margin: 0 0 16px; }
 }
 .person__portrait img {
   position: absolute; inset: 0;
