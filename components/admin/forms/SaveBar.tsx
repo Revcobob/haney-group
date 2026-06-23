@@ -8,6 +8,7 @@ export function SaveBar({
   cancelHref,
   primaryLabel = "Save changes",
   secondary,
+  pending: pendingOverride,
 }: {
   message?: string;
   status?: "idle" | "success" | "error";
@@ -16,8 +17,13 @@ export function SaveBar({
   /** Optional left-aligned secondary action (e.g. "Reset to default").
    *  Rendered before the cancel/save cluster. */
   secondary?: React.ReactNode;
+  /** When the form drives submits programmatically (useTransition +
+   *  manual action call), pass the transition's pending here. Forms
+   *  using <form action={...}> can omit this and rely on useFormStatus. */
+  pending?: boolean;
 }) {
-  const { pending } = useFormStatus();
+  const formStatus = useFormStatus();
+  const pending = pendingOverride ?? formStatus.pending;
   return (
     <div className="adminsavebar" role="status">
       {message ? (

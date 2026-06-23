@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useEffect, useId, useRef } from "react";
+import { useEffect, useId, useRef, useState, useTransition } from "react";
 import { useUnsavedChangesGuard } from "./useUnsavedChangesGuard";
 import { useDirtyFormRegistration } from "../DirtyFormProvider";
 import { SaveBar } from "./SaveBar";
@@ -300,16 +300,33 @@ export function SectionForm({
   onPreviewChange?: (sectionKey: string, fields: Record<string, string>) => void;
   compact?: boolean;
 }) {
-  const [state, formAction] = useActionState<
-    ActionResult<SavedSectionPayload> | undefined,
-    FormData
-  >(action, undefined);
+  // Drive the action programmatically with useTransition instead of
+  // <form action={formAction}>. Going through the form-action protocol
+  // ties the pending state to Next.js's automatic post-action router
+  // refresh, which on cold infra can hang the Save button on
+  // "Saving…" long after the DB write has completed. With this
+  // pattern, `pending` is bound only to the action's own promise.
+  const [state, setState] = useState<
+    ActionResult<SavedSectionPayload> | undefined
+  >(undefined);
+  const [pending, startTransition] = useTransition();
   const formRef = useRef<HTMLFormElement>(null);
   const { markClean, isDirty } = useUnsavedChangesGuard(formRef);
   const formId = useId();
   useDirtyFormRegistration(`section:${formId}`, isDirty);
   const status = !state ? "idle" : state.ok ? "success" : "error";
   const message = !state ? undefined : state.ok ? "Saved." : state.error;
+
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const form = formRef.current;
+    if (!form) return;
+    const fd = new FormData(form);
+    startTransition(async () => {
+      const result = await action(state, fd);
+      setState(result);
+    });
+  }
 
   // Fire onSaved exactly once per state object — useActionState returns the
   // same reference until the next submit, so an identity check on `state`
@@ -362,7 +379,7 @@ export function SectionForm({
   }, [onPreviewChange, meta.sectionKey]);
 
   return (
-    <form ref={formRef} action={formAction} className="adminform">
+    <form ref={formRef} onSubmit={handleSubmit} className="adminform">
       {/* Hidden context for the server action — no per-call bind required */}
       <input type="hidden" name="_meta_page_id" value={meta.pageId} />
       <input type="hidden" name="_meta_page_slug" value={meta.pageSlug} />
@@ -387,6 +404,7 @@ export function SectionForm({
         status={status}
         message={message}
         cancelHref={cancelHref}
+        pending={pending}
         secondary={
           meta.pageId ? (
             <ResetSectionButton
