@@ -11,6 +11,12 @@ const securityHeaders = [
 const config: NextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
+  experimental: {
+    // Server actions cap request bodies at 1 MB by default, which rejects
+    // image uploads (uploadMediaAction accepts up to 8 MB) before the
+    // action runs. Raise the cap to match the action's own limit.
+    serverActions: { bodySizeLimit: "8mb" },
+  },
   async headers() {
     return [{ source: "/(.*)", headers: securityHeaders }];
   },
