@@ -99,6 +99,10 @@ export default async function AdminDiagnosticsPage() {
       "cms_pages",
       "cms_page_sections",
       "cms_audit_log",
+      "cms_services",
+      "cms_industries",
+      "cms_experience_items",
+      "cms_client_logos",
     ];
     for (const t of tableNames) {
       tables.push(await probeTable(t));

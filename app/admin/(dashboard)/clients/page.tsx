@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { listAdminRows } from "@/lib/admin/data/entities";
+import { listAdminRows, type AdminRow } from "@/lib/admin/data/entities";
 import {
   EntityListClient,
   type EntityListRow,
@@ -18,9 +18,16 @@ type ClientRow = EntityListRow & {
 };
 
 export default async function AdminClientsPage() {
-  const raw = supabaseServerConfigured
-    ? await listAdminRows("cms_client_logos")
-    : [];
+  let raw: AdminRow[] = [];
+  let loadError: string | null = null;
+  if (supabaseServerConfigured) {
+    try {
+      raw = await listAdminRows("cms_client_logos");
+    } catch (e) {
+      loadError = e instanceof Error ? e.message : "Unknown error";
+      console.error("[admin/clients] failed to load cms_client_logos rows", loadError);
+    }
+  }
   const rows: ClientRow[] = raw.map((r) => ({
     id: r.id as string,
     is_visible: (r.is_visible as boolean) ?? true,
@@ -51,6 +58,19 @@ export default async function AdminClientsPage() {
           <div>
             <strong>Supabase not connected.</strong>
             <p>Public site rendering from built-in fallback content.</p>
+          </div>
+        </div>
+      ) : loadError ? (
+        <div className="admin__notice admin__notice--warning">
+          <div>
+            <strong>Couldn’t load client logos.</strong>
+            <p>
+              Supabase replied: <code>{loadError}</code>. Open{" "}
+              <Link href="/admin/diagnostics" style={{ textDecoration: "underline" }}>
+                /admin/diagnostics
+              </Link>{" "}
+              to confirm the table and key.
+            </p>
           </div>
         </div>
       ) : rows.length === 0 ? (
