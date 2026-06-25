@@ -26,13 +26,42 @@ export default async function AdminExperiencePage() {
       console.error("[admin/experience] failed to load cms_experience_items rows", loadError);
     }
   }
-  const rows: ExperienceRow[] = raw.map((r) => ({
-    id: r.id as string,
-    is_visible: (r.is_visible as boolean) ?? true,
-    display_order: (r.display_order as number) ?? 0,
-    title: (r.title as string) ?? "Untitled",
-    leading_line: (r.leading_line as string) ?? "",
-  }));
+  const rows: ExperienceRow[] = raw.map((r) => {
+    const id = r.id as string;
+    const title = (r.title as string) ?? "Untitled";
+    const leading_line = (r.leading_line as string) ?? "";
+    const is_visible = (r.is_visible as boolean) ?? true;
+    const display_order = (r.display_order as number) ?? 0;
+    return {
+      id,
+      is_visible,
+      display_order,
+      title,
+      leading_line,
+      editHref: `/admin/experience/${id}`,
+      content: (
+        <>
+          <Link
+            href={`/admin/experience/${id}`}
+            className="admintable__title"
+          >
+            {title}
+          </Link>
+          <p className="admintable__sub">{leading_line}</p>
+          <div style={{ marginTop: 6 }}>
+            <span
+              className={`admintable__pill admintable__pill--${
+                is_visible ? "published" : "hidden"
+              }`}
+            >
+              {is_visible ? "Visible" : "Hidden"}
+            </span>{" "}
+            <span className="admintable__pill">Order {display_order}</span>
+          </div>
+        </>
+      ),
+    };
+  });
 
   return (
     <>
@@ -88,29 +117,7 @@ export default async function AdminExperiencePage() {
         <EntityListClient
           table="cms_experience_items"
           rows={rows}
-          editHref={(r) => `/admin/experience/${r.id}`}
           deleteConfirmLabel="engagement"
-          renderRow={(r) => (
-            <>
-              <Link
-                href={`/admin/experience/${r.id}`}
-                className="admintable__title"
-              >
-                {r.title}
-              </Link>
-              <p className="admintable__sub">{r.leading_line}</p>
-              <div style={{ marginTop: 6 }}>
-                <span
-                  className={`admintable__pill admintable__pill--${
-                    r.is_visible ? "published" : "hidden"
-                  }`}
-                >
-                  {r.is_visible ? "Visible" : "Hidden"}
-                </span>{" "}
-                <span className="admintable__pill">Order {r.display_order}</span>
-              </div>
-            </>
-          )}
         />
       )}
     </>

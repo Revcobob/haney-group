@@ -28,15 +28,59 @@ export default async function AdminClientsPage() {
       console.error("[admin/clients] failed to load cms_client_logos rows", loadError);
     }
   }
-  const rows: ClientRow[] = raw.map((r) => ({
-    id: r.id as string,
-    is_visible: (r.is_visible as boolean) ?? true,
-    display_order: (r.display_order as number) ?? 0,
-    client_name: (r.client_name as string) ?? "Untitled",
-    website_url: (r.website_url as string | null) ?? null,
-    client_status: (r.client_status as string) ?? "current",
-    alt_missing: !(r.alt_text as string | null),
-  }));
+  const rows: ClientRow[] = raw.map((r) => {
+    const id = r.id as string;
+    const client_name = (r.client_name as string) ?? "Untitled";
+    const website_url = (r.website_url as string | null) ?? null;
+    const client_status = (r.client_status as string) ?? "current";
+    const alt_missing = !(r.alt_text as string | null);
+    const is_visible = (r.is_visible as boolean) ?? true;
+    const display_order = (r.display_order as number) ?? 0;
+    return {
+      id,
+      is_visible,
+      display_order,
+      client_name,
+      website_url,
+      client_status,
+      alt_missing,
+      editHref: `/admin/clients/${id}`,
+      content: (
+        <>
+          <Link href={`/admin/clients/${id}`} className="admintable__title">
+            {client_name}
+          </Link>
+          {website_url ? (
+            <p className="admintable__sub">{website_url}</p>
+          ) : null}
+          <div style={{ marginTop: 6 }}>
+            <span
+              className={`admintable__pill admintable__pill--${
+                is_visible ? "published" : "hidden"
+              }`}
+            >
+              {is_visible ? "Visible" : "Hidden"}
+            </span>{" "}
+            <span className="admintable__pill">
+              {client_status === "past" ? "Past" : "Current"}
+            </span>{" "}
+            <span className="admintable__pill">Order {display_order}</span>
+            {alt_missing ? (
+              <>
+                {" "}
+                <span
+                  className="admintable__pill"
+                  style={{ color: "#B25C2E", borderColor: "#E5C0C0" }}
+                >
+                  Missing alt text
+                </span>
+              </>
+            ) : null}
+          </div>
+        </>
+      ),
+    };
+  });
 
   return (
     <>
@@ -83,42 +127,7 @@ export default async function AdminClientsPage() {
         <EntityListClient
           table="cms_client_logos"
           rows={rows}
-          editHref={(r) => `/admin/clients/${r.id}`}
           deleteConfirmLabel="client logo"
-          renderRow={(r) => (
-            <>
-              <Link href={`/admin/clients/${r.id}`} className="admintable__title">
-                {r.client_name}
-              </Link>
-              {r.website_url ? (
-                <p className="admintable__sub">{r.website_url}</p>
-              ) : null}
-              <div style={{ marginTop: 6 }}>
-                <span
-                  className={`admintable__pill admintable__pill--${
-                    r.is_visible ? "published" : "hidden"
-                  }`}
-                >
-                  {r.is_visible ? "Visible" : "Hidden"}
-                </span>{" "}
-                <span className="admintable__pill">
-                  {r.client_status === "past" ? "Past" : "Current"}
-                </span>{" "}
-                <span className="admintable__pill">Order {r.display_order}</span>
-                {r.alt_missing ? (
-                  <>
-                    {" "}
-                    <span
-                      className="admintable__pill"
-                      style={{ color: "#B25C2E", borderColor: "#E5C0C0" }}
-                    >
-                      Missing alt text
-                    </span>
-                  </>
-                ) : null}
-              </div>
-            </>
-          )}
         />
       )}
     </>

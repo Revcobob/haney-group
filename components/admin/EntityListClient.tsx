@@ -20,19 +20,22 @@ export type EntityListRow = {
   id: string;
   is_visible: boolean;
   display_order: number;
+  /** Server-rendered URL for the row's Edit button. */
+  editHref: string;
+  /** Server-rendered JSX for the row body. Server components can pass
+   *  JSX into client components as ReactNode props, but they cannot
+   *  pass functions — so the page renders the row up front instead of
+   *  handing this component a render callback. */
+  content: React.ReactNode;
 };
 
 export function EntityListClient<R extends EntityListRow>({
   table,
   rows: initialRows,
-  renderRow,
-  editHref,
   deleteConfirmLabel,
 }: {
   table: EntityTable;
   rows: R[];
-  renderRow: (row: R) => React.ReactNode;
-  editHref: (row: R) => string;
   deleteConfirmLabel: string;
 }) {
   const router = useRouter();
@@ -186,7 +189,7 @@ export function EntityListClient<R extends EntityListRow>({
                   aria-label={`Select row ${i + 1}`}
                   style={{ marginTop: 4 }}
                 />
-                <div style={{ flex: 1, minWidth: 0 }}>{renderRow(r)}</div>
+                <div style={{ flex: 1, minWidth: 0 }}>{r.content}</div>
               </div>
               <div className="admintable__actions">
                 <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
@@ -222,7 +225,7 @@ export function EntityListClient<R extends EntityListRow>({
                   {r.is_visible ? "Hide" : "Show"}
                 </button>
                 <Link
-                  href={editHref(r)}
+                  href={r.editHref}
                   className="adminbtn adminbtn--primary adminbtn--small"
                 >
                   Edit
