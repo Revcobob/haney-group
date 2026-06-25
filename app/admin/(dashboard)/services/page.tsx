@@ -26,13 +26,43 @@ export default async function AdminServicesPage() {
       console.error("[admin/services] failed to load cms_services rows", loadError);
     }
   }
-  const rows: ServiceRow[] = raw.map((r) => ({
-    id: r.id as string,
-    is_visible: (r.is_visible as boolean) ?? true,
-    display_order: (r.display_order as number) ?? 0,
-    title: (r.title as string) ?? "Untitled",
-    description: (r.description as string) ?? "",
-  }));
+  const rows: ServiceRow[] = raw.map((r) => {
+    const id = r.id as string;
+    const title = (r.title as string) ?? "Untitled";
+    const description = (r.description as string) ?? "";
+    const is_visible = (r.is_visible as boolean) ?? true;
+    const display_order = (r.display_order as number) ?? 0;
+    return {
+      id,
+      is_visible,
+      display_order,
+      title,
+      description,
+      editHref: `/admin/services/${id}`,
+      content: (
+        <>
+          <Link href={`/admin/services/${id}`} className="admintable__title">
+            {title}
+          </Link>
+          <p className="admintable__sub">
+            {description.length > 120
+              ? description.slice(0, 120) + "…"
+              : description}
+          </p>
+          <div style={{ marginTop: 6 }}>
+            <span
+              className={`admintable__pill admintable__pill--${
+                is_visible ? "published" : "hidden"
+              }`}
+            >
+              {is_visible ? "Visible" : "Hidden"}
+            </span>{" "}
+            <span className="admintable__pill">Order {display_order}</span>
+          </div>
+        </>
+      ),
+    };
+  });
 
   return (
     <>
@@ -86,30 +116,7 @@ export default async function AdminServicesPage() {
         <EntityListClient
           table="cms_services"
           rows={rows}
-          editHref={(r) => `/admin/services/${r.id}`}
           deleteConfirmLabel="service"
-          renderRow={(r) => (
-            <>
-              <Link href={`/admin/services/${r.id}`} className="admintable__title">
-                {r.title}
-              </Link>
-              <p className="admintable__sub">
-                {r.description.length > 120
-                  ? r.description.slice(0, 120) + "…"
-                  : r.description}
-              </p>
-              <div style={{ marginTop: 6 }}>
-                <span
-                  className={`admintable__pill admintable__pill--${
-                    r.is_visible ? "published" : "hidden"
-                  }`}
-                >
-                  {r.is_visible ? "Visible" : "Hidden"}
-                </span>{" "}
-                <span className="admintable__pill">Order {r.display_order}</span>
-              </div>
-            </>
-          )}
         />
       )}
     </>
