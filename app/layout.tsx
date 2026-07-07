@@ -29,7 +29,9 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const body = (
-    <html lang="en">
+    // suppressHydrationWarning: the public layout's motion boot script adds
+    // a class to <html> before hydration.
+    <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
