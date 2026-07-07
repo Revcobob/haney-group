@@ -1,10 +1,17 @@
 # CareDose (clean Expo project)
 
 A care-plan reminder and adherence companion for patients and caregivers.
-This is the **clean rebuild** of CareDose on the current Expo SDK, scaffolded
-with `create-expo-app@latest` (Expo SDK 57, React Native 0.86, Expo Router)
-and containing only Expo-compatible mobile dependencies — no Next.js, no
-Clerk, no web-only packages.
+This is the **clean rebuild** of CareDose, scaffolded with
+`create-expo-app@latest` and containing only Expo-compatible mobile
+dependencies — no Next.js, no Clerk, no web-only packages.
+
+**The project is pinned to Expo SDK 54 (React Native 0.81, Expo Router v6)
+on purpose.** That is the newest SDK the Expo Go app currently available on
+the App Store / Play Store can run — Expo Go builds for SDK 55–57 are still
+stuck in store review (see Expo's changelog). If you see "download the
+latest Expo Go" on an up-to-date phone, the project SDK is newer than the
+store's Expo Go; don't upgrade this project past SDK 54 until the stores
+carry a newer Expo Go.
 
 > The previous `caredose/` folder is superseded by this project.
 > Always run Expo commands from inside `caredose-clean/`, **not** from the
@@ -69,8 +76,10 @@ the current SDK:
 - Tab bar icon typing updated for Expo Router v6 (`ColorValue`).
 - Source moved under `src/` to match the current template (`@/*` →
   `./src/*`).
-- The old zustand/Metro `import.meta` workaround is no longer needed and
-  was dropped.
+- `metro.config.js` prefers CommonJS resolution because zustand v5's ESM
+  build uses `import.meta`, which Hermes/Metro on SDK 54 don't support.
+- All dependency versions come from `expo@54`'s `bundledNativeModules.json`
+  (the `npx expo install` API can be unreachable behind proxies).
 
 `FUTURE:` comments throughout mark the OCR/AI, authentication, push
 notification, and backend integration points.
