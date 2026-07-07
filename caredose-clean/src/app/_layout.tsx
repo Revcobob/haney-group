@@ -5,6 +5,7 @@ import { ActivityIndicator, View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { AppText } from '@/components/ui/AppText';
+import { BrandMark } from '@/components/ui/BrandMark';
 import {
   configureNotificationHandling,
   requestNotificationPermissions,
@@ -38,10 +39,15 @@ export default function RootLayout() {
             justifyContent: 'center',
             backgroundColor: colors.background,
             gap: spacing.lg,
+            padding: spacing.xl,
           }}
         >
+          <BrandMark size={132} />
+          <AppText variant="hero" weight="bold">
+            CareDose
+          </AppText>
           <ActivityIndicator size="large" color={colors.accent} />
-          <AppText variant="heading" weight="semibold">
+          <AppText variant="heading" weight="semibold" tone="secondary" center>
             Getting your care plan ready…
           </AppText>
         </View>
