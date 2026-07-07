@@ -1,0 +1,57 @@
+{
+  "expo": {
+    "name": "CareDose",
+    "slug": "caredose",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "scheme": "caredose",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "backgroundColor": "#FAF6F0",
+    "splash": {
+      "backgroundColor": "#FAF6F0",
+      "resizeMode": "contain"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "infoPlist": {
+        "UIBackgroundModes": ["audio"],
+        "NSCameraUsageDescription": "CareDose uses the camera so you can photograph discharge papers, prescriptions, and pill bottles.",
+        "NSPhotoLibraryUsageDescription": "CareDose uses your photo library so you can attach photos of instructions and medications.",
+        "NSMicrophoneUsageDescription": "CareDose does not record audio; this permission is required by the camera module."
+      }
+    },
+    "android": {
+      "edgeToEdgeEnabled": true,
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.VIBRATE",
+        "android.permission.RECEIVE_BOOT_COMPLETED",
+        "android.permission.SCHEDULE_EXACT_ALARM",
+        "android.permission.POST_NOTIFICATIONS"
+      ]
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "single"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-notifications",
+        {
+          "defaultChannel": "care-reminders"
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "cameraPermission": "CareDose uses the camera so you can photograph discharge papers, prescriptions, and pill bottles."
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": false
+    }
+  }
+}
