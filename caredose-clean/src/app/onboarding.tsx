@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { AppText } from '@/components/ui/AppText';
+import { BrandMark } from '@/components/ui/BrandMark';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { FormField } from '@/components/ui/FormField';
@@ -81,7 +82,7 @@ export default function OnboardingScreen() {
       {step === 1 ? (
         <View>
           <View style={[styles.hero, { backgroundColor: colors.accentSoft }]}>
-            <Ionicons name="heart-circle" size={80} color={colors.accent} />
+            <BrandMark size={116} />
           </View>
           <AppText variant="hero" weight="bold" center accessibilityRole="header">
             Welcome to CareDose

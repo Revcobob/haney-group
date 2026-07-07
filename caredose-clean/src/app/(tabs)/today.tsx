@@ -4,6 +4,7 @@ import React, { useMemo } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import { AppText } from '@/components/ui/AppText';
+import { BrandLockup } from '@/components/ui/BrandMark';
 import { Card } from '@/components/ui/Card';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { Screen } from '@/components/ui/Screen';
@@ -53,6 +54,10 @@ export default function TodayScreen() {
 
   return (
     <Screen>
+      {/* Brand */}
+      <View style={{ marginBottom: spacing.md }}>
+        <BrandLockup />
+      </View>
       {/* Date + greeting */}
       <AppText variant="label" tone="secondary" weight="medium">
         {formatLongDate(now)}
