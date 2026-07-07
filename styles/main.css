@@ -3337,3 +3337,153 @@ body.body--visual-editor .admin__header { position: sticky; top: 0; }
   }
   .nav__foot-link:hover { border-color: var(--navy-900); background: var(--paper-3); }
 }
+
+/* =============================================================
+   Scroll-driven motion & interaction polish (SiteMotion)
+   Everything below only tightens behavior when JS has confirmed
+   itself: an inline boot script adds .js-anim to <html> before
+   first paint, and removes it after 4s if hydration never lands.
+   Without .js-anim the CSS-only first-paint animations above keep
+   working exactly as before, so there is no no-JS regression.
+   ============================================================= */
+
+/* ---------- Scroll-triggered section reveals ---------- */
+/* Sections wait, hidden, until IntersectionObserver marks them
+   .is-inview; then they play the same rise-in used at first paint.
+   fill-mode `backwards` (not `both`) matters: once the animation
+   ends, hover transforms on the element work again. The home hero
+   (.hero__inner) is excluded — it stays on the instant first-paint
+   animation so the page never waits on hydration. */
+html.js-anim [data-reveal]:not(.hero__inner) { animation: none; }
+html.js-anim [data-reveal]:not(.hero__inner):not(.is-inview) {
+  opacity: 0;
+  transform: translate3d(0, 22px, 0);
+}
+html.js-anim [data-reveal].is-inview {
+  animation: haney-rise-in 0.7s var(--ease) backwards;
+}
+
+/* Grid children stagger in just behind their container. */
+html.js-anim :is(.caps__grid, .proof__grid, .approach__grid, .principals__grid, .issues__grid, .insights__grid, .tilegrid, .howwework__grid, .audience__grid, .proofstrip__grid, .founders) > * {
+  animation: none;
+}
+html.js-anim :is(.caps__grid, .proof__grid, .approach__grid, .principals__grid, .issues__grid, .insights__grid, .tilegrid, .howwework__grid, .audience__grid, .proofstrip__grid, .founders):not(.is-inview) > * {
+  opacity: 0;
+  transform: translate3d(0, 18px, 0);
+}
+html.js-anim :is(.caps__grid, .proof__grid, .approach__grid, .principals__grid, .issues__grid, .insights__grid, .tilegrid, .howwework__grid, .audience__grid, .proofstrip__grid, .founders).is-inview > * {
+  animation: haney-rise-in 0.6s var(--ease) backwards;
+}
+html.js-anim :is(.caps__grid, .proof__grid, .approach__grid, .principals__grid, .issues__grid, .insights__grid, .tilegrid, .howwework__grid, .audience__grid, .proofstrip__grid, .founders).is-inview > *:nth-child(1) { animation-delay: 40ms; }
+html.js-anim :is(.caps__grid, .proof__grid, .approach__grid, .principals__grid, .issues__grid, .insights__grid, .tilegrid, .howwework__grid, .audience__grid, .proofstrip__grid, .founders).is-inview > *:nth-child(2) { animation-delay: 130ms; }
+html.js-anim :is(.caps__grid, .proof__grid, .approach__grid, .principals__grid, .issues__grid, .insights__grid, .tilegrid, .howwework__grid, .audience__grid, .proofstrip__grid, .founders).is-inview > *:nth-child(3) { animation-delay: 220ms; }
+html.js-anim :is(.caps__grid, .proof__grid, .approach__grid, .principals__grid, .issues__grid, .insights__grid, .tilegrid, .howwework__grid, .audience__grid, .proofstrip__grid, .founders).is-inview > *:nth-child(4) { animation-delay: 310ms; }
+html.js-anim :is(.caps__grid, .proof__grid, .approach__grid, .principals__grid, .issues__grid, .insights__grid, .tilegrid, .howwework__grid, .audience__grid, .proofstrip__grid, .founders).is-inview > *:nth-child(5) { animation-delay: 400ms; }
+html.js-anim :is(.caps__grid, .proof__grid, .approach__grid, .principals__grid, .issues__grid, .insights__grid, .tilegrid, .howwework__grid, .audience__grid, .proofstrip__grid, .founders).is-inview > *:nth-child(6) { animation-delay: 490ms; }
+html.js-anim :is(.caps__grid, .proof__grid, .approach__grid, .principals__grid, .issues__grid, .insights__grid, .tilegrid, .howwework__grid, .audience__grid, .proofstrip__grid, .founders).is-inview > *:nth-child(7) { animation-delay: 580ms; }
+html.js-anim :is(.caps__grid, .proof__grid, .approach__grid, .principals__grid, .issues__grid, .insights__grid, .tilegrid, .howwework__grid, .audience__grid, .proofstrip__grid, .founders).is-inview > *:nth-child(n+8) { animation-delay: 670ms; }
+
+/* ---------- Header: condense + elevate on scroll ---------- */
+.header {
+  transition: box-shadow .32s var(--ease), background .32s var(--ease);
+}
+.header__inner { transition: padding .32s var(--ease); }
+.brand__logo { transition: height .32s var(--ease); }
+.header.is-scrolled {
+  background: rgba(255, 255, 255, 0.97);
+  box-shadow: 0 12px 32px -20px rgba(11, 18, 40, 0.28);
+}
+.header.is-scrolled .header__inner { padding-block: 9px; }
+.header.is-scrolled .brand__logo { height: clamp(48px, 5vw, 58px); }
+
+/* Sticky-header offset for in-page anchors (e.g. /about#robert). */
+[id] { scroll-margin-top: 110px; }
+
+/* ---------- Reading progress bar (insight articles) ---------- */
+.readbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  z-index: 120;
+  background: linear-gradient(90deg, var(--amber-600), var(--amber-400));
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  pointer-events: none;
+}
+
+/* ---------- Back-to-top ---------- */
+.totop {
+  position: fixed;
+  right: 22px;
+  bottom: 22px;
+  z-index: 70;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: var(--navy-900);
+  color: var(--paper);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 12px 28px -14px rgba(11, 18, 40, 0.55);
+  opacity: 0;
+  transform: translateY(12px);
+  pointer-events: none;
+  transition: opacity .3s var(--ease), transform .3s var(--ease), background .22s var(--ease);
+}
+.totop.is-visible { opacity: 1; transform: none; pointer-events: auto; }
+.totop:hover { background: var(--navy-800); }
+.totop svg { transition: transform .22s var(--ease); }
+.totop:hover svg { transform: translateY(-2px); }
+@media (max-width: 640px) {
+  .totop { right: 16px; bottom: 16px; width: 42px; height: 42px; }
+}
+
+/* ---------- CTA sheen sweep ---------- */
+.btn--primary, .btn--amber { position: relative; overflow: hidden; }
+.btn--primary::before, .btn--amber::before {
+  content: "";
+  position: absolute;
+  top: 0; bottom: 0;
+  left: -70%;
+  width: 46%;
+  background: linear-gradient(100deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.22) 50%, rgba(255,255,255,0) 100%);
+  transform: skewX(-18deg);
+  pointer-events: none;
+}
+.btn--primary:hover::before, .btn--amber:hover::before,
+.btn--primary:focus-visible::before, .btn--amber:focus-visible::before {
+  animation: haney-btn-sheen 0.85s var(--ease);
+}
+@keyframes haney-btn-sheen {
+  from { left: -70%; }
+  to   { left: 135%; }
+}
+
+/* ---------- Imagery: slow zoom on hover ---------- */
+.insight__band img { transition: transform .6s var(--ease); }
+.insight:hover .insight__band img { transform: scale(1.05); }
+.tile__banner img { transition: transform .6s var(--ease); }
+.tile--banner:hover .tile__banner img { transform: scale(1.04); }
+.principal__portrait img { transition: transform .6s var(--ease); }
+.principal:hover .principal__portrait img { transform: scale(1.03); }
+
+/* ---------- Stat counters ---------- */
+/* Tabular figures keep the strip from jittering while counting up. */
+.stat__num { font-variant-numeric: tabular-nums; }
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  /* The boot script never adds .js-anim under reduced motion, but if the
+     preference flips mid-session nothing may stay hidden. */
+  html.js-anim [data-reveal]:not(.is-inview),
+  html.js-anim :is(.caps__grid, .proof__grid, .approach__grid, .principals__grid, .issues__grid, .insights__grid, .tilegrid, .howwework__grid, .audience__grid, .proofstrip__grid, .founders):not(.is-inview) > * {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .readbar { display: none; }
+  .totop, .totop svg { transition: none; }
+  .insight__band img, .tile__banner img, .principal__portrait img { transition: none; }
+  .btn--primary::before, .btn--amber::before { display: none; }
+}
