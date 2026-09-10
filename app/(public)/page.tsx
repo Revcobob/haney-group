@@ -11,7 +11,7 @@ export async function generateMetadata(): Promise<Metadata> {
     fallback: {
       title: "The Haney Group · Texas Government Relations & Legislative Strategy",
       description:
-        "A senior-led Austin government relations firm with deep Texas Capitol experience. Legislative strategy, appropriations, parliamentary procedure, and disciplined advocacy for associations, corporations, public entities, and policy organizations.",
+        "The Haney Group advises public entities, associations, companies, and policy organizations on Texas legislation, appropriations, House procedure, and advocacy.",
     },
   });
 }

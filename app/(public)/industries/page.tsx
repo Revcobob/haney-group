@@ -18,7 +18,7 @@ export async function generateMetadata(): Promise<Metadata> {
     fallback: {
       title: "Clients",
       description:
-        "Nine sectors where The Haney Group's Texas legislative and regulatory work is concentrated — and a trusted roster of associations, providers, and operators who rely on principal-level representation.",
+        "Clients and sectors represented by The Haney Group in Texas legislative, appropriations, regulatory, and procedural matters.",
     },
   });
 }

@@ -29,12 +29,12 @@ export const pageFallbacks: PageFallback[] = [
         section_type: "hero",
         display_order: 1,
         content_json: {
-          eyebrow: "Texas Government Relations · Est. Austin",
-          headline: "Strategic government relations for complex Texas policy challenges.",
+          eyebrow: "Texas Legislative Strategy · Austin",
+          headline: "We help clients move policy through the Texas Legislature.",
           lede:
-            "The Haney Group helps clients navigate the Texas Capitol with legislative strategy, procedural expertise, appropriations knowledge, and disciplined advocacy. Senior-led representation for the priorities that cannot afford to be misunderstood.",
-          primary_cta: { label: "Schedule a Consultation", href: "/contact" },
-          secondary_cta: { label: "Explore Our Services", href: "/services" },
+            "The Haney Group advises public entities, associations, companies, and policy organizations on legislation, appropriations, House procedure, and advocacy. Clients work directly with Robert and Julie Haney.",
+          primary_cta: { label: "Discuss a Legislative Priority", href: "/contact" },
+          secondary_cta: { label: "View Services", href: "/services" },
           background_image_url: "/assets/img/capitol-hero-web2.jpg",
           meta_text_html:
             'Led by <strong>Robert Haney</strong>, former Chief Clerk of the Texas House of Representatives, and <strong>Julie Freeman Haney</strong>, senior appropriations and communications strategist. <a class="linkarrow" href="/about" style="margin-left:4px">Meet the principals <span class="arrow" aria-hidden="true">→</span></a>',
@@ -48,10 +48,10 @@ export const pageFallbacks: PageFallback[] = [
         display_order: 2,
         content_json: {
           eyebrow: "The Challenge",
-          heading: "The legislative process is complex. Your strategy should not be.",
+          heading: "A good objective still needs a workable path through the Legislature.",
           body_paragraphs: [
-            "Clients come to The Haney Group when the stakes are high, the process is complicated, and timing matters. We help organizations understand the legislative landscape, prepare a defensible policy position, identify the right path forward, and execute with discipline from interim planning through session deadlines.",
-            "We do not promise access. We deliver judgment, preparation, and clear communication, grounded in decades of work inside the Texas Capitol.",
+            "Clients call us when a bill needs an author and a committee path, a funding request needs a viable rider, or late-session language creates a procedural problem. We assess the facts, the votes, the calendar, and the available routes.",
+            "We tell clients what can move, what is likely to fail, and what work should begin during the interim.",
           ],
         },
       },
@@ -62,7 +62,7 @@ export const pageFallbacks: PageFallback[] = [
         display_order: 3,
         content_json: {
           eyebrow: "What We Do",
-          heading: "Six capabilities, organized around how Texas policy actually gets made.",
+          heading: "What we do at the Capitol.",
           lede: "",
         },
       },
@@ -73,9 +73,9 @@ export const pageFallbacks: PageFallback[] = [
         display_order: 4,
         content_json: {
           eyebrow: "Inside The Process",
-          heading: "Strategy is built before the vote is taken.",
+          heading: "The work starts before the vote is scheduled.",
           body:
-            "From bill drafting and budget riders to author strategy, committee movement, and floor procedure, The Haney Group helps clients prepare for the moments when timing, judgment, and process matter most.",
+            "We draft the bill, identify the author and committee path, test amendments, track deadlines, and prepare for floor and conference decisions.",
           primary_cta: {
             label: "Discuss Your Legislative Strategy",
             href: "/contact",
@@ -91,31 +91,31 @@ export const pageFallbacks: PageFallback[] = [
         display_order: 5,
         content_json: {
           eyebrow: "Why Clients Choose Us",
-          heading: "Experience matters when the process moves quickly.",
+          heading: "Why clients bring us in.",
           items: [
             {
               image_url: "/assets/img/inline-7589971e7e.png",
               title: "Texas Capitol Experience",
               body:
-                "Decades of hands-on legislative experience inside and around the Texas Capitol, across multiple sessions and Speakers.",
+                "More than 40 years of combined work in the Texas Capitol, including service under five House Speakers.",
             },
             {
               image_url: "/assets/img/inline-86b56cc282.png",
               title: "Procedural Judgment",
               body:
-                "Practical understanding of House Rules, committee process, amendments, deadlines, and the floor procedure that decides outcomes.",
+                "House Rules, committee procedure, germaneness, points of order, amendments, deadlines, and floor practice.",
             },
             {
               image_url: "/assets/img/inline-425e9a13a6.png",
               title: "Appropriations Knowledge",
               body:
-                "Strategic guidance on budget riders, funding requests, and the realities of how Article II and Article III actually move.",
+                "Rider drafting, article placement, LBB engagement, agency coordination, and House and Senate budget strategy.",
             },
             {
               image_url: "/assets/img/inline-1ec1420b3e.png",
-              title: "Client-Focused Execution",
+              title: "Direct Principal Counsel",
               body:
-                "Clear communication, preparation, and follow-through from interim planning to sine die, briefed for boards and members alike.",
+                "Robert and Julie stay involved from interim planning through sine die and brief executives, boards, and members directly.",
             },
           ],
         },
@@ -127,27 +127,27 @@ export const pageFallbacks: PageFallback[] = [
         display_order: 6,
         content_json: {
           eyebrow: "How We Work",
-          heading: "A disciplined approach to legislative strategy.",
+          heading: "How we build a legislative plan.",
           steps: [
             {
               image_url: "/assets/img/inline-835345f38e.png",
-              title: "Understand the Objective",
-              body: "Clarify the client’s policy, funding, regulatory, or legislative goal, and the constraints that surround it.",
+              title: "Define the Objective",
+              body: "Set the policy, funding, or regulatory goal. Identify legal, fiscal, political, and timing constraints.",
             },
             {
               image_url: "/assets/img/inline-abdda0b7c7.png",
               title: "Map the Process",
-              body: "Identify deadlines, committees, authors, stakeholders, procedural risks, and the viable paths forward.",
+              body: "Identify authors, committees, deadlines, votes, stakeholders, and procedural risks.",
             },
             {
               image_url: "/assets/img/inline-73a36ce4aa.png",
               title: "Build the Strategy",
-              body: "Prepare messaging, bill language, budget posture, coalition support, and an engagement plan tied to the calendar.",
+              body: "Draft the language, prepare the budget position, line up support, and tie each decision to the calendar.",
             },
             {
               image_url: "/assets/img/inline-1c2fbe3ffe.png",
-              title: "Execute with Discipline",
-              body: "Track movement, communicate clearly, adjust quickly, and stay focused on the result the client engaged us to deliver.",
+              title: "Work the Plan",
+              body: "Track the bill, brief the client, and change course when the votes, language, or calendar require it.",
             },
           ],
         },
@@ -159,14 +159,14 @@ export const pageFallbacks: PageFallback[] = [
         display_order: 7,
         content_json: {
           eyebrow: "Who We Help",
-          heading: "Built for the organizations that move policy in Texas.",
+          heading: "Who we represent.",
           lede:
-            "The firm represents clients whose priorities require senior judgment, procedural fluency, and disciplined execution at the Capitol — from corporate boards to lobby firms that need an extra hand on the floor.",
+            "Our clients usually have a specific bill, funding request, regulatory issue, or procedural question that requires direct attention from the principals.",
           items: [
             {
-              title: "Corporations",
+              title: "Public Entities",
               body:
-                "Legislative risk analysis, issue advocacy, regulatory strategy, and appropriations positioning.",
+                "Cities, counties, transit systems, utilities, special districts, and public-sector boards.",
             },
             {
               title: "Associations",
@@ -174,14 +174,14 @@ export const pageFallbacks: PageFallback[] = [
                 "Member-driven policy agendas, coalition building, bill strategy, and Capitol representation.",
             },
             {
-              title: "Lobby Firms",
+              title: "Companies & Regulated Organizations",
               body:
-                "Procedural analysis, House Rules guidance, amendment strategy, and backup capacity during session.",
+                "Legislative risk, regulatory matters, appropriations, and advocacy on a defined Texas issue.",
             },
             {
-              title: "Policy Shops & Think Tanks",
+              title: "Policy & Professional Partners",
               body:
-                "Bill development, legislative education, author strategy, and stakeholder alignment.",
+                "Policy organizations, nonprofits, law firms, and advocacy teams that need drafting or procedural help.",
             },
           ],
         },
@@ -193,9 +193,9 @@ export const pageFallbacks: PageFallback[] = [
         display_order: 8,
         content_json: {
           eyebrow: "The Principals",
-          heading: "Proven expertise. Focused results. Unmatched influence.",
+          heading: "Clients work directly with Robert and Julie Haney.",
           lede:
-            "The Haney Group is intentionally senior-led. Clients work directly with principals who bring more than 40 years of combined Texas Capitol experience to legislative strategy, parliamentary procedure, and disciplined communication.",
+            "They set the strategy, handle key conversations, and brief executives and boards. The work is not handed off after the first meeting.",
         },
       },
       {
@@ -205,9 +205,9 @@ export const pageFallbacks: PageFallback[] = [
         display_order: 9,
         content_json: {
           eyebrow: "Experience",
-          heading: "Experience across the issues that shape Texas.",
+          heading: "Work across Texas policy and public institutions.",
           lede:
-            "Our work spans the sectors where Texas policy is most actively contested, for corporate clients, statewide associations, public entities, and policy organizations.",
+            "The firm represents public entities, statewide associations, companies, health care organizations, and policy groups.",
           quote:
             "“When the calendar tightened and the bill we had been working on for a year was suddenly in play, The Haney Group did not flinch. They told us what to do, who to call, and what to say. And they were right on every count.”",
           quote_attribution: "General Counsel · Statewide Trade Association",
@@ -220,9 +220,9 @@ export const pageFallbacks: PageFallback[] = [
         display_order: 10,
         content_json: {
           eyebrow: "Insights",
-          heading: "Legislative perspective for clients preparing ahead.",
+          heading: "Notes on how the Texas Legislature works.",
           lede:
-            "The Session Briefing is a candid read on what moved at the Texas Capitol, written by the firm during session and monthly during interim.",
+            "The Session Briefing covers procedure, appropriations, deadlines, and the work that should happen before session begins.",
         },
       },
       {
@@ -234,9 +234,9 @@ export const pageFallbacks: PageFallback[] = [
           eyebrow: "Contact",
           heading: "Preparing for the next legislative session?",
           body:
-            "Start early, with a strategy grounded in experience, timing, and practical knowledge of the Texas legislative process. Every engagement begins with a short, confidential conversation.",
+            "Tell us the objective, the timing, and where the matter stands. We will give you a direct assessment of the next step.",
           primary_cta: {
-            label: "Contact The Haney Group",
+            label: "Discuss a Legislative Priority",
             href: "/contact",
           },
           secondary_cta: {
@@ -263,9 +263,9 @@ export const pageFallbacks: PageFallback[] = [
           crumb_label: "About",
           eyebrow: "About the Firm",
           headline:
-            "A boutique firm built around procedural mastery and quiet results.",
+            "Texas legislative counsel from people who have worked inside the process.",
           lede:
-            "The Texas Capitol rewards a small number of disciplines: knowing the process, knowing the budget, knowing the people, and knowing how to talk about all three. The firm was built to keep those four disciplines in one room.",
+            "Robert Haney served as Chief Clerk of the Texas House. Julie Freeman Haney worked in appropriations, a member office, and legislative communications. They bring that experience to every engagement.",
           background_image_url: "/assets/img/inline-80d647ef11.jpg",
         },
       },
@@ -276,10 +276,10 @@ export const pageFallbacks: PageFallback[] = [
         display_order: 2,
         content_json: {
           eyebrow: "The Firm",
-          heading: "A senior-led firm built around a deliberate combination.",
+          heading: "Legislative procedure, appropriations, and communications in one firm.",
           body_paragraphs_html: [
-            "The Haney Group is a senior-led Austin government relations firm. We represent statewide associations, regulated companies, local governments, health care organizations, and policy nonprofits at the Texas Legislature and across the executive agencies that interpret what the Legislature passes.",
-            "The combination is purposeful: the firm pairs <strong>procedural and budgetary fluency</strong> with the <strong>message discipline</strong> that decides how a bill is received, covered, and remembered.",
+            "The Haney Group represents statewide associations, regulated companies, local governments, health care organizations, and policy nonprofits before the Texas Legislature and executive agencies.",
+            "Robert leads work on <strong>House procedure and legislative strategy</strong>. Julie leads work on <strong>appropriations and communications</strong>. Both remain involved throughout the engagement.",
           ],
           founders: [
             {
@@ -330,19 +330,19 @@ export const pageFallbacks: PageFallback[] = [
         display_order: 4,
         content_json: {
           eyebrow: "How we work",
-          heading: "Three principles that shape every engagement.",
+          heading: "What clients can expect.",
           items: [
             {
               num: "01",
               title: "We do not start with a tactic.",
               body:
-                "We start with the question every legislator asks about an issue: who is for it, who is against it, where does it live, and what does it cost. Until those four questions have honest answers, no strategy can be trusted.",
+                "We first ask who is for the proposal, who is against it, which committee has jurisdiction, and what it costs. Those answers determine the plan.",
             },
             {
               num: "02",
               title: "We tell clients the truth.",
               body:
-                "If your priority cannot be moved this session, we will say so, and tell you what the interim work looks like to give it a chance next time. If your bill is in trouble, we will tell you what it will take to save it, even if the answer is uncomfortable.",
+                "If a priority is unlikely to move this session, we say so. If a bill is in trouble, we explain what can still be done and what should wait for the interim.",
             },
             {
               num: "03",
@@ -360,7 +360,7 @@ export const pageFallbacks: PageFallback[] = [
         display_order: 5,
         content_json: {
           eyebrow: "The Principals",
-          heading: "Two careers, one Capitol.",
+          heading: "Meet the principals.",
           lede: "",
         },
       },
@@ -375,9 +375,9 @@ export const pageFallbacks: PageFallback[] = [
           role: "Principal · Former Chief Clerk, Texas House",
           portrait_image_url: "/assets/img/inline-634aab4058.jpg",
           body_paragraphs: [
-            "Robert Haney worked inside the Texas House of Representatives for more than twenty-five years. He served as Chief Clerk of the Texas House under five different Speakers across both parties — a level of bipartisan trust earned through demonstrated competence on the floor.",
+            "Robert Haney worked in the Texas House of Representatives for more than twenty-five years. He served as Chief Clerk under five Speakers from both parties.",
             "As Chief Clerk, he managed the procedural backbone of every bill the House considered: calendars, certifications, journals, technology, and the rules under which Members debated. He led the modernization of House operations, including the transition to electronic bill filing, which retired a century-old paper process.",
-            "Nationally, Robert served as President of the American Society of Legislative Clerks and Secretaries (ASLCS), the professional society of legislative procedural officers across the United States. He continues to advise chambers nationwide on modernization and parliamentary procedure. Texas Capitol Inside named him a Rising Star in 2023.",
+            "Robert served as President of the American Society of Legislative Clerks and Secretaries (ASLCS). He continues to advise legislative chambers on modernization and parliamentary procedure. Texas Capitol Inside named him a Rising Star in 2023.",
           ],
           pull_quote:
             "Most of what looks like influence in a session is actually preparation done six months earlier. Our job is to be six months earlier than the people across the table.",
@@ -396,9 +396,9 @@ export const pageFallbacks: PageFallback[] = [
           role: "Principal · Appropriations & Communications",
           portrait_image_url: "/assets/img/inline-fab1dc790d.jpg",
           body_paragraphs: [
-            "Julie Freeman Haney built two decades of Texas politics on the appropriations and communications sides of the Capitol. She served as an aide to the Chair of the House Appropriations Committee and later as chief of staff to a state legislator, work that put her in the room for the trade-offs that define a budget cycle.",
-            "In communications, she has led message development and legislative communication for clients whose issues had to land at the Capitol and at the board table in the same week. Her work spans crisis posture, talking points, board briefings, and reputation strengthening with officeholders.",
-            "Julie advises clients on what to say, when to say it, and to whom — and on the harder discipline of what not to say in the middle of a session that is still being written.",
+            "Julie Freeman Haney has two decades of experience in Texas appropriations and legislative communications. She served as an aide to the Chair of the House Appropriations Committee and later as chief of staff to a state legislator.",
+            "She develops legislative messages, prepares talking points and board briefings, and advises clients responding to public or political pressure.",
+            "Julie tells clients what to say, who needs to hear it, and when public comment would do more harm than good.",
           ],
           pull_quote:
             "The same fact can land three different ways depending on who is hearing it. Our job is to know who is hearing it and to make sure it lands the right way.",
@@ -413,10 +413,10 @@ export const pageFallbacks: PageFallback[] = [
         display_order: 8,
         content_json: {
           eyebrow: "Contact",
-          heading: "Preparing for the next legislative session?",
+          heading: "Need counsel on a matter before the Legislature?",
           body:
-            "Start early, with a strategy grounded in experience, timing, and practical knowledge of the Texas legislative process. Every engagement begins with a short, confidential conversation.",
-          primary_cta: { label: "Contact The Haney Group", href: "/contact" },
+            "If you need legislative, appropriations, procedural, or communications counsel, tell us where the matter stands and what decision comes next.",
+          primary_cta: { label: "Talk With the Principals", href: "/contact" },
           secondary_cta: { label: "Or call (512) 925-5000", href: "tel:+15129255000" },
         },
       },
@@ -439,7 +439,7 @@ export const pageFallbacks: PageFallback[] = [
           eyebrow: "Services",
           headline: "Services built around how Texas policy actually moves.",
           lede:
-            "Six capabilities and four specialized practice areas, organized for the way the Legislature, the appropriations process, the executive agencies, and the press cycle interact during a session.",
+            "We develop legislative plans, draft and analyze bills, work appropriations, advise on House procedure, represent clients at the Capitol, and organize stakeholder support.",
           background_image_url: "/assets/img/services-hero-web.jpg",
         },
       },
@@ -450,7 +450,7 @@ export const pageFallbacks: PageFallback[] = [
         display_order: 2,
         content_json: {
           eyebrow: "Capabilities",
-          heading: "Six capabilities, organized around how policy gets made.",
+          heading: "Six ways we help clients move an issue.",
           lede: "",
         },
       },
@@ -461,9 +461,9 @@ export const pageFallbacks: PageFallback[] = [
         display_order: 3,
         content_json: {
           eyebrow: "Senior-Level Representation",
-          heading: "Experienced representation when the process starts moving.",
+          heading: "The principals stay on the work.",
           body:
-            "The Haney Group provides direct principal-level guidance through the legislative, appropriations, and procedural decisions that shape outcomes. We help clients prepare early, navigate key decision points, and execute with discipline when timing matters.",
+            "Robert and Julie set the plan, handle key meetings, and brief the client. During session, they can make informed calls quickly because they know the matter from the start.",
           primary_cta: {
             label: "Discuss Your Legislative Strategy",
             href: "/contact",
@@ -479,7 +479,7 @@ export const pageFallbacks: PageFallback[] = [
         display_order: 4,
         content_json: {
           eyebrow: "Practice Areas",
-          heading: "Four practice areas, each led by a principal.",
+          heading: "Detailed counsel in four practice areas.",
           lede: "",
         },
       },
@@ -490,10 +490,10 @@ export const pageFallbacks: PageFallback[] = [
         display_order: 5,
         content_json: {
           eyebrow: "Contact",
-          heading: "Preparing for the next legislative session?",
+          heading: "Bring us the issue early.",
           body:
-            "Start early, with a strategy grounded in experience, timing, and practical knowledge of the Texas legislative process. Every engagement begins with a short, confidential conversation.",
-          primary_cta: { label: "Contact The Haney Group", href: "/contact" },
+            "Bring us the bill, funding request, procedural question, or communications problem. We will help identify the next workable step.",
+          primary_cta: { label: "Discuss Your Texas Strategy", href: "/contact" },
           secondary_cta: { label: "Or call (512) 925-5000", href: "tel:+15129255000" },
         },
       },
@@ -514,9 +514,9 @@ export const pageFallbacks: PageFallback[] = [
         content_json: {
           crumb_label: "Clients",
           eyebrow: "Clients",
-          headline: "Industries we serve.",
+          headline: "Who we represent.",
           lede:
-            "The firm represents organizations whose Texas priorities cannot afford to be misunderstood — nine sectors where our work is concentrated, and a trusted roster of associations, providers, and operators who rely on principal-level representation when the stakes are real.",
+            "The firm represents associations, public entities, providers, companies, and policy organizations across nine areas of Texas law and regulation.",
           background_image_url: "/assets/img/clients-hero-web.jpg",
         },
       },
@@ -527,7 +527,7 @@ export const pageFallbacks: PageFallback[] = [
         display_order: 2,
         content_json: {
           eyebrow: "Selected Clients",
-          heading: "Trusted by associations, providers, and operators across Texas.",
+          heading: "A selection of clients.",
           disclaimer:
             "Selected client logos shown with permission. Full roster on request.",
         },
@@ -539,10 +539,10 @@ export const pageFallbacks: PageFallback[] = [
         display_order: 3,
         content_json: {
           eyebrow: "Contact",
-          heading: "Preparing for the next legislative session?",
+          heading: "Does your organization have a Texas priority?",
           body:
-            "Start early, with a strategy grounded in experience, timing, and practical knowledge of the Texas legislative process. Every engagement begins with a short, confidential conversation.",
-          primary_cta: { label: "Contact The Haney Group", href: "/contact" },
+            "If your organization has a Texas legislative or regulatory priority, tell us what is at issue and when a decision is expected.",
+          primary_cta: { label: "Discuss Your Texas Priority", href: "/contact" },
           secondary_cta: { label: "Or call (512) 925-5000", href: "tel:+15129255000" },
         },
       },
@@ -565,7 +565,7 @@ export const pageFallbacks: PageFallback[] = [
           eyebrow: "Experience",
           headline: "Selected engagements.",
           lede:
-            "Anonymized work across the issues that shape Texas — for trade associations, public entities, regulated companies, health systems, and policy organizations. Specifics on request under a confidential conversation.",
+            "Examples of work for trade associations, public entities, regulated companies, health systems, and policy organizations. Client names are withheld where the matter was confidential.",
           background_image_url: "/assets/img/experience2-hero-web.jpg",
         },
       },
@@ -587,10 +587,10 @@ export const pageFallbacks: PageFallback[] = [
         display_order: 3,
         content_json: {
           eyebrow: "Contact",
-          heading: "Preparing for the next legislative session?",
+          heading: "Working on a similar matter?",
           body:
-            "Start early, with a strategy grounded in experience, timing, and practical knowledge of the Texas legislative process. Every engagement begins with a short, confidential conversation.",
-          primary_cta: { label: "Contact The Haney Group", href: "/contact" },
+            "If one of these matters resembles yours, we can discuss the work and the limits of what can be shared.",
+          primary_cta: { label: "Discuss a Similar Matter", href: "/contact" },
           secondary_cta: { label: "Or call (512) 925-5000", href: "tel:+15129255000" },
         },
       },
@@ -613,7 +613,7 @@ export const pageFallbacks: PageFallback[] = [
           eyebrow: "Insights",
           headline: "The Session Briefing.",
           lede:
-            "A candid read on what moved at the Texas Capitol, written by the firm during session and monthly during interim.",
+            "Short explanations of procedure, appropriations, deadlines, and preparation for the next session.",
           background_image_url: "/assets/img/insights-hero-web.jpg",
         },
       },
@@ -624,10 +624,10 @@ export const pageFallbacks: PageFallback[] = [
         display_order: 2,
         content_json: {
           eyebrow: "Contact",
-          heading: "Preparing for the next legislative session?",
+          heading: "Have a question about the process?",
           body:
-            "Start early, with a strategy grounded in experience, timing, and practical knowledge of the Texas legislative process. Every engagement begins with a short, confidential conversation.",
-          primary_cta: { label: "Contact The Haney Group", href: "/contact" },
+            "Have a question about how one of these issues applies to your organization? Tell us the facts and the timing.",
+          primary_cta: { label: "Ask the Firm", href: "/contact" },
           secondary_cta: { label: "Or call (512) 925-5000", href: "tel:+15129255000" },
         },
       },
@@ -650,7 +650,7 @@ export const pageFallbacks: PageFallback[] = [
           eyebrow: "Contact",
           headline: "Start a confidential conversation.",
           lede:
-            "Tell us a little about the issue, the timing, and what success would look like. We will be in touch within one business day.",
+            "Tell us the issue, the next deadline, and the result you need. A principal will reply within one business day.",
           background_image_url: "/assets/img/contact-us-hero-web.jpg",
         },
       },
@@ -663,7 +663,7 @@ export const pageFallbacks: PageFallback[] = [
           eyebrow: "Reach The Firm",
           heading: "Talk directly to a principal.",
           body_html:
-            "<p>The Haney Group is a small firm. Inquiries reach a principal directly. We respond inside one business day, often the same day during session.</p><p>For urgent procedural questions during session, please call.</p>",
+            "<p>Your inquiry goes directly to a principal. We reply within one business day and often sooner during session.</p><p>For an urgent procedural question, please call.</p>",
         },
       },
       {
@@ -673,7 +673,7 @@ export const pageFallbacks: PageFallback[] = [
         display_order: 3,
         content_json: {
           eyebrow: "Send a Note",
-          heading: "A few details help us prepare.",
+          heading: "Tell us what is at issue.",
           submit_label: "Send Message",
           consent_language:
             "I understand my message will be reviewed by The Haney Group and consent to being contacted about my inquiry.",
@@ -686,11 +686,11 @@ export const pageFallbacks: PageFallback[] = [
         display_order: 4,
         content_json: {
           eyebrow: "Contact",
-          heading: "Preparing for the next legislative session?",
+          heading: "Is the matter already moving?",
           body:
-            "Start early, with a strategy grounded in experience, timing, and practical knowledge of the Texas legislative process. Every engagement begins with a short, confidential conversation.",
-          primary_cta: { label: "Contact The Haney Group", href: "/contact" },
-          secondary_cta: { label: "Or call (512) 925-5000", href: "tel:+15129255000" },
+            "If the deadline is close or the matter is already moving, call the firm directly.",
+          primary_cta: { label: "Call (512) 925-5000", href: "tel:+15129255000" },
+          secondary_cta: { label: "Email the firm", href: "mailto:info@haney-group.com" },
         },
       },
     ],
