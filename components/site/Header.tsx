@@ -44,7 +44,7 @@ export async function Header() {
             ))}
           </ul>
           <Link className="btn btn--primary nav__cta" href="/contact">
-            Schedule a Consultation
+            Discuss a Legislative Priority
             <span className="arrow" aria-hidden="true">
               →
             </span>

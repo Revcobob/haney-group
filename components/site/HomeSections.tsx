@@ -327,12 +327,11 @@ function PrincipalsBlock({ s, c }: { s: PageSection; c: SectionHeaderContent }) 
               <h3 className="principal__name">Robert Haney</h3>
               <p className="principal__role">Principal · Former Chief Clerk, Texas House</p>
               <p className="principal__bio">
-                Twenty-five years inside the Texas House of Representatives,
-                including service as Chief Clerk under five Speakers. From the
-                rostrum he managed calendars, certified votes, and oversaw the
-                procedural backbone that thousands of bills moved through. Past
-                President of the American Society of Legislative Clerks and
-                Secretaries and a nationally recognized parliamentary expert.
+                Robert spent more than twenty-five years in the Texas House,
+                including service as Chief Clerk under five Speakers. He managed
+                calendars, vote certifications, journals, technology, and the
+                rules used on the House floor. He is a past president of the
+                American Society of Legislative Clerks and Secretaries.
               </p>
               <Link className="linkarrow principal__link" href="/about#robert">
                 Read Robert’s full biography <span className="arrow" aria-hidden="true">→</span>
@@ -352,12 +351,11 @@ function PrincipalsBlock({ s, c }: { s: PageSection; c: SectionHeaderContent }) 
               <h3 className="principal__name">Julie Freeman Haney</h3>
               <p className="principal__role">Principal · Appropriations &amp; Communications</p>
               <p className="principal__bio">
-                Two decades of Texas legislative and public-relations experience,
-                built as an aide to the House Appropriations Chair, as chief of
-                staff to a state legislator, and across communications engagements
-                where client priorities had to land at the Capitol and at the
-                board table in the same week. Specializes in message development
-                and legislative communication.
+                Julie has two decades of experience in Texas appropriations and
+                legislative communications. She served as an aide to the House
+                Appropriations Chair and as chief of staff to a state legislator.
+                She prepares legislative messages, executive briefings, and board
+                communications.
               </p>
               <Link className="linkarrow principal__link" href="/about#julie">
                 Read Julie’s full biography <span className="arrow" aria-hidden="true">→</span>

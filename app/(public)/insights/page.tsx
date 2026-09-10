@@ -13,7 +13,7 @@ export async function generateMetadata(): Promise<Metadata> {
     fallback: {
       title: "Insights · The Session Briefing",
       description:
-        "A candid read on what moved at the Texas Capitol, written by The Haney Group during session and monthly during interim.",
+        "The Haney Group explains Texas legislative procedure, appropriations, deadlines, and interim preparation.",
     },
   });
 }

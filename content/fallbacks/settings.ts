@@ -47,8 +47,8 @@ export const siteSettings: SiteSettings = {
   linkedin_url: "https://www.linkedin.com/",
   session_briefing_link_label: "The Session Briefing",
   footer_description:
-    "A senior-led Austin government relations firm — Texas legislative strategy, appropriations, and procedural expertise for organizations with priorities at the Capitol.",
-  footer_tagline: "Proven expertise. Focused results. Unmatched influence.",
+    "An Austin government relations firm advising clients on Texas legislation, appropriations, House procedure, and advocacy.",
+  footer_tagline: "Direct counsel from people who know the process.",
   copyright_text: "Haney Group LLC. All rights reserved.",
   privacy_link: "/privacy",
   tec_link: "#",
@@ -62,12 +62,12 @@ export const siteSettings: SiteSettings = {
   contact_page_eyebrow: "Contact",
   contact_page_headline: "Start a confidential conversation.",
   contact_page_lede:
-    "Tell us a little about the issue, the timing, and what success would look like. We will be in touch within one business day.",
+    "Tell us the issue, the next deadline, and the result you need. A principal will reply within one business day.",
   contact_left_eyebrow: "Reach The Firm",
   contact_left_heading: "Talk directly to a principal.",
   contact_left_body_html:
-    "<p>The Haney Group is a small firm. Inquiries reach a principal directly. We respond inside one business day, often the same day during session.</p><p>For urgent procedural questions during session, please call.</p>",
+    "<p>Your inquiry goes directly to a principal. We reply within one business day and often sooner during session.</p><p>For an urgent procedural question, please call.</p>",
   contact_right_eyebrow: "Send a Note",
-  contact_right_heading: "A few details help us prepare.",
+  contact_right_heading: "Tell us what is at issue.",
   contact_form_submit_label: "Send Message",
 };

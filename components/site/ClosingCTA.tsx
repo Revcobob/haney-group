@@ -10,10 +10,10 @@ type ClosingProps = {
 
 const DEFAULT_CONTENT: ClosingCtaContent = {
   eyebrow: "Contact",
-  heading: "Ready to start a conversation?",
+  heading: "Have a Texas legislative question?",
   body:
-    "Every engagement begins with a short, confidential discussion of the issue, the timing, and what success would look like. Reach us in Austin to talk it through.",
-  primary_cta: { label: "Contact The Haney Group", href: "/contact" },
+    "Tell us the issue, the next deadline, and where the matter stands. A principal will respond directly.",
+  primary_cta: { label: "Discuss a Legislative Priority", href: "/contact" },
   secondary_cta: { label: "Or call (512) 925-5000", href: "tel:+15129255000" },
 };
 

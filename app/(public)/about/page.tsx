@@ -25,7 +25,7 @@ export async function generateMetadata(): Promise<Metadata> {
     fallback: {
       title: "About",
       description:
-        "A senior-led Austin government relations firm built around procedural and budgetary fluency and disciplined communications. Led by Robert Haney, former Chief Clerk of the Texas House, and Julie Freeman Haney.",
+        "Robert Haney, a former Chief Clerk of the Texas House, and Julie Freeman Haney advise clients on legislation, appropriations, procedure, and communications.",
     },
   });
 }

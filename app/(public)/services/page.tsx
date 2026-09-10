@@ -18,7 +18,7 @@ export async function generateMetadata(): Promise<Metadata> {
     fallback: {
       title: "Services",
       description:
-        "Six capabilities and four specialized practice areas — legislative strategy, appropriations, public affairs, and parliamentary procedure — for organizations whose Texas priorities cannot afford to be misunderstood.",
+        "Texas legislative strategy, lobbying, bill drafting, appropriations, parliamentary procedure, coalition work, and public affairs.",
     },
   });
 }
@@ -28,25 +28,25 @@ const practiceAreas = [
     href: "/services/legislative-strategy",
     icon: "/assets/img/icon-legislative-strategy.png",
     title: "Legislative Strategy",
-    body: "Read the calendar, map the path, time the engagement. The work that decides whether a bill moves.",
+    body: "Choose the author, map the committee and calendar path, count the votes, and prepare for floor and conference.",
   },
   {
     href: "/services/appropriations",
     icon: "/assets/img/icon-appropriations.png",
     title: "Appropriations & Riders",
-    body: "Article posture, rider language, LBB engagement, and interim work that protects funding cycle to cycle.",
+    body: "Article placement, rider drafting, LBB and agency work, and House and Senate budget strategy.",
   },
   {
     href: "/services/public-affairs",
     icon: "/assets/img/icon-public-affairs.png",
     title: "Public Affairs",
-    body: "Message development, media posture, and board-ready communications for clients whose issues are public.",
+    body: "Legislative messages, media responses, executive briefings, and board materials for public issues.",
   },
   {
     href: "/services/parliamentary",
     icon: "/assets/img/icon-procedural-2.png",
     title: "Parliamentary Procedure",
-    body: "The institutional advisory practice. House Rules, modernization, and procedural counsel to legislatures.",
+    body: "House Rules, points of order, germaneness, floor procedure, and advice on chamber operations.",
   },
 ];
 

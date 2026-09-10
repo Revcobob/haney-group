@@ -10,11 +10,11 @@ export const metadata: Metadata = {
     template: "%s · The Haney Group",
   },
   description:
-    "A senior-led Austin government relations firm with deep Texas Capitol experience. Legislative strategy, appropriations, parliamentary procedure, and disciplined advocacy for associations, corporations, public entities, and policy organizations.",
+    "Austin government relations counsel for Texas legislation, appropriations, House procedure, bill drafting, and advocacy.",
   openGraph: {
     title: "The Haney Group · Texas Government Relations",
     description:
-      "Senior-led legislative strategy, appropriations, and procedural expertise for organizations whose Texas priorities cannot afford to be misunderstood.",
+      "Direct counsel on Texas legislation, appropriations, House procedure, bill drafting, and advocacy.",
     type: "website",
     url: "https://www.haney-group.com/",
   },

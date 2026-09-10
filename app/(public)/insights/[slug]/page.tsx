@@ -174,9 +174,8 @@ export default async function ArticlePage({
 
             <div className="article__close">
               <p>
-                <strong>Want to discuss this with the firm?</strong> Every
-                engagement begins with a short, confidential conversation about
-                the issue, the timing, and what success would look like.
+                <strong>Does this apply to a matter you are working on?</strong>{" "}
+                Tell us the facts, the deadline, and where the issue stands.
               </p>
               <Link className="article__email" href="/contact">
                 <svg
