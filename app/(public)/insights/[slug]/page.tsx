@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getArticle, listArticleSlugs } from "@/lib/content/insights";
@@ -61,12 +62,13 @@ export default async function ArticlePage({
             <p className="lede">{article.lede}</p>
           </div>
           <figure className="article-hero__media" aria-hidden="true">
-            <img
+            <Image
               src={article.hero_image}
               alt=""
-              width={1200}
-              height={800}
-              fetchPriority="high"
+              fill
+              priority
+              quality={82}
+              sizes="(max-width: 899px) 100vw, 45vw"
             />
           </figure>
         </div>

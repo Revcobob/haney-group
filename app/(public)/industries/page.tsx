@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { ClosingCTA } from "@/components/site/ClosingCTA";
 import {
   PageHeroBlock,
@@ -53,12 +54,12 @@ export default async function IndustriesPage() {
             {industries.map((i) => (
               <article key={i.title} className="tile tile--banner tile--illo">
                 <div className="tile__banner">
-                  <img
+                  <Image
                     src={i.image}
                     alt=""
                     loading="lazy"
-                    width={960}
-                    height={540}
+                    fill
+                    sizes="(max-width: 719px) 100vw, 50vw"
                   />
                 </div>
                 <div className="tile__body">

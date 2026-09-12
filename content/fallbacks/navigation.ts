@@ -34,5 +34,5 @@ export const footerFirmNav: NavItem[] = [
 
 export const utilityNav: NavItem[] = [
   { label: "Privacy", href: "/privacy", display_order: 1 },
-  { label: "Accessibility", href: "#", display_order: 2 },
+  { label: "Accessibility", href: "/accessibility", display_order: 2 },
 ];

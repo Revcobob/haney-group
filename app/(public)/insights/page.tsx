@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { ClosingCTA } from "@/components/site/ClosingCTA";
 import { PageHeroBlock } from "@/components/site/PageBlocks";
@@ -46,7 +47,13 @@ export default async function InsightsIndexPage() {
                 className="postlist__item postlist__item--thumb"
               >
                 <div className="postlist__thumb">
-                  <img src={a.hero_image} alt="" loading="lazy" />
+                  <Image
+                    src={a.hero_image}
+                    alt=""
+                    fill
+                    loading="lazy"
+                    sizes="(max-width: 719px) 100vw, 220px"
+                  />
                 </div>
                 <div>
                   <div className="postlist__meta">{a.article_label}</div>
