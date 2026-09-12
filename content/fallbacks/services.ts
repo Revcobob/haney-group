@@ -9,6 +9,13 @@ export type ServiceDetail = {
   title: string;
   lede: string;
   hero_image: string;
+  /**
+   * Optional CSS object-position for the hero crop. The hero media column is
+   * a tall box, so a landscape source is cropped horizontally and only the X
+   * value has any effect there. Defaults to `center` (see .service-hero__media
+   * img in main.css); override when a centered crop misreads the composition.
+   */
+  hero_object_position?: string;
   body_sections: Array<{ heading: string; html: string }>;
   illoblock: { image: string; lead: string; body: string };
 };
@@ -102,6 +109,10 @@ export const serviceDetails: ServiceDetail[] = [
     title: "Parliamentary and procedural counsel.",
     lede: "Robert Haney, a former Chief Clerk of the Texas House and past president of ASLCS, advises legislative bodies and private clients on rules, chamber operations, and floor procedure.",
     hero_image: "/assets/img/capitol-dome-interior.jpg",
+    // The dome is a concentric composition: a centred crop slices the rings
+    // into tall arcs and reads as a vertically stretched circle. Shifting the
+    // window left keeps the oculus whole and turns it into an off-axis view.
+    hero_object_position: "25% 50%",
     body_sections: [
       {
         heading: "Counsel to chambers",
