@@ -142,7 +142,7 @@ function CapabilitiesBlock({
 }) {
   return (
     <Region sectionKey={s.section_key} sectionLabel={s.section_label}>
-      <section className="caps" data-reveal>
+      <section className="caps caps--home" data-reveal>
         <div className="container">
           <div className="section__head">
             <p className="eyebrow">{c.eyebrow}</p>
@@ -160,8 +160,10 @@ function CapabilitiesBlock({
                   width={480}
                   height={480}
                 />
-                <h3>{cap.title}</h3>
-                <p>{cap.description}</p>
+                <div className="cap__copy">
+                  <h3>{cap.title}</h3>
+                  <p>{cap.description}</p>
+                </div>
               </article>
             ))}
           </div>
@@ -206,30 +208,23 @@ function ProcessBreakBlock({ s, c }: { s: PageSection; c: ProcessBreakContent })
 function ProofBlock({ s, c }: { s: PageSection; c: ProofContent }) {
   return (
     <Region sectionKey={s.section_key} sectionLabel={s.section_label}>
-      <section className="proof" data-reveal>
+      <section className="proof proof--home" data-reveal>
         <div className="container">
           <div className="section__head">
             <p className="eyebrow">{c.eyebrow}</p>
             <h2 className="h2">{c.heading}</h2>
           </div>
-          <div className="proof__grid">
+          <ol className="proof__grid">
             {c.items.map((item, i) => (
-              <div className="proof__item" key={i}>
-                {item.image_url ? (
-                  <img
-                    className="proof__illo"
-                    src={item.image_url}
-                    alt=""
-                    width={320}
-                    height={320}
-                    loading="lazy"
-                  />
-                ) : null}
+              <li className="proof__item" key={i}>
+                <span className="proof__number" aria-hidden="true">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
                 <h3>{item.title}</h3>
                 <p>{item.body}</p>
-              </div>
+              </li>
             ))}
-          </div>
+          </ol>
         </div>
       </section>
     </Region>
@@ -239,29 +234,29 @@ function ProofBlock({ s, c }: { s: PageSection; c: ProofContent }) {
 function ApproachBlock({ s, c }: { s: PageSection; c: ApproachContent }) {
   return (
     <Region sectionKey={s.section_key} sectionLabel={s.section_label}>
-      <section className="approach" data-reveal>
+      <section className="approach approach--home" data-reveal>
         <div className="container">
           <div className="section__head">
             <p className="eyebrow">{c.eyebrow}</p>
             <h2 className="h2">{c.heading}</h2>
           </div>
-          <div className="approach__grid">
+          <ol className="approach__grid">
             {c.steps.map((step, i) => (
-              <article className="step" key={i}>
-                {step.image_url ? (
-                  <img
-                    className="step__illo"
-                    src={step.image_url}
-                    alt={step.title}
-                    width={320}
-                    height={320}
-                    loading="lazy"
-                  />
-                ) : null}
-                <h3>{step.title}</h3>
-                <p>{step.body}</p>
-              </article>
+              <li className="step" key={i}>
+                <span className="step__number" aria-hidden="true">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <div className="step__copy">
+                  <h3>{step.title}</h3>
+                  <p>{step.body}</p>
+                </div>
+              </li>
             ))}
+          </ol>
+          <div className="approach__foot">
+            <Link className="linkarrow" href="/services/legislative-strategy">
+              See legislative strategy <span className="arrow" aria-hidden="true">→</span>
+            </Link>
           </div>
         </div>
       </section>
@@ -272,7 +267,7 @@ function ApproachBlock({ s, c }: { s: PageSection; c: ApproachContent }) {
 function AudienceBlock({ s, c }: { s: PageSection; c: AudienceGridContent }) {
   return (
     <Region sectionKey={s.section_key} sectionLabel={s.section_label}>
-      <section className="audience" data-reveal>
+      <section className="audience audience--home" data-reveal>
         <div className="container">
           <div className="section__head">
             {c.eyebrow ? <p className="eyebrow">{c.eyebrow}</p> : null}
@@ -305,7 +300,7 @@ function PrincipalsBlock({ s, c }: { s: PageSection; c: SectionHeaderContent }) 
   // intentionally). The editable section is the intro heading + lede.
   return (
     <Region sectionKey={s.section_key} sectionLabel={s.section_label}>
-      <section className="firm" data-reveal>
+      <section className="firm firm--home" data-reveal>
         <div className="container">
           <div className="firm__top">
             <p className="eyebrow">{c.eyebrow}</p>
@@ -315,7 +310,7 @@ function PrincipalsBlock({ s, c }: { s: PageSection; c: SectionHeaderContent }) 
 
           <div className="principals__grid">
             <article className="principal">
-              <div className="principal__portrait">
+              <div className="principal__portrait principal__portrait--robert">
                 <img
                   src="/assets/img/inline-634aab4058.jpg"
                   alt="Portrait of Robert Haney"
@@ -324,22 +319,22 @@ function PrincipalsBlock({ s, c }: { s: PageSection; c: SectionHeaderContent }) 
                   loading="lazy"
                 />
               </div>
-              <h3 className="principal__name">Robert Haney</h3>
-              <p className="principal__role">Principal · Former Chief Clerk, Texas House</p>
-              <p className="principal__bio">
-                Robert spent more than twenty-five years in the Texas House,
-                including service as Chief Clerk under five Speakers. He managed
-                calendars, vote certifications, journals, technology, and the
-                rules used on the House floor. He is a past president of the
-                American Society of Legislative Clerks and Secretaries.
-              </p>
-              <Link className="linkarrow principal__link" href="/about#robert">
-                Read Robert’s full biography <span className="arrow" aria-hidden="true">→</span>
-              </Link>
+              <div className="principal__copy">
+                <h3 className="principal__name">Robert Haney</h3>
+                <p className="principal__role">Principal · Former Chief Clerk, Texas House</p>
+                <p className="principal__bio">
+                  Robert spent more than twenty-five years in the Texas House,
+                  including service as Chief Clerk under five Speakers. He advises
+                  clients on legislative strategy, House procedure, and floor practice.
+                </p>
+                <Link className="linkarrow principal__link" href="/about#robert">
+                  Robert’s full biography <span className="arrow" aria-hidden="true">→</span>
+                </Link>
+              </div>
             </article>
 
             <article className="principal">
-              <div className="principal__portrait">
+              <div className="principal__portrait principal__portrait--julie">
                 <img
                   src="/assets/img/inline-fab1dc790d.jpg"
                   alt="Portrait of Julie Freeman Haney"
@@ -348,18 +343,18 @@ function PrincipalsBlock({ s, c }: { s: PageSection; c: SectionHeaderContent }) 
                   loading="lazy"
                 />
               </div>
-              <h3 className="principal__name">Julie Freeman Haney</h3>
-              <p className="principal__role">Principal · Appropriations &amp; Communications</p>
-              <p className="principal__bio">
-                Julie has two decades of experience in Texas appropriations and
-                legislative communications. She served as an aide to the House
-                Appropriations Chair and as chief of staff to a state legislator.
-                She prepares legislative messages, executive briefings, and board
-                communications.
-              </p>
-              <Link className="linkarrow principal__link" href="/about#julie">
-                Read Julie’s full biography <span className="arrow" aria-hidden="true">→</span>
-              </Link>
+              <div className="principal__copy">
+                <h3 className="principal__name">Julie Freeman Haney</h3>
+                <p className="principal__role">Principal · Appropriations &amp; Communications</p>
+                <p className="principal__bio">
+                  Julie has two decades of experience in Texas appropriations and
+                  legislative communications. She advises clients on budget strategy,
+                  legislative messages, and executive and board briefings.
+                </p>
+                <Link className="linkarrow principal__link" href="/about#julie">
+                  Julie’s full biography <span className="arrow" aria-hidden="true">→</span>
+                </Link>
+              </div>
             </article>
           </div>
         </div>
@@ -379,7 +374,7 @@ function IssuesBlock({
 }) {
   return (
     <Region sectionKey={s.section_key} sectionLabel={s.section_label}>
-      <section className="issues" data-reveal>
+      <section className="issues issues--home" data-reveal>
         <div className="container">
           <div className="section__head">
             <p className="eyebrow">{c.eyebrow}</p>
@@ -387,7 +382,7 @@ function IssuesBlock({
             {c.lede ? <p className="lede" style={{ marginTop: 0 }}>{c.lede}</p> : null}
           </div>
           <div className="issues__grid">
-            {industries.slice(0, 8).map((ind) => (
+            {industries.slice(0, 4).map((ind) => (
               <Link key={ind.title} className="issue" href="/industries">
                 <span className="issue__mark" aria-hidden="true"></span>
                 <div>
@@ -396,6 +391,11 @@ function IssuesBlock({
                 </div>
               </Link>
             ))}
+          </div>
+          <div className="issues__foot">
+            <Link className="linkarrow" href="/industries">
+              See all industries and client types <span className="arrow" aria-hidden="true">→</span>
+            </Link>
           </div>
           {c.quote ? (
             <blockquote className="issues__quote">
@@ -421,7 +421,7 @@ function InsightsTeaserBlock({
   const top = articles.slice(0, 3);
   return (
     <Region sectionKey={s.section_key} sectionLabel={s.section_label}>
-      <section className="insights" data-reveal>
+      <section className="insights insights--home" data-reveal>
         <div className="container">
           <div className="section__head">
             <p className="eyebrow">{c.eyebrow}</p>

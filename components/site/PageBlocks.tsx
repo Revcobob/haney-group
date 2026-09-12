@@ -240,19 +240,17 @@ export function ClientLogosStripBlock({
         </div>
         <div className="clientlogos__viewport">
           <div className="clientlogos__track">
-            {[...logos, ...logos].map((logo, idx) => (
+            {logos.map((logo) => (
               <a
-                key={`${logo.client_name}-${idx}`}
+                key={logo.client_name}
                 className="clientlogos__logo"
                 href={logo.website_url || "#"}
                 target="_blank"
                 rel="noopener"
-                tabIndex={idx >= logos.length ? -1 : undefined}
-                aria-hidden={idx >= logos.length ? true : undefined}
               >
                 <img
                   src={logo.logo}
-                  alt={idx >= logos.length ? "" : logo.alt_text}
+                  alt={logo.alt_text}
                   loading="lazy"
                 />
               </a>

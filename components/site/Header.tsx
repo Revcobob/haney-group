@@ -43,6 +43,18 @@ export async function Header() {
               </li>
             ))}
           </ul>
+          <div className="nav__secondary" aria-label="Additional links">
+            <Link className="nav__secondary-link" href="/insights">
+              The Session Briefing
+            </Link>
+            <a
+              className="nav__secondary-link"
+              href="https://www.linkedin.com/"
+              rel="noopener"
+            >
+              LinkedIn
+            </a>
+          </div>
           <Link className="btn btn--primary nav__cta" href="/contact">
             Discuss a Legislative Priority
             <span className="arrow" aria-hidden="true">
@@ -87,16 +99,6 @@ export async function Header() {
               >
                 <rect x="2" y="4" width="20" height="16" rx="2" />
                 <path d="m22 7-10 6L2 7" />
-              </svg>
-            </a>
-            <a
-              className="nav__foot-link"
-              href="https://www.linkedin.com/"
-              rel="noopener"
-              aria-label="LinkedIn"
-            >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                <path d="M19 0H5C2.24 0 0 2.24 0 5v14c0 2.76 2.24 5 5 5h14c2.76 0 5-2.24 5-5V5c0-2.76-2.24-5-5-5zM8 19H5V8h3v11zM6.5 6.73c-.97 0-1.75-.79-1.75-1.76S5.53 3.22 6.5 3.22s1.75.79 1.75 1.75-.78 1.76-1.75 1.76zM20 19h-3v-5.6c0-3.37-4-3.11-4 0V19h-3V8h3v1.77c1.4-2.59 7-2.78 7 2.47V19z" />
               </svg>
             </a>
           </div>

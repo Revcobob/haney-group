@@ -26,25 +26,25 @@ export async function generateMetadata(): Promise<Metadata> {
 const practiceAreas = [
   {
     href: "/services/legislative-strategy",
-    icon: "/assets/img/icon-legislative-strategy.png",
+    number: "01",
     title: "Legislative Strategy",
     body: "Choose the author, map the committee and calendar path, count the votes, and prepare for floor and conference.",
   },
   {
     href: "/services/appropriations",
-    icon: "/assets/img/icon-appropriations.png",
+    number: "02",
     title: "Appropriations & Riders",
     body: "Article placement, rider drafting, LBB and agency work, and House and Senate budget strategy.",
   },
   {
     href: "/services/public-affairs",
-    icon: "/assets/img/icon-public-affairs.png",
+    number: "03",
     title: "Public Affairs",
     body: "Legislative messages, media responses, executive briefings, and board materials for public issues.",
   },
   {
     href: "/services/parliamentary",
-    icon: "/assets/img/icon-procedural-2.png",
+    number: "04",
     title: "Parliamentary Procedure",
     body: "House Rules, points of order, germaneness, floor procedure, and advice on chamber operations.",
   },
@@ -67,7 +67,7 @@ export default async function ServicesPage() {
   const closing = findSection(sections, "closing_cta");
 
   return (
-    <>
+    <div className="services-index">
       {hero ? (
         <PageHeroBlock s={hero} c={hero.content_json as PageHeroContent} />
       ) : null}
@@ -77,7 +77,7 @@ export default async function ServicesPage() {
           sectionKey={capsHeader.section_key}
           sectionLabel={capsHeader.section_label}
         >
-          <section className="caps" data-reveal>
+          <section className="caps services-index__caps" data-reveal>
             <div className="container">
               <div className="section__head">
                 {(capsHeader.content_json as SectionHeaderContent).eyebrow ? (
@@ -91,19 +91,24 @@ export default async function ServicesPage() {
                   </h2>
                 ) : null}
               </div>
-              <div className="caps__grid">
-                {capabilities.map((cap) => (
-                  <article key={cap.title} className="cap">
+              <div className="services-caplist">
+                {capabilities.map((cap, index) => (
+                  <article key={cap.title} className="services-capability">
+                    <span className="services-capability__number" aria-hidden="true">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
                     <img
-                      className="cap__icon"
+                      className="services-capability__mark"
                       src={cap.icon}
                       alt=""
                       loading="lazy"
-                      width={480}
-                      height={480}
+                      width={72}
+                      height={72}
                     />
-                    <h3>{cap.title}</h3>
-                    <p>{cap.description}</p>
+                    <div className="services-capability__copy">
+                      <h3>{cap.title}</h3>
+                      <p>{cap.description}</p>
+                    </div>
                   </article>
                 ))}
               </div>
@@ -181,7 +186,7 @@ export default async function ServicesPage() {
           sectionKey={practiceHeader.section_key}
           sectionLabel={practiceHeader.section_label}
         >
-          <section className="approach" data-reveal>
+          <section className="services-practices" data-reveal>
             <div className="container">
               <div className="section__head">
                 {(practiceHeader.content_json as SectionHeaderContent).eyebrow ? (
@@ -201,24 +206,16 @@ export default async function ServicesPage() {
                   </h2>
                 ) : null}
               </div>
-              <div className="tilegrid">
+              <div className="services-practice-list">
                 {practiceAreas.map((p) => (
-                  <Link key={p.href} className="tile" href={p.href}>
-                    <img
-                      className="tile__icon"
-                      src={p.icon}
-                      alt=""
-                      loading="lazy"
-                      width={480}
-                      height={480}
-                    />
-                    <h3>{p.title}</h3>
-                    <p>{p.body}</p>
-                    <span className="tile__more">
-                      Read more{" "}
-                      <span className="arrow" aria-hidden="true">
-                        →
-                      </span>
+                  <Link key={p.href} className="services-practice" href={p.href}>
+                    <span className="services-practice__number">{p.number}</span>
+                    <span className="services-practice__copy">
+                      <span className="services-practice__title">{p.title}</span>
+                      <span className="services-practice__body">{p.body}</span>
+                    </span>
+                    <span className="services-practice__arrow" aria-hidden="true">
+                      →
                     </span>
                   </Link>
                 ))}
@@ -229,6 +226,6 @@ export default async function ServicesPage() {
       ) : null}
 
       {closing ? <ClosingCTA section={closing} /> : <ClosingCTA />}
-    </>
+    </div>
   );
 }
