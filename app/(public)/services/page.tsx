@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { ClosingCTA } from "@/components/site/ClosingCTA";
 import { EditableRegion } from "@/components/site/EditableRegion";
@@ -97,13 +98,14 @@ export default async function ServicesPage() {
                     <span className="services-capability__number" aria-hidden="true">
                       {String(index + 1).padStart(2, "0")}
                     </span>
-                    <img
+                    <Image
                       className="services-capability__mark"
                       src={cap.icon}
                       alt=""
                       loading="lazy"
                       width={72}
                       height={72}
+                      sizes="(max-width: 719px) 46px, 54px"
                     />
                     <div className="services-capability__copy">
                       <h3>{cap.title}</h3>
@@ -127,16 +129,16 @@ export default async function ServicesPage() {
               <div className="srbreak__inner">
                 <figure className="srbreak__media">
                   {(srbreak.content_json as ProcessBreakContent).image_url ? (
-                    <img
+                    <Image
                       src={
-                        (srbreak.content_json as ProcessBreakContent).image_url
+                        (srbreak.content_json as ProcessBreakContent).image_url!
                       }
                       alt={
                         (srbreak.content_json as ProcessBreakContent).image_alt
                       }
                       loading="lazy"
-                      width={1600}
-                      height={686}
+                      fill
+                      sizes="(max-width: 879px) 100vw, 58vw"
                     />
                   ) : null}
                 </figure>

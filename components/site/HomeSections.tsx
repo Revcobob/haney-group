@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { EditableRegion } from "./EditableRegion";
 import type {
@@ -52,15 +53,16 @@ function HeroBlock({ s, c }: { s: PageSection; c: HeroContent }) {
   return (
     <Region sectionKey={s.section_key} sectionLabel={s.section_label}>
       <section className="hero" aria-labelledby="hero-h1">
-        <div
+        <Image
           className="hero__bg"
+          src={c.background_image_url || "/assets/img/capitol-hero-web2.jpg"}
+          alt=""
+          fill
+          priority
+          quality={82}
+          sizes="100vw"
           aria-hidden="true"
-          style={
-            c.background_image_url
-              ? { backgroundImage: `url('${c.background_image_url}')` }
-              : undefined
-          }
-        ></div>
+        />
         <div className="container">
           <div className="hero__inner" data-reveal>
             <div className="hero__copy">
@@ -152,13 +154,14 @@ function CapabilitiesBlock({
           <div className="caps__grid">
             {capabilities.map((cap) => (
               <article key={cap.title} className="cap">
-                <img
+                <Image
                   className="cap__icon"
                   src={cap.icon}
                   alt=""
                   loading="lazy"
-                  width={480}
-                  height={480}
+                  width={96}
+                  height={96}
+                  sizes="(max-width: 759px) 48px, 64px"
                 />
                 <div className="cap__copy">
                   <h3>{cap.title}</h3>
@@ -185,7 +188,13 @@ function ProcessBreakBlock({ s, c }: { s: PageSection; c: ProcessBreakContent })
         <div className="container processbreak__inner">
           <div className="processbreak__media">
             {c.image_url ? (
-              <img src={c.image_url} alt={c.image_alt} loading="lazy" />
+              <Image
+                src={c.image_url}
+                alt={c.image_alt}
+                fill
+                loading="lazy"
+                sizes="(max-width: 879px) 100vw, 58vw"
+              />
             ) : null}
           </div>
           <div className="processbreak__copy">
@@ -311,12 +320,12 @@ function PrincipalsBlock({ s, c }: { s: PageSection; c: SectionHeaderContent }) 
           <div className="principals__grid">
             <article className="principal">
               <div className="principal__portrait principal__portrait--robert">
-                <img
+                <Image
                   src="/assets/img/inline-634aab4058.jpg"
                   alt="Portrait of Robert Haney"
-                  width={768}
-                  height={768}
+                  fill
                   loading="lazy"
+                  sizes="(max-width: 719px) 200px, (max-width: 1100px) 220px, 280px"
                 />
               </div>
               <div className="principal__copy">
@@ -335,12 +344,12 @@ function PrincipalsBlock({ s, c }: { s: PageSection; c: SectionHeaderContent }) 
 
             <article className="principal">
               <div className="principal__portrait principal__portrait--julie">
-                <img
+                <Image
                   src="/assets/img/inline-fab1dc790d.jpg"
                   alt="Portrait of Julie Freeman Haney"
-                  width={531}
-                  height={531}
+                  fill
                   loading="lazy"
+                  sizes="(max-width: 719px) 200px, (max-width: 1100px) 220px, 280px"
                 />
               </div>
               <div className="principal__copy">
@@ -432,7 +441,13 @@ function InsightsTeaserBlock({
             {top.map((a) => (
               <Link key={a.slug} className="insight" href={`/insights/${a.slug}`}>
                 <div className="insight__band" aria-hidden="true">
-                  <img src={a.hero_image} alt="" loading="lazy" />
+                  <Image
+                    src={a.hero_image}
+                    alt=""
+                    fill
+                    loading="lazy"
+                    sizes="(max-width: 719px) 100vw, 33vw"
+                  />
                 </div>
                 <div className="insight__body">
                   <p className="insight__meta">{a.article_label}</p>

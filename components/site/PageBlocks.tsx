@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { EditableRegion } from "./EditableRegion";
 import type {
@@ -38,15 +39,18 @@ export function PageHeroBlock({ s, c }: { s: PageSection; c: PageHeroContent }) 
   return (
     <Region sectionKey={s.section_key} sectionLabel={s.section_label}>
       <section className="pagehero pagehero--photo" aria-labelledby={`hero-${s.section_key}`}>
-        <div
-          className="pagehero__bg"
-          style={
-            c.background_image_url
-              ? { backgroundImage: `url('${c.background_image_url}')` }
-              : undefined
-          }
-          aria-hidden="true"
-        ></div>
+        {c.background_image_url ? (
+          <Image
+            className="pagehero__bg"
+            src={c.background_image_url}
+            alt=""
+            fill
+            priority
+            quality={82}
+            sizes="100vw"
+            aria-hidden="true"
+          />
+        ) : null}
         <div className="container pagehero__inner">
           <p className="pagehero__crumbs">
             <Link href="/">Home</Link>
@@ -192,7 +196,13 @@ export function PersonBioBlock({ s, c }: { s: PageSection; c: PersonBioContent }
       <article className="person" id={c.anchor || undefined}>
         <div className="person__portrait">
           {c.portrait_image_url ? (
-            <img src={c.portrait_image_url} alt={`Portrait of ${c.name}`} loading="lazy" />
+            <Image
+              src={c.portrait_image_url}
+              alt={`Portrait of ${c.name}`}
+              fill
+              loading="lazy"
+              sizes="(max-width: 719px) 180px, 240px"
+            />
           ) : null}
         </div>
         <div>
@@ -240,21 +250,35 @@ export function ClientLogosStripBlock({
         </div>
         <div className="clientlogos__viewport">
           <div className="clientlogos__track">
-            {logos.map((logo) => (
-              <a
-                key={logo.client_name}
-                className="clientlogos__logo"
-                href={logo.website_url || "#"}
-                target="_blank"
-                rel="noopener"
-              >
-                <img
-                  src={logo.logo}
-                  alt={logo.alt_text}
-                  loading="lazy"
-                />
-              </a>
-            ))}
+            {logos.map((logo) => {
+              const image = (
+                <span className="clientlogos__image">
+                  <Image
+                    src={logo.logo}
+                    alt={logo.alt_text}
+                    fill
+                    loading="lazy"
+                    sizes="(max-width: 640px) 116px, 140px"
+                  />
+                </span>
+              );
+
+              return logo.website_url ? (
+                <a
+                  key={logo.client_name}
+                  className="clientlogos__logo"
+                  href={logo.website_url}
+                  target="_blank"
+                  rel="noopener"
+                >
+                  {image}
+                </a>
+              ) : (
+                <span key={logo.client_name} className="clientlogos__logo">
+                  {image}
+                </span>
+              );
+            })}
           </div>
         </div>
         {c.disclaimer ? <p className="clientlogos__note">{c.disclaimer}</p> : null}

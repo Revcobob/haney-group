@@ -15,6 +15,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/insights",
     "/contact",
     "/privacy",
+    "/accessibility",
   ];
 
   const articleSlugs = await listArticleSlugs();

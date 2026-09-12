@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { getSiteSettings, getNavigation } from "@/lib/content/site";
 
@@ -11,13 +12,14 @@ export async function Footer() {
         <div className="footer__grid">
           <div className="footer__brand">
             <Link className="brand" href="/" aria-label={`${settings.firm_name}, Home`}>
-              <img
+              <Image
                 className="brand__logo brand__logo--footer"
                 src="/assets/img/inline-1c87817066.png"
                 alt={settings.firm_name}
                 width={911}
                 height={690}
                 loading="lazy"
+                sizes="160px"
               />
             </Link>
             <p>
@@ -92,16 +94,22 @@ export async function Footer() {
             © {year} {settings.copyright_text}
           </span>
           <span>
-            {nav.footer_utility.map((item, idx) => (
-              <span key={`${item.href}-${item.label}`}>
-                {idx > 0 ? " · " : null}
-                {item.href.startsWith("/") ? (
-                  <Link href={item.href}>{item.label}</Link>
-                ) : (
-                  <a href={item.href}>{item.label}</a>
-                )}
-              </span>
-            ))}
+            {nav.footer_utility.map((item, idx) => {
+              const href =
+                item.label.toLowerCase() === "accessibility" && item.href === "#"
+                  ? "/accessibility"
+                  : item.href;
+              return (
+                <span key={`${href}-${item.label}`}>
+                  {idx > 0 ? " · " : null}
+                  {href.startsWith("/") ? (
+                    <Link href={href}>{item.label}</Link>
+                  ) : (
+                    <a href={href}>{item.label}</a>
+                  )}
+                </span>
+              );
+            })}
             {" · "}
             <Link href="/admin/login">Site Admin</Link>
           </span>

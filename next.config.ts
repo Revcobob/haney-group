@@ -11,6 +11,16 @@ const securityHeaders = [
 const config: NextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
+  images: {
+    qualities: [75, 82],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "**.supabase.co",
+        pathname: "/storage/v1/object/public/**",
+      },
+    ],
+  },
   experimental: {
     // Server actions cap request bodies at 1 MB by default, which rejects
     // image uploads (uploadMediaAction accepts up to 8 MB) before the

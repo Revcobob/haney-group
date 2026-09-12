@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { getNavigation } from "@/lib/content/site";
 
@@ -7,12 +8,14 @@ export async function Header() {
     <header className="header">
       <div className="container header__inner">
         <Link className="brand" href="/" aria-label="The Haney Group, Home">
-          <img
+          <Image
             className="brand__logo"
             src="/assets/img/inline-e9e661e302.png"
             alt="The Haney Group"
             width={384}
             height={157}
+            priority
+            sizes="(max-width: 720px) 132px, 168px"
           />
         </Link>
 
@@ -28,7 +31,13 @@ export async function Header() {
         <nav className="nav" id="primary-nav" aria-label="Primary">
           <div className="nav__head">
             <Link className="nav__brand" href="/" aria-label="The Haney Group, Home">
-              <img src="/assets/img/inline-e9e661e302.png" alt="The Haney Group" />
+              <Image
+                src="/assets/img/inline-e9e661e302.png"
+                alt="The Haney Group"
+                width={384}
+                height={157}
+                sizes="120px"
+              />
             </Link>
             <button className="nav__close" aria-label="Close menu" type="button">
               ✕

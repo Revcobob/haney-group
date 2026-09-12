@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { ClosingCTA } from "@/components/site/ClosingCTA";
 import {
   PageHeroBlock,
@@ -49,7 +50,13 @@ export default async function ExperiencePage() {
             {engagements.map((e) => (
               <article key={e.title} className="tile tile--banner">
                 <div className="tile__banner">
-                  <img src={e.image} alt={e.image_alt} loading="lazy" />
+                  <Image
+                    src={e.image}
+                    alt={e.image_alt}
+                    fill
+                    loading="lazy"
+                    sizes="(max-width: 719px) 100vw, 50vw"
+                  />
                 </div>
                 <div className="tile__body">
                   <h3>{e.title}</h3>
