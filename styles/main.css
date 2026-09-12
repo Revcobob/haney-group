@@ -1380,13 +1380,22 @@ section.tight { padding-block: clamp(48px, 6vw, 72px); }
 /* ---------- Services index: compact, text-led, asymmetric ---------- */
 .services-index__caps {
   padding-block: clamp(64px, 8vw, 104px);
+  /* The header and the capability grid share one measure so their left
+     edges line up. */
+  --caplist-width: min(100%, 1080px);
 }
 .services-index__caps .section__head {
-  width: min(100%, 780px);
-  margin-left: auto;
+  /* Left-aligned, with its left edge on the capability grid's left edge. The
+     grid is inset from the container's content box whenever it hits its
+     1080px cap, so the header needs the same offset rather than a plain 0.
+     max-width resets the 60ch cap set on .section__head, which would
+     otherwise win over width. */
+  width: min(100%, 600px);
+  max-width: none;
+  margin-left: calc(100% - var(--caplist-width));
 }
 .services-caplist {
-  width: min(100%, 1080px);
+  width: var(--caplist-width);
   margin-left: auto;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1945,6 +1954,10 @@ html.js-anim .legislative-docket.is-inview .legislative-docket__list::before {
 @media (max-width: 680px) {
   .services-caplist {
     grid-template-columns: 1fr;
+  }
+  .services-index__caps .section__head {
+    width: 100%;
+    margin-left: 0;
   }
   .services-capability {
     grid-template-columns: 30px 46px minmax(0, 1fr);
