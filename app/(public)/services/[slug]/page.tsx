@@ -181,6 +181,11 @@ export default async function ServiceDetailPage({
               fill
               priority
               sizes="(max-width: 820px) 100vw, 38vw"
+              style={
+                service.hero_object_position
+                  ? { objectPosition: service.hero_object_position }
+                  : undefined
+              }
             />
           </figure>
         </div>
