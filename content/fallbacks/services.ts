@@ -20,7 +20,7 @@ export const serviceDetails: ServiceDetail[] = [
     crumb: "Legislative Strategy",
     title: "A legislative plan built around the calendar.",
     lede: "A bill needs an author, a committee path, the votes, a defensible cost, and enough time to clear each deadline. We map those requirements and work the plan member by member.",
-    hero_image: "/assets/img/inline-7b2605a7a1.jpg",
+    hero_image: "/assets/img/capitol-house-chamber.jpg",
     body_sections: [
       {
         heading: "Build the path",
@@ -47,7 +47,7 @@ export const serviceDetails: ServiceDetail[] = [
     crumb: "Appropriations & Riders",
     title: "Budget riders drafted to make it through conference.",
     lede: "We advise on article placement, rider language, LBB engagement, agency concerns, and the House and Senate work required before conference.",
-    hero_image: "/assets/img/inline-231e1beae5.jpg",
+    hero_image: "/assets/img/capitol-rotunda-gallery.jpg",
     body_sections: [
       {
         heading: "Article strategy",
@@ -74,7 +74,7 @@ export const serviceDetails: ServiceDetail[] = [
     crumb: "Public Affairs",
     title: "Public affairs for the Capitol and the boardroom.",
     lede: "We prepare legislative messages, media responses, executive briefings, and board materials for issues that may become public.",
-    hero_image: "/assets/img/inline-9a3ed06a64.jpg",
+    hero_image: "/assets/img/capitol-corridor-star.jpg",
     body_sections: [
       {
         heading: "Message development",
@@ -101,7 +101,7 @@ export const serviceDetails: ServiceDetail[] = [
     crumb: "Parliamentary Procedure",
     title: "Parliamentary and procedural counsel.",
     lede: "Robert Haney, a former Chief Clerk of the Texas House and past president of ASLCS, advises legislative bodies and private clients on rules, chamber operations, and floor procedure.",
-    hero_image: "/assets/img/inline-c2276af506.jpg",
+    hero_image: "/assets/img/capitol-dome-interior.jpg",
     body_sections: [
       {
         heading: "Counsel to chambers",
