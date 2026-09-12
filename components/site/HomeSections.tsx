@@ -223,17 +223,25 @@ function ProofBlock({ s, c }: { s: PageSection; c: ProofContent }) {
             <p className="eyebrow">{c.eyebrow}</p>
             <h2 className="h2">{c.heading}</h2>
           </div>
-          <ol className="proof__grid">
-            {c.items.map((item, i) => (
-              <li className="proof__item" key={i}>
-                <span className="proof__number" aria-hidden="true">
-                  {String(i + 1).padStart(2, "0")}
-                </span>
+          <div className="proof__grid">
+            {c.items.map((item) => (
+              <article className="proof__item" key={item.title}>
+                {item.image_url ? (
+                  <Image
+                    className="proof__illo"
+                    src={item.image_url}
+                    alt=""
+                    width={96}
+                    height={96}
+                    loading="lazy"
+                    sizes="72px"
+                  />
+                ) : null}
                 <h3>{item.title}</h3>
                 <p>{item.body}</p>
-              </li>
+              </article>
             ))}
-          </ol>
+          </div>
         </div>
       </section>
     </Region>
@@ -288,11 +296,8 @@ function AudienceBlock({ s, c }: { s: PageSection; c: AudienceGridContent }) {
             ) : null}
           </div>
           <div className="audience__grid">
-            {c.items.map((item, i) => (
-              <article key={i} className="audience__card">
-                <span className="audience__mark" aria-hidden="true">
-                  {String(i + 1).padStart(2, "0")}
-                </span>
+            {c.items.map((item) => (
+              <article key={item.title} className="audience__card">
                 <h3 className="audience__title">{item.title}</h3>
                 <p className="audience__body">{item.body}</p>
               </article>
@@ -321,7 +326,7 @@ function PrincipalsBlock({ s, c }: { s: PageSection; c: SectionHeaderContent }) 
             <article className="principal">
               <div className="principal__portrait principal__portrait--robert">
                 <Image
-                  src="/assets/img/inline-634aab4058.jpg"
+                  src="/assets/img/robert-haney.png"
                   alt="Portrait of Robert Haney"
                   fill
                   loading="lazy"
@@ -345,7 +350,7 @@ function PrincipalsBlock({ s, c }: { s: PageSection; c: SectionHeaderContent }) 
             <article className="principal">
               <div className="principal__portrait principal__portrait--julie">
                 <Image
-                  src="/assets/img/inline-fab1dc790d.jpg"
+                  src="/assets/img/julie-haney.png"
                   alt="Portrait of Julie Freeman Haney"
                   fill
                   loading="lazy"

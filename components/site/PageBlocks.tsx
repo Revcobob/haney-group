@@ -191,13 +191,20 @@ export function FirmIntroBlock({ s, c }: { s: PageSection; c: FirmIntroContent }
 }
 
 export function PersonBioBlock({ s, c }: { s: PageSection; c: PersonBioContent }) {
+  const portraitSrc =
+    c.anchor === "robert"
+      ? "/assets/img/robert-haney.png"
+      : c.anchor === "julie"
+        ? "/assets/img/julie-haney.png"
+        : c.portrait_image_url;
+
   return (
     <Region sectionKey={s.section_key} sectionLabel={s.section_label}>
       <article className="person" id={c.anchor || undefined}>
         <div className="person__portrait">
-          {c.portrait_image_url ? (
+          {portraitSrc ? (
             <Image
-              src={c.portrait_image_url}
+              src={portraitSrc}
               alt={`Portrait of ${c.name}`}
               fill
               loading="lazy"

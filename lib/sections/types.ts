@@ -326,12 +326,12 @@ const processbreakDef: SectionTypeDef = {
 const proofDef: SectionTypeDef = {
   type: "proof",
   label: "Why Clients Choose Us",
-  description: "Ruled strip of proof points with a number, title, and body.",
+  description: "Ruled strip of proof points with compact illustrations, titles, and body copy.",
   schema: ProofSchema,
   fields: [
     { key: "eyebrow", label: "Eyebrow", type: "text", maxLength: 60 },
     { key: "heading", label: "Heading", type: "textarea", maxLength: 200 },
-    { key: "items", label: "Proof items", type: "card-list-proof", help: "Four items render as a ruled strip. Stored illustrations are retained but not shown on the homepage." },
+    { key: "items", label: "Proof items", type: "card-list-proof", help: "Four items render as a ruled strip with compact illustrations." },
   ],
   empty: () => ProofSchema.parse({}),
 };

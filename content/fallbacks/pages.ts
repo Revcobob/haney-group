@@ -373,7 +373,7 @@ export const pageFallbacks: PageFallback[] = [
           anchor: "robert",
           name: "Robert Haney",
           role: "Principal · Former Chief Clerk, Texas House",
-          portrait_image_url: "/assets/img/inline-634aab4058.jpg",
+          portrait_image_url: "/assets/img/robert-haney.png",
           body_paragraphs: [
             "Robert Haney worked in the Texas House of Representatives for more than twenty-five years. He served as Chief Clerk under five Speakers from both parties.",
             "As Chief Clerk, he managed the procedural backbone of every bill the House considered: calendars, certifications, journals, technology, and the rules under which Members debated. He led the modernization of House operations, including the transition to electronic bill filing, which retired a century-old paper process.",
@@ -394,7 +394,7 @@ export const pageFallbacks: PageFallback[] = [
           anchor: "julie",
           name: "Julie Freeman Haney",
           role: "Principal · Appropriations & Communications",
-          portrait_image_url: "/assets/img/inline-fab1dc790d.jpg",
+          portrait_image_url: "/assets/img/julie-haney.png",
           body_paragraphs: [
             "Julie Freeman Haney has two decades of experience in Texas appropriations and legislative communications. She served as an aide to the Chair of the House Appropriations Committee and later as chief of staff to a state legislator.",
             "She develops legislative messages, prepares talking points and board briefings, and advises clients responding to public or political pressure.",
