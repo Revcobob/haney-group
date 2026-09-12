@@ -44,27 +44,31 @@ export default async function ArticlePage({
 
   return (
     <>
-      <section className="pagehero pagehero--photo" aria-labelledby="ph-h1">
-        <div
-          className="pagehero__bg"
-          style={{ backgroundImage: `url('${article.hero_image}')` }}
-          aria-hidden="true"
-        ></div>
-        <div className="container pagehero__inner">
-          <p className="pagehero__crumbs">
-            <Link href="/">Home</Link>
-            <span className="sep">/</span>
-            <Link href="/insights">Insights</Link>
-            <span className="sep">/</span>
-            <span>{article.title}</span>
-          </p>
-          <p className="eyebrow" style={{ marginBottom: 22 }}>
-            The Session Briefing · Article
-          </p>
-          <h1 className="h1" id="ph-h1">
-            {article.title}
-          </h1>
-          <p className="lede">{article.lede}</p>
+      <section className="article-hero" aria-labelledby="article-hero-title">
+        <div className="container article-hero__grid">
+          <div className="article-hero__copy">
+            <p className="article-hero__crumbs">
+              <Link href="/">Home</Link>
+              <span className="sep">/</span>
+              <Link href="/insights">Insights</Link>
+              <span className="sep">/</span>
+              <span>Article</span>
+            </p>
+            <p className="eyebrow">The Session Briefing · Article</p>
+            <h1 className="h1" id="article-hero-title">
+              {article.title}
+            </h1>
+            <p className="lede">{article.lede}</p>
+          </div>
+          <figure className="article-hero__media" aria-hidden="true">
+            <img
+              src={article.hero_image}
+              alt=""
+              width={1200}
+              height={800}
+              fetchPriority="high"
+            />
+          </figure>
         </div>
       </section>
 

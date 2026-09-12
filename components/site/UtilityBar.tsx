@@ -63,7 +63,7 @@ export function UtilityBar() {
             <span className="util__label">info@haney-group.com</span>
           </a>
         </div>
-        <div className="utility__group">
+        <div className="utility__group utility__group--secondary">
           <a className="util" href="/insights">
             <svg
               className="util__icon"

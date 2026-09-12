@@ -326,12 +326,12 @@ const processbreakDef: SectionTypeDef = {
 const proofDef: SectionTypeDef = {
   type: "proof",
   label: "Why Clients Choose Us",
-  description: "Four-up grid of proof points with illustration, title, and body.",
+  description: "Ruled strip of proof points with a number, title, and body.",
   schema: ProofSchema,
   fields: [
     { key: "eyebrow", label: "Eyebrow", type: "text", maxLength: 60 },
     { key: "heading", label: "Heading", type: "textarea", maxLength: 200 },
-    { key: "items", label: "Proof items", type: "card-list-proof", help: "Four items render best." },
+    { key: "items", label: "Proof items", type: "card-list-proof", help: "Four items render as a ruled strip. Stored illustrations are retained but not shown on the homepage." },
   ],
   empty: () => ProofSchema.parse({}),
 };
@@ -339,12 +339,12 @@ const proofDef: SectionTypeDef = {
 const approachDef: SectionTypeDef = {
   type: "approach",
   label: "How We Work",
-  description: "Four-up grid of approach steps with illustration, title, and body.",
+  description: "Numbered editorial sequence describing how the firm works.",
   schema: ApproachSchema,
   fields: [
     { key: "eyebrow", label: "Eyebrow", type: "text", maxLength: 60 },
     { key: "heading", label: "Heading", type: "textarea", maxLength: 200 },
-    { key: "steps", label: "Steps", type: "card-list-approach", help: "Four steps render best." },
+    { key: "steps", label: "Steps", type: "card-list-approach", help: "Four steps render as numbered editorial rows. Stored illustrations are retained but not shown on the homepage." },
   ],
   empty: () => ApproachSchema.parse({}),
 };
