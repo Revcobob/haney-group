@@ -440,7 +440,7 @@ export const pageFallbacks: PageFallback[] = [
           headline: "Services built around how Texas policy actually moves.",
           lede:
             "We develop legislative plans, draft and analyze bills, work appropriations, advise on House procedure, represent clients at the Capitol, and organize stakeholder support.",
-          background_image_url: "/assets/img/capitol-portrait-hall.jpg",
+          background_image_url: "/assets/img/capitol-corridor-star.jpg",
         },
       },
       {
