@@ -327,21 +327,23 @@ export function SiteSettingsForm({
           <p className="adminform__section-eyebrow">Contact form notifications</p>
           <h2>Where new inquiries are emailed</h2>
           <p>
-            When the public Contact form is submitted, an email goes here
+            When the public Contact form is submitted, an email goes out
             with the visitor’s message and a link into the admin Inquiries
-            inbox. Requires <code>RESEND_API_KEY</code> to be configured
-            to actually send.
+            inbox. <code>info@haney-group.com</code> always receives a
+            copy; add addresses here to notify anyone else. Requires{" "}
+            <code>RESEND_API_KEY</code> to be configured to actually send —
+            check <code>/admin/diagnostics</code> to confirm and to send a
+            test.
           </p>
         </div>
         <TextField
           id="contact_notification_email"
           name="contact_notification_email"
-          type="email"
-          label="Notification recipient email"
+          type="text"
+          label="Notification recipients (comma-separated)"
           defaultValue={settings.contact_notification_email}
-          required
           error={errors.contact_notification_email}
-          placeholder="info@haney-group.com"
+          placeholder="info@haney-group.com, robert@haney-group.com"
         />
       </section>
 

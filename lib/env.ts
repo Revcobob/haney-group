@@ -28,6 +28,11 @@ export const env = {
   SUPABASE_SERVICE_ROLE_KEY: read("SUPABASE_SERVICE_ROLE_KEY"),
   CONTACT_NOTIFICATION_EMAIL:
     read("CONTACT_NOTIFICATION_EMAIL") ?? "info@haney-group.com",
+  // Must be an address on a domain verified in Resend, or every send is
+  // rejected. Overridable so a domain change doesn't need a code change.
+  CONTACT_FROM_EMAIL:
+    read("CONTACT_FROM_EMAIL") ??
+    "The Haney Group Website <noreply@haney-group.com>",
   RESEND_API_KEY: read("RESEND_API_KEY"),
 };
 

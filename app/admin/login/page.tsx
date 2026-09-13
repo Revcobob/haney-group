@@ -40,8 +40,20 @@ export default async function AdminLoginPage() {
           signUpUrl="/admin/login"
           appearance={{
             elements: {
-              rootBox: "cl-rootBox",
-              card: "cl-card",
+              // Clerk's card is a fixed 25rem by default, which overflows a
+              // phone viewport once our auth-card padding is accounted for.
+              rootBox: { width: "100%", maxWidth: "100%", minWidth: 0 },
+              cardBox: { width: "100%", maxWidth: "100%", minWidth: 0, boxShadow: "none" },
+              card: {
+                width: "100%",
+                maxWidth: "100%",
+                minWidth: 0,
+                boxSizing: "border-box",
+                background: "transparent",
+                boxShadow: "none",
+                border: 0,
+                padding: 0,
+              },
               headerTitle: { display: "none" },
               headerSubtitle: { display: "none" },
               socialButtonsBlockButton: {
@@ -66,6 +78,10 @@ export default async function AdminLoginPage() {
                 fontSize: "15px",
               },
               formButtonPrimary: {
+                width: "100%",
+                maxWidth: "100%",
+                minWidth: 0,
+                whiteSpace: "normal",
                 backgroundColor: "#C9892A",
                 color: "#06091A",
                 fontSize: "14.5px",

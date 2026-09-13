@@ -1482,6 +1482,8 @@ section.tight { padding-block: clamp(48px, 6vw, 72px); }
 }
 .form__status--success { background: rgba(201,137,42,0.10); color: var(--amber-700); border: 1px solid rgba(201,137,42,0.3); }
 .form__status--error { background: #FBEAEA; color: #6B1F1F; border: 1px solid #E5C0C0; }
+.form__status-redirect { margin: 10px 0 0; font-size: 14px; opacity: 0.85; }
+.form__status-redirect a { text-decoration: underline; }
 
 /* ---------- Insights index list ---------- */
 .postlist {
@@ -4272,12 +4274,60 @@ body.body--visual-editor .admin__header { position: sticky; top: 0; }
 
 /* Make Clerk's <SignIn /> blend into the auth card */
 .admin__authcard .cl-rootBox,
-.admin__authcard .cl-card {
+.admin__authcard .cl-card,
+.admin__authcard .cl-cardBox {
   width: 100%;
+  max-width: 100%;
+  min-width: 0;
   background: transparent;
   box-shadow: none;
   border: 0;
   padding: 0;
+}
+
+/* Clerk ships its card at a fixed width (25rem) and its own horizontal
+   padding. Inside our 36px-padded auth card that overflows a phone
+   viewport, pushing "Continue" past the right edge where .admin__authshell
+   clips it. Pin every Clerk box to the available width and let long
+   strings wrap instead of forcing the row wider. */
+.admin__authcard .cl-rootBox,
+.admin__authcard .cl-cardBox,
+.admin__authcard .cl-card,
+.admin__authcard .cl-header,
+.admin__authcard .cl-main,
+.admin__authcard .cl-form,
+.admin__authcard .cl-formField,
+.admin__authcard .cl-formFieldInput,
+.admin__authcard .cl-formButtonPrimary,
+.admin__authcard .cl-socialButtons,
+.admin__authcard .cl-socialButtonsBlockButton,
+.admin__authcard .cl-alternativeMethods,
+.admin__authcard .cl-alternativeMethodsBlockButton,
+.admin__authcard .cl-identityPreview,
+.admin__authcard .cl-otpCodeFieldInputs,
+.admin__authcard .cl-footer {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+.admin__authcard .cl-formButtonPrimary,
+.admin__authcard .cl-socialButtonsBlockButton,
+.admin__authcard .cl-alternativeMethodsBlockButton {
+  white-space: normal;
+}
+.admin__authcard .cl-identityPreviewText,
+.admin__authcard .cl-formFieldLabel,
+.admin__authcard .cl-footerActionText {
+  overflow-wrap: anywhere;
+}
+
+/* Narrow phones: give the Clerk form the full card width back. */
+@media (max-width: 480px) {
+  .admin__authshell { padding: 28px 12px; }
+  .admin__authcard { padding: 26px 18px 22px; gap: 20px; }
+  .admin__authcard h1 { font-size: 22px; }
+  .admin__authcard .admin__authcard-foot { gap: 8px; }
 }
 
 /* ---------- Article timeline aside (used in some posts) ---------- */
