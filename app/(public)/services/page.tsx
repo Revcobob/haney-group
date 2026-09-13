@@ -64,6 +64,15 @@ export default async function ServicesPage() {
   const hero = findSection(sections, "page_hero");
   const capsHeader = findSection(sections, "capabilities_intro");
   const srbreak = findSection(sections, "srbreak");
+  const srbreakContent = srbreak?.content_json as ProcessBreakContent | undefined;
+  const srbreakImageUrl =
+    srbreakContent?.image_url === "/assets/img/banner-services-page.png"
+      ? "/assets/img/senior-experience-capitol.webp"
+      : srbreakContent?.image_url;
+  const srbreakImageAlt =
+    srbreakContent?.image_url === "/assets/img/banner-services-page.png"
+      ? "Texas Capitol dome seen through a legislative conference room window"
+      : srbreakContent?.image_alt;
   const practiceHeader = findSection(sections, "practice_areas_intro");
   const closing = findSection(sections, "closing_cta");
 
@@ -128,14 +137,10 @@ export default async function ServicesPage() {
             <div className="container">
               <div className="srbreak__inner">
                 <figure className="srbreak__media">
-                  {(srbreak.content_json as ProcessBreakContent).image_url ? (
+                  {srbreakImageUrl ? (
                     <Image
-                      src={
-                        (srbreak.content_json as ProcessBreakContent).image_url!
-                      }
-                      alt={
-                        (srbreak.content_json as ProcessBreakContent).image_alt
-                      }
+                      src={srbreakImageUrl}
+                      alt={srbreakImageAlt ?? ""}
                       loading="lazy"
                       fill
                       sizes="(max-width: 879px) 100vw, 58vw"
