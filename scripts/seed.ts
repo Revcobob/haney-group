@@ -3,8 +3,15 @@
  * Seed Supabase with the current static fallback content.
  *
  * Run:
- *   npm run seed                # idempotent: skips rows that already exist
+ *   npm run seed                # repeatable, but OVERWRITES existing rows
  *   npm run seed -- --reset     # truncates each cms_ table first (destructive)
+ *
+ * Re-running is safe to repeat in that it converges on the same state, but it
+ * does not preserve edits: upsertOne() matches an existing row and UPDATES it
+ * from the fallbacks, so anything changed through the admin UI is replaced.
+ * cms_media is the one exception — ensureMedia() reuses a row whose public_url
+ * already matches and only inserts when it is missing, so media is never
+ * duplicated.
  *
  * Requires NEXT_PUBLIC_SUPABASE_URL + SUPABASE_SERVICE_ROLE_KEY in env.
  *
