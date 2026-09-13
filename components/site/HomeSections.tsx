@@ -287,22 +287,37 @@ function AudienceBlock({ s, c }: { s: PageSection; c: AudienceGridContent }) {
     <Region sectionKey={s.section_key} sectionLabel={s.section_label}>
       <section className="audience audience--home" data-reveal>
         <div className="container">
-          <div className="section__head">
-            {c.eyebrow ? <p className="eyebrow">{c.eyebrow}</p> : null}
-            {c.heading ? <h2 className="h2">{c.heading}</h2> : null}
-            {c.lede ? (
-              <p className="lede" style={{ marginTop: 0 }}>
-                {c.lede}
-              </p>
-            ) : null}
-          </div>
-          <div className="audience__grid">
-            {c.items.map((item) => (
-              <article key={item.title} className="audience__card">
-                <h3 className="audience__title">{item.title}</h3>
-                <p className="audience__body">{item.body}</p>
-              </article>
-            ))}
+          <div className="audience__panel">
+            <div className="audience__intro">
+              <div className="section__head">
+                {c.eyebrow ? <p className="eyebrow">{c.eyebrow}</p> : null}
+                {c.heading ? <h2 className="h2">{c.heading}</h2> : null}
+                {c.lede ? <p className="lede">{c.lede}</p> : null}
+              </div>
+              <Link className="linkarrow audience__link" href="/industries">
+                See clients and industries <span className="arrow" aria-hidden="true">→</span>
+              </Link>
+              <Image
+                className="audience__art"
+                src="/assets/img/icon-coalitions.png"
+                alt=""
+                width={512}
+                height={512}
+                loading="lazy"
+                sizes="(max-width: 719px) 170px, 230px"
+              />
+            </div>
+            <div className="audience__grid">
+              {c.items.map((item) => (
+                <article key={item.title} className="audience__card">
+                  <span className="audience__marker" aria-hidden="true" />
+                  <div className="audience__item-copy">
+                    <h3 className="audience__title">{item.title}</h3>
+                    <p className="audience__body">{item.body}</p>
+                  </div>
+                </article>
+              ))}
+            </div>
           </div>
         </div>
       </section>
