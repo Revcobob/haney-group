@@ -28,7 +28,9 @@
   --amber-500: #C9892A;
   --amber-400: #D69C40;
 
-  --font-sans: "Public Sans", "Söhne", "GT America", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  /* --font-public-sans is set by next/font in app/layout.tsx; the literal
+     name is kept as a backstop for any surface rendered outside that layout. */
+  --font-sans: var(--font-public-sans), "Public Sans", "Söhne", "GT America", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
 
   --maxw: 1240px;
   --gutter: clamp(20px, 4vw, 64px);

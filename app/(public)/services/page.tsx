@@ -12,6 +12,7 @@ import type {
   SectionHeaderContent,
   ProcessBreakContent,
 } from "@/lib/sections/types";
+import { blurProps } from "@/lib/images";
 
 export async function generateMetadata(): Promise<Metadata> {
   return resolveMetadata({
@@ -133,6 +134,9 @@ export default async function ServicesPage() {
                       src={
                         (srbreak.content_json as ProcessBreakContent).image_url!
                       }
+                      {...blurProps(
+                        (srbreak.content_json as ProcessBreakContent).image_url
+                      )}
                       alt={
                         (srbreak.content_json as ProcessBreakContent).image_alt
                       }

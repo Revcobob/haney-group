@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getArticle, listArticleSlugs } from "@/lib/content/insights";
+import { blurProps } from "@/lib/images";
 
 // Allow new slugs published via the admin to render without a redeploy.
 // Unknown slugs return notFound() below.
@@ -64,6 +65,7 @@ export default async function ArticlePage({
           <figure className="article-hero__media" aria-hidden="true">
             <Image
               src={article.hero_image}
+              {...blurProps(article.hero_image)}
               alt=""
               fill
               priority

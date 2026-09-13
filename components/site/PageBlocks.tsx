@@ -15,6 +15,7 @@ import type {
   QuoteCardContent,
 } from "@/lib/sections/types";
 import type { PageSection } from "@/lib/content/pages";
+import { blurProps } from "@/lib/images";
 
 // Generic wrapper that adds click-to-edit affordances when the page is
 // loaded inside the visual editor iframe (?edit=1). A no-op in normal
@@ -43,6 +44,7 @@ export function PageHeroBlock({ s, c }: { s: PageSection; c: PageHeroContent }) 
           <Image
             className="pagehero__bg"
             src={c.background_image_url}
+            {...blurProps(c.background_image_url)}
             alt=""
             fill
             priority
@@ -205,6 +207,7 @@ export function PersonBioBlock({ s, c }: { s: PageSection; c: PersonBioContent }
           {portraitSrc ? (
             <Image
               src={portraitSrc}
+              {...blurProps(portraitSrc)}
               alt={`Portrait of ${c.name}`}
               fill
               loading="lazy"

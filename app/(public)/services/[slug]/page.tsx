@@ -7,6 +7,7 @@ import {
   getServiceBySlug,
   serviceDetails,
 } from "@/content/fallbacks/services";
+import { blurProps } from "@/lib/images";
 
 export const dynamicParams = false;
 
@@ -177,6 +178,7 @@ export default async function ServiceDetailPage({
           <figure className="service-hero__media" aria-hidden="true">
             <Image
               src={service.hero_image}
+              {...blurProps(service.hero_image)}
               alt=""
               fill
               priority

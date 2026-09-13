@@ -12,6 +12,7 @@ import type {
   PageHeroContent,
   QuoteCardContent,
 } from "@/lib/sections/types";
+import { blurProps } from "@/lib/images";
 
 export async function generateMetadata(): Promise<Metadata> {
   return resolveMetadata({
@@ -52,6 +53,7 @@ export default async function ExperiencePage() {
                 <div className="tile__banner">
                   <Image
                     src={e.image}
+                    {...blurProps(e.image)}
                     alt={e.image_alt}
                     fill
                     loading="lazy"
