@@ -1,8 +1,14 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 type Status = "idle" | "submitting" | "success" | "error";
+
+// How long the acknowledgement stays on screen before the visitor is
+// returned to the homepage. Long enough to read it twice.
+const REDIRECT_SECONDS = 6;
 
 const DEFAULT_CONSENT =
   "I understand my message will be reviewed by The Haney Group and consent to being contacted about my inquiry.";
@@ -14,8 +20,26 @@ export function ContactForm({
   consentLanguage?: string;
   submitLabel?: string;
 }) {
+  const router = useRouter();
   const [status, setStatus] = useState<Status>("idle");
   const [errorMessage, setErrorMessage] = useState<string>("");
+  const [secondsLeft, setSecondsLeft] = useState(REDIRECT_SECONDS);
+
+  // After a successful send, count down and hand the visitor back to the
+  // homepage. Cancelled if they navigate away first.
+  useEffect(() => {
+    if (status !== "success") return;
+    const tick = window.setInterval(() => {
+      setSecondsLeft((n) => (n > 0 ? n - 1 : 0));
+    }, 1000);
+    const go = window.setTimeout(() => {
+      router.push("/");
+    }, REDIRECT_SECONDS * 1000);
+    return () => {
+      window.clearInterval(tick);
+      window.clearTimeout(go);
+    };
+  }, [status, router]);
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -71,6 +95,11 @@ export function ContactForm({
       <div className="form__status form__status--success" role="status">
         <strong>Thank you.</strong> Your note has reached The Haney Group. A
         principal will be in touch within one business day.
+        <p className="form__status-redirect">
+          Returning you to the homepage in {secondsLeft}{" "}
+          {secondsLeft === 1 ? "second" : "seconds"} —{" "}
+          <Link href="/">go now</Link>.
+        </p>
       </div>
     );
   }

@@ -124,19 +124,31 @@ export async function POST(request: Request) {
     );
   }
 
-  // 6) Email notification (best-effort, never blocks the visitor).
-  notifyNewInquiry({
-    name: input.name,
-    organization: input.organization || undefined,
-    email: input.email,
-    phone: input.phone || undefined,
-    inquiry_type: input.inquiry_type || undefined,
-    message: input.message,
-    source_page: input.source_page || "/contact",
-    id: inserted?.id as string | undefined,
-  }).catch(() => {
+  // 6) Email notification to the firm inbox. Awaited so a rejected send
+  //    is logged against this request instead of vanishing when the
+  //    serverless function is frozen, but a failure never fails the
+  //    response — the inquiry is already saved and visible in the admin.
+  try {
+    const notified = await notifyNewInquiry({
+      name: input.name,
+      organization: input.organization || undefined,
+      email: input.email,
+      phone: input.phone || undefined,
+      inquiry_type: input.inquiry_type || undefined,
+      message: input.message,
+      source_page: input.source_page || "/contact",
+      id: inserted?.id as string | undefined,
+    });
+    if (!notified.ok) {
+      // eslint-disable-next-line no-console
+      console.error("[/api/contact] inquiry saved but notification failed", {
+        id: inserted?.id,
+        reason: notified.reason,
+      });
+    }
+  } catch {
     // Email failure shouldn't break the user flow; the inquiry is already saved.
-  });
+  }
 
   return NextResponse.json({ ok: true, id: inserted?.id }, { status: 200 });
 }

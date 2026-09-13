@@ -10,6 +10,26 @@ const requiredText = (msg: string) =>
 const optionalText = z.preprocess(blankToUndef, z.string().trim().optional());
 const requiredEmail = (msg: string) =>
   z.preprocess(blankToUndef, z.string().trim().email(msg));
+// Contact alerts can fan out to several people, so this field accepts a
+// comma-separated list. Blank is allowed — info@haney-group.com always
+// receives a copy regardless (see lib/email.ts).
+const optionalEmailList = (msg: string) =>
+  z.preprocess(
+    blankToUndef,
+    z
+      .string()
+      .trim()
+      .refine(
+        (v) =>
+          v
+            .split(",")
+            .map((s) => s.trim())
+            .filter(Boolean)
+            .every((s) => z.string().email().safeParse(s).success),
+        msg
+      )
+      .optional()
+  );
 const optionalUrl = z.preprocess(
   blankToUndef,
   z.string().url("Please enter a complete URL like https://…").optional()
@@ -55,7 +75,9 @@ export const SettingsSchema = z.object({
   consent_language: requiredText("Consent language is required"),
 
   // Contact page + form
-  contact_notification_email: requiredEmail("Please enter a valid email for contact-form alerts"),
+  contact_notification_email: optionalEmailList(
+    "Please enter a valid email, or several separated by commas"
+  ),
   contact_page_eyebrow: optionalText,
   contact_page_headline: optionalText,
   contact_page_lede: optionalText,
