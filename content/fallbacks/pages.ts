@@ -468,8 +468,9 @@ export const pageFallbacks: PageFallback[] = [
             label: "Discuss Your Legislative Strategy",
             href: "/contact",
           },
-          image_url: "/assets/img/banner-services-page.png",
-          image_alt: "Professionals in conversation at a conference table",
+          image_url: "/assets/img/senior-experience-capitol.webp",
+          image_alt:
+            "Texas Capitol dome seen through a legislative conference room window",
         },
       },
       {
