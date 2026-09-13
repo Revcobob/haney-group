@@ -5,6 +5,10 @@ import { getSiteSettings, getNavigation } from "@/lib/content/site";
 export async function Footer() {
   const [settings, nav] = await Promise.all([getSiteSettings(), getNavigation()]);
   const year = new Date().getFullYear();
+  const footerUtilityLinks = nav.footer_utility.filter((item) => {
+    const label = item.label.toLowerCase();
+    return !label.includes("texas ethics commission") && !label.includes("lobby registration");
+  });
 
   return (
     <footer className="footer">
@@ -94,7 +98,7 @@ export async function Footer() {
             © {year} {settings.copyright_text}
           </span>
           <span>
-            {nav.footer_utility.map((item, idx) => {
+            {footerUtilityLinks.map((item, idx) => {
               const href =
                 item.label.toLowerCase() === "accessibility" && item.href === "#"
                   ? "/accessibility"
