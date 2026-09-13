@@ -12,6 +12,7 @@ import type {
   PageHeroContent,
   ClientLogosStripContent,
 } from "@/lib/sections/types";
+import { blurProps } from "@/lib/images";
 
 export async function generateMetadata(): Promise<Metadata> {
   return resolveMetadata({
@@ -56,6 +57,7 @@ export default async function IndustriesPage() {
                 <div className="tile__banner">
                   <Image
                     src={i.image}
+                    {...blurProps(i.image)}
                     alt=""
                     loading="lazy"
                     fill

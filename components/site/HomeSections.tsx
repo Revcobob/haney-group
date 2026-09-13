@@ -16,6 +16,7 @@ import type { PageSection } from "@/lib/content/pages";
 import type { ServiceCard } from "@/content/fallbacks/services";
 import type { IndustryCard } from "@/content/fallbacks/industries";
 import type { InsightArticle } from "@/lib/content/insights";
+import { blurProps } from "@/lib/images";
 
 type RenderProps = {
   sections: PageSection[];
@@ -56,6 +57,7 @@ function HeroBlock({ s, c }: { s: PageSection; c: HeroContent }) {
         <Image
           className="hero__bg"
           src={c.background_image_url || "/assets/img/capitol-hero-web2.jpg"}
+          {...blurProps(c.background_image_url || "/assets/img/capitol-hero-web2.jpg")}
           alt=""
           fill
           priority
@@ -190,6 +192,7 @@ function ProcessBreakBlock({ s, c }: { s: PageSection; c: ProcessBreakContent })
             {c.image_url ? (
               <Image
                 src={c.image_url}
+                {...blurProps(c.image_url)}
                 alt={c.image_alt}
                 fill
                 loading="lazy"
@@ -343,6 +346,7 @@ function PrincipalsBlock({ s, c }: { s: PageSection; c: SectionHeaderContent }) 
               <div className="principal__portrait principal__portrait--robert">
                 <Image
                   src="/assets/img/robert-haney.png"
+                  {...blurProps("/assets/img/robert-haney.png")}
                   alt="Portrait of Robert Haney"
                   fill
                   loading="lazy"
@@ -367,6 +371,7 @@ function PrincipalsBlock({ s, c }: { s: PageSection; c: SectionHeaderContent }) 
               <div className="principal__portrait principal__portrait--julie">
                 <Image
                   src="/assets/img/julie-haney.png"
+                  {...blurProps("/assets/img/julie-haney.png")}
                   alt="Portrait of Julie Freeman Haney"
                   fill
                   loading="lazy"
@@ -464,6 +469,7 @@ function InsightsTeaserBlock({
                 <div className="insight__band" aria-hidden="true">
                   <Image
                     src={a.hero_image}
+                    {...blurProps(a.hero_image)}
                     alt=""
                     fill
                     loading="lazy"

@@ -7,6 +7,7 @@ import { listPublishedArticles } from "@/lib/content/insights";
 import { getPageWithSections, type PageSection } from "@/lib/content/pages";
 import { resolveMetadata } from "@/lib/content/seo";
 import type { PageHeroContent } from "@/lib/sections/types";
+import { blurProps } from "@/lib/images";
 
 export async function generateMetadata(): Promise<Metadata> {
   return resolveMetadata({
@@ -49,6 +50,7 @@ export default async function InsightsIndexPage() {
                 <div className="postlist__thumb">
                   <Image
                     src={a.hero_image}
+                    {...blurProps(a.hero_image)}
                     alt=""
                     fill
                     loading="lazy"
