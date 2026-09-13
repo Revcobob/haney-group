@@ -12,6 +12,7 @@ import type {
   PageHeroContent,
   ClientLogosStripContent,
 } from "@/lib/sections/types";
+import { blurProps } from "@/lib/images";
 
 const ORIGINAL_HERO_LEDE =
   "The firm represents associations, public entities, providers, companies, and policy organizations across nine areas of Texas law and regulation.";
@@ -110,6 +111,7 @@ export default async function IndustriesPage() {
                 <div className="client-sector__mark" aria-hidden="true">
                   <Image
                     src={industry.image}
+                    {...blurProps(industry.image)}
                     alt=""
                     loading="lazy"
                     fill

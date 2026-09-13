@@ -12,6 +12,7 @@ import type {
   SectionHeaderContent,
   ProcessBreakContent,
 } from "@/lib/sections/types";
+import { blurProps } from "@/lib/images";
 
 export async function generateMetadata(): Promise<Metadata> {
   return resolveMetadata({
@@ -140,6 +141,7 @@ export default async function ServicesPage() {
                   {srbreakImageUrl ? (
                     <Image
                       src={srbreakImageUrl}
+                      {...blurProps(srbreakImageUrl)}
                       alt={srbreakImageAlt ?? ""}
                       loading="lazy"
                       fill

@@ -1,7 +1,21 @@
 import type { Metadata, Viewport } from "next";
+import { Public_Sans } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import "../styles/main.css";
 import { clerkConfigured } from "@/lib/env";
+
+// Self-hosted at build time: no render-blocking round trip to fonts.googleapis
+// and no second connection to fonts.gstatic. Next also generates a
+// size-adjusted local fallback from the real font's metrics, so the swap
+// costs no layout shift. Weights match what main.css actually asks for.
+const publicSans = Public_Sans({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700", "800"],
+  style: ["normal", "italic"],
+  display: "swap",
+  variable: "--font-public-sans",
+  fallback: ["Söhne", "GT America", "Helvetica", "Arial", "sans-serif"],
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.haney-group.com"),
@@ -31,15 +45,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   const body = (
     // suppressHydrationWarning: the public layout's motion boot script adds
     // a class to <html> before hydration.
-    <html lang="en" suppressHydrationWarning>
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap"
-        />
-      </head>
+    <html lang="en" className={publicSans.variable} suppressHydrationWarning>
       <body>{children}</body>
     </html>
   );

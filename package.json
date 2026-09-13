@@ -9,7 +9,8 @@
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
     "seed": "tsx scripts/seed.ts",
-    "seed:icon-hints": "tsx scripts/seed-service-icon-hints.ts"
+    "seed:icon-hints": "tsx scripts/seed-service-icon-hints.ts",
+    "blur": "tsx scripts/generate-blur-manifest.ts"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.39.5",
@@ -30,6 +31,7 @@
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
     "@types/sanitize-html": "^2.16.1",
+    "sharp": "^0.34.5",
     "tsx": "^4.22.4",
     "typescript": "^5.6.3"
   }

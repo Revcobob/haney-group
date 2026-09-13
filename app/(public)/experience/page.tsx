@@ -12,6 +12,7 @@ import type {
   PageHeroContent,
   QuoteCardContent,
 } from "@/lib/sections/types";
+import { blurProps } from "@/lib/images";
 
 const ORIGINAL_HERO_IMAGE = "/assets/img/experience2-hero-web.jpg";
 const EXPERIENCE_HERO_IMAGE =
@@ -66,6 +67,7 @@ export default async function ExperiencePage() {
                 <div className="tile__banner">
                   <Image
                     src={e.image}
+                    {...blurProps(e.image)}
                     alt={e.image_alt}
                     fill
                     loading="lazy"
