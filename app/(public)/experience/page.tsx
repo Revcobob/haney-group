@@ -13,6 +13,10 @@ import type {
   QuoteCardContent,
 } from "@/lib/sections/types";
 
+const ORIGINAL_HERO_IMAGE = "/assets/img/experience2-hero-web.jpg";
+const EXPERIENCE_HERO_IMAGE =
+  "/assets/img/experience-house-chamber-hero.webp";
+
 export async function generateMetadata(): Promise<Metadata> {
   return resolveMetadata({
     path: "/experience",
@@ -37,11 +41,21 @@ export default async function ExperiencePage() {
   const hero = findSection(sections, "page_hero");
   const quote = findSection(sections, "engagements_quote");
   const closing = findSection(sections, "closing_cta");
+  const heroContent = hero?.content_json as PageHeroContent | undefined;
 
   return (
     <>
-      {hero ? (
-        <PageHeroBlock s={hero} c={hero.content_json as PageHeroContent} />
+      {hero && heroContent ? (
+        <PageHeroBlock
+          s={hero}
+          c={{
+            ...heroContent,
+            background_image_url:
+              heroContent.background_image_url === ORIGINAL_HERO_IMAGE
+                ? EXPERIENCE_HERO_IMAGE
+                : heroContent.background_image_url,
+          }}
+        />
       ) : null}
 
       <section data-reveal>

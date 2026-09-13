@@ -567,7 +567,8 @@ export const pageFallbacks: PageFallback[] = [
           headline: "Selected engagements.",
           lede:
             "Examples of work for trade associations, public entities, regulated companies, health systems, and policy organizations. Client names are withheld where the matter was confidential.",
-          background_image_url: "/assets/img/experience2-hero-web.jpg",
+          background_image_url:
+            "/assets/img/experience-house-chamber-hero.webp",
         },
       },
       {
