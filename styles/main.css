@@ -1734,14 +1734,38 @@ html.js-anim .legislative-docket.is-inview .legislative-docket__list::before {
   to { transform: scaleX(1); }
 }
 .legislative-docket__list li {
+  position: relative;
   min-width: 0;
+  overflow: hidden;
   border-top: 1px solid var(--line-2);
   border-right: 1px solid var(--line-2);
   border-bottom: 1px solid var(--line-2);
 }
 .legislative-docket details {
+  position: relative;
   height: 100%;
   background: transparent;
+  transition: background-color .28s var(--ease);
+}
+.legislative-docket details::after {
+  content: "";
+  position: absolute;
+  z-index: 3;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 2px;
+  background: var(--amber-600);
+  opacity: 0;
+  pointer-events: none;
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+.legislative-docket details[open] {
+  background: rgba(168, 116, 31, 0.055);
+}
+.legislative-docket details[open]::after {
+  animation: docket-stage-rule .56s var(--ease) forwards;
 }
 .legislative-docket summary {
   min-height: 112px;
@@ -1782,12 +1806,51 @@ html.js-anim .legislative-docket.is-inview .legislative-docket__list::before {
 .legislative-docket details[open] .legislative-docket__toggle {
   transform: rotate(45deg);
 }
+.legislative-docket details[open] .legislative-docket__number {
+  animation: docket-number-pulse .52s var(--ease);
+}
 .legislative-docket details > p {
   margin: 0;
   padding: 0 12px 18px;
   color: var(--text-2);
   font-size: 12.5px;
   line-height: 1.55;
+}
+.legislative-docket details[open] > p {
+  animation: docket-note-enter .42s var(--ease) both;
+}
+@keyframes docket-stage-rule {
+  0% {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+  18% { opacity: 1; }
+  100% {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}
+@keyframes docket-number-pulse {
+  0%, 100% {
+    color: var(--amber-700);
+    text-shadow: 0 0 0 rgba(168, 116, 31, 0);
+    transform: translateY(0);
+  }
+  46% {
+    color: var(--amber-600);
+    text-shadow: 0 0 14px rgba(168, 116, 31, 0.5);
+    transform: translateY(-2px);
+  }
+}
+@keyframes docket-note-enter {
+  from {
+    opacity: 0;
+    transform: translateY(-7px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 @media (min-width: 901px) {
   .legislative-docket details:not([open]) > p {
