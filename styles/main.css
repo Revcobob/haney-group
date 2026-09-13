@@ -2624,6 +2624,203 @@ a.clientlogos__logo { cursor: pointer; }
   .clientlogos__image { width: 116px; height: 44px; }
 }
 
+/* ---------- Clients page: proof first, compact subject-matter index ---------- */
+.clients-page .pagehero {
+  padding-block: clamp(56px, 7vw, 88px);
+}
+.clients-page .pagehero--photo .pagehero__bg {
+  object-position: center 38%;
+}
+
+.clients-page .clientlogos {
+  background: var(--navy-900);
+  border-color: rgba(255, 255, 255, 0.12);
+  color: var(--paper);
+  padding-block: clamp(54px, 6vw, 76px);
+}
+.clients-page .clientlogos__head {
+  margin-bottom: clamp(28px, 4vw, 40px);
+}
+.clients-page .clientlogos__head .eyebrow {
+  color: var(--amber-400);
+}
+.clients-page .clientlogos__head .eyebrow::before {
+  background: var(--amber-400);
+}
+.clients-page .clientlogos__head h2 {
+  color: var(--paper);
+  font-size: clamp(24px, 2.8vw, 34px);
+  font-weight: 650;
+}
+.clients-page .clientlogos__track {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 16px;
+  width: min(100%, 1080px);
+}
+.clients-page .clientlogos__logo {
+  width: 100%;
+  height: 92px;
+  padding: 16px 20px;
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 12px 32px -24px rgba(0, 0, 0, 0.7);
+  transition:
+    border-color .3s var(--ease),
+    box-shadow .3s var(--ease),
+    transform .3s var(--ease);
+}
+.clients-page a.clientlogos__logo:hover,
+.clients-page a.clientlogos__logo:focus-visible {
+  border-color: var(--amber-400);
+  box-shadow: 0 18px 34px -20px rgba(0, 0, 0, 0.75);
+  transform: translateY(-3px);
+}
+.clients-page .clientlogos__note {
+  color: rgba(255, 255, 255, 0.64);
+  margin-top: 26px;
+}
+
+.client-sectors {
+  background: var(--paper-2);
+  border-bottom: 1px solid var(--line-1);
+  padding-block: clamp(68px, 9vw, 116px);
+}
+.client-sectors__layout {
+  display: block;
+}
+.client-sectors__intro {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(280px, 0.7fr);
+  gap: clamp(48px, 8vw, 120px);
+  align-items: end;
+  margin-bottom: clamp(38px, 5vw, 58px);
+}
+.client-sectors__intro .eyebrow {
+  margin-bottom: 20px;
+}
+.client-sectors__intro .h2 {
+  max-width: 18ch;
+  margin: 0;
+  text-wrap: balance;
+}
+.client-sectors__intro > p:last-child {
+  max-width: 40ch;
+  margin: 0 0 4px;
+  color: var(--text-2);
+  font-size: 17px;
+  line-height: 1.68;
+}
+.client-sectors__list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+.client-sector {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--paper);
+  border: 1px solid var(--line-1);
+  border-radius: var(--radius-md);
+  box-shadow: 0 12px 30px -28px rgba(11, 18, 40, 0.42);
+}
+.client-sector__mark {
+  position: relative;
+  width: 100%;
+  height: 138px;
+  overflow: hidden;
+  border-bottom: 1px solid var(--line-1);
+  background: var(--paper-2);
+}
+.client-sector__mark img {
+  object-fit: contain;
+  transform: scale(0.94);
+  filter: contrast(1.1) saturate(1.08);
+}
+.client-sector__copy {
+  padding: 22px 24px 25px;
+}
+.client-sector__copy h3 {
+  margin: 0 0 9px;
+  color: var(--text-1);
+  font-size: 19px;
+  font-weight: 650;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+.client-sector__copy p {
+  margin: 0;
+  color: var(--text-2);
+  font-size: 14.5px;
+  line-height: 1.58;
+}
+
+@media (max-width: 920px) {
+  .clients-page .clientlogos__track {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .client-sectors__intro {
+    grid-template-columns: 1fr 1fr;
+    gap: 42px;
+  }
+  .client-sectors__list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .clients-page .pagehero {
+    padding-block: 48px 54px;
+  }
+  .clients-page .clientlogos__track {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+  .clients-page .clientlogos__logo {
+    height: 76px;
+    padding: 12px;
+  }
+  .client-sectors {
+    padding-block: 62px 70px;
+  }
+  .client-sectors__intro {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    margin-bottom: 34px;
+  }
+  .client-sectors__intro > p:last-child {
+    font-size: 16px;
+  }
+  .client-sectors__list {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+  .client-sector {
+    display: grid;
+    grid-template-columns: 110px minmax(0, 1fr);
+    min-height: 148px;
+  }
+  .client-sector__mark {
+    width: 110px;
+    height: 100%;
+    border-right: 1px solid var(--line-1);
+    border-bottom: 0;
+  }
+  .client-sector__mark img {
+    transform: scale(0.92);
+  }
+  .client-sector__copy {
+    padding: 18px 18px 20px;
+  }
+  .client-sector__copy h3 {
+    font-size: 17px;
+  }
+  .client-sector__copy p {
+    font-size: 14px;
+  }
+}
+
 /* ---------- Privacy / Legal page ---------- */
 .legal__toc {
   background: var(--paper-2);
@@ -4485,6 +4682,23 @@ html.js-anim :is(.caps__grid, .proof__grid, .approach__grid, .principals__grid, 
 html.js-anim :is(.caps__grid, .proof__grid, .approach__grid, .principals__grid, .issues__grid, .insights__grid, .tilegrid, .howwework__grid, .audience__grid, .proofstrip__grid, .founders).is-inview > *:nth-child(7) { animation-delay: 580ms; }
 html.js-anim :is(.caps__grid, .proof__grid, .approach__grid, .principals__grid, .issues__grid, .insights__grid, .tilegrid, .howwework__grid, .audience__grid, .proofstrip__grid, .founders).is-inview > *:nth-child(n+8) { animation-delay: 670ms; }
 
+/* The Clients page uses a tighter stagger so its logo wall and editorial
+   index settle quickly instead of reading as a sequence of card effects. */
+html.js-anim :is(.client-sectors__list, .clients-page .clientlogos__track) > * {
+  animation: none;
+}
+html.js-anim :is(.client-sectors__list, .clients-page .clientlogos__track):not(.is-inview) > * {
+  opacity: 0;
+  transform: translate3d(0, 12px, 0);
+}
+html.js-anim :is(.client-sectors__list, .clients-page .clientlogos__track).is-inview > * {
+  animation: haney-rise-in 0.56s var(--ease) backwards;
+}
+html.js-anim :is(.client-sectors__list, .clients-page .clientlogos__track).is-inview > *:nth-child(2) { animation-delay: 55ms; }
+html.js-anim :is(.client-sectors__list, .clients-page .clientlogos__track).is-inview > *:nth-child(3) { animation-delay: 110ms; }
+html.js-anim :is(.client-sectors__list, .clients-page .clientlogos__track).is-inview > *:nth-child(4) { animation-delay: 165ms; }
+html.js-anim :is(.client-sectors__list, .clients-page .clientlogos__track).is-inview > *:nth-child(n+5) { animation-delay: 220ms; }
+
 /* ---------- Header: condense + elevate on scroll ---------- */
 .header {
   transition: box-shadow .32s var(--ease), background .32s var(--ease);
@@ -4559,11 +4773,11 @@ html.js-anim :is(.caps__grid, .proof__grid, .approach__grid, .principals__grid, 
   /* The boot script never adds .js-anim under reduced motion, but if the
      preference flips mid-session nothing may stay hidden. */
   html.js-anim [data-reveal]:not(.is-inview),
-  html.js-anim :is(.caps__grid, .proof__grid, .approach__grid, .principals__grid, .issues__grid, .insights__grid, .tilegrid, .howwework__grid, .audience__grid, .proofstrip__grid, .founders):not(.is-inview) > * {
+  html.js-anim :is(.caps__grid, .proof__grid, .approach__grid, .principals__grid, .issues__grid, .insights__grid, .tilegrid, .howwework__grid, .audience__grid, .proofstrip__grid, .founders, .client-sectors__list, .clients-page .clientlogos__track):not(.is-inview) > * {
     opacity: 1 !important;
     transform: none !important;
   }
   .readbar { display: none; }
   .totop, .totop svg { transition: none; }
-  .insight__band img, .tile__banner img, .principal__portrait img { transition: none; }
+  .insight__band img, .tile__banner img, .principal__portrait img, .clients-page .clientlogos__logo { transition: none; }
 }

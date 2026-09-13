@@ -517,7 +517,7 @@ export const pageFallbacks: PageFallback[] = [
           eyebrow: "Clients",
           headline: "Who we represent.",
           lede:
-            "The firm represents associations, public entities, providers, companies, and policy organizations across nine areas of Texas law and regulation.",
+            "The firm represents associations, public entities, providers, companies, and policy organizations before the Texas Legislature and state agencies.",
           background_image_url: "/assets/img/clients-hero-web.jpg",
         },
       },
@@ -528,7 +528,7 @@ export const pageFallbacks: PageFallback[] = [
         display_order: 2,
         content_json: {
           eyebrow: "Selected Clients",
-          heading: "A selection of clients.",
+          heading: "Organizations we have represented.",
           disclaimer:
             "Selected client logos shown with permission. Full roster on request.",
         },
@@ -567,7 +567,8 @@ export const pageFallbacks: PageFallback[] = [
           headline: "Selected engagements.",
           lede:
             "Examples of work for trade associations, public entities, regulated companies, health systems, and policy organizations. Client names are withheld where the matter was confidential.",
-          background_image_url: "/assets/img/experience2-hero-web.jpg",
+          background_image_url:
+            "/assets/img/experience-house-chamber-hero.webp",
         },
       },
       {

@@ -31,6 +31,8 @@ const STAGGER_GRIDS = [
   ".audience__grid",
   ".proofstrip__grid",
   ".founders",
+  ".client-sectors__list",
+  ".clients-page .clientlogos__track",
 ].join(", ");
 
 function reducedMotion() {
