@@ -263,6 +263,7 @@ function ApproachBlock({ s, c }: { s: PageSection; c: ApproachContent }) {
                 <span className="step__number" aria-hidden="true">
                   {String(i + 1).padStart(2, "0")}
                 </span>
+                <span className="step__rail" aria-hidden="true" />
                 <div className="step__copy">
                   <h3>{step.title}</h3>
                   <p>{step.body}</p>

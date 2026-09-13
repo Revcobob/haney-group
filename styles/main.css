@@ -849,11 +849,16 @@ section.tight { padding-block: clamp(48px, 6vw, 72px); }
   background: transparent;
   box-shadow: none;
 }
+/* The numeral system is the page's one visual signature: set large and
+   lining, in the reserved gold, seated on the timeline rail. Deliberately
+   bigger than a label so it reads as a typographic gesture, not a bullet. */
 .approach--home .step__number {
+  display: block;
   color: var(--amber-700);
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.14em;
+  font-size: clamp(30px, 3.4vw, 40px);
+  font-weight: 300;
+  font-variant-numeric: lining-nums tabular-nums;
+  letter-spacing: -0.02em;
   line-height: 1;
 }
 .proof--home .proof__illo {
@@ -870,20 +875,24 @@ section.tight { padding-block: clamp(48px, 6vw, 72px); }
   .proof--home .proof__item { border-bottom: 0; }
 }
 
+/* A horizontal connected timeline rather than a fourth stacked card grid.
+   The three sections around it (proof, this, audience) otherwise share one
+   silhouette -- label, headline, rule, grid -- and the page needs a change of
+   tempo here. The steps are a sequence, so a sequence is what they look like. */
 .approach--home .approach__grid {
-  display: block;
+  --step-gap: clamp(24px, 3vw, 44px);
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  column-gap: var(--step-gap);
   list-style: none;
   margin: 0;
   padding: 0;
-  border-bottom: 1px solid var(--line-2);
+  border-bottom: 0;
 }
 .approach--home .step {
-  display: grid;
-  grid-template-columns: 56px minmax(0, 1fr);
-  gap: 24px;
-  padding: 28px 0;
+  display: block;
+  padding: 0;
   border: 0;
-  border-top: 1px solid var(--line-2);
   border-radius: 0;
   background: transparent;
 }
@@ -891,20 +900,48 @@ section.tight { padding-block: clamp(48px, 6vw, 72px); }
   transform: none;
   box-shadow: none;
 }
-.approach--home .step__number { padding-top: 6px; }
+/* Each rail overhangs its column by the gap so the four segments meet as one
+   unbroken line; the last one stops at its own edge. */
+.approach--home .step__rail {
+  position: relative;
+  display: block;
+  width: calc(100% + var(--step-gap));
+  height: 1px;
+  margin: 18px 0 22px;
+  background: var(--line-2);
+}
+.approach--home .step:last-child .step__rail {
+  width: 100%;
+}
+.approach--home .step__rail::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 7px;
+  height: 7px;
+  background: var(--amber-500);
+  transform: translateY(-50%) rotate(45deg);
+}
 .approach--home .step__copy {
   display: grid;
-  gap: 8px 40px;
+  gap: 8px;
 }
-.approach--home .step h3 { font-size: 19px; }
-.approach--home .step p { max-width: 62ch; }
+.approach--home .step h3 { font-size: 18px; }
+.approach--home .step p { max-width: 34ch; }
+
+@media (max-width: 1023px) {
+  .approach--home .approach__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 40px; }
+  /* Two columns: the right-hand item ends its row, so it must not overhang. */
+  .approach--home .step:nth-child(2n) .step__rail { width: 100%; }
+}
+@media (max-width: 719px) {
+  .approach--home .approach__grid { grid-template-columns: 1fr; row-gap: 32px; }
+  /* One column: the rail is a divider again, so drop the overhang. */
+  .approach--home .step__rail { width: 100%; margin: 12px 0 16px; }
+  .approach--home .step p { max-width: none; }
+}
 .approach__foot { margin-top: 32px; }
-@media (min-width: 800px) {
-  .approach--home .step__copy {
-    grid-template-columns: minmax(180px, 0.65fr) minmax(0, 1.35fr);
-    align-items: baseline;
-  }
-}
 
 .audience--home .audience__grid {
   gap: 0 48px;
