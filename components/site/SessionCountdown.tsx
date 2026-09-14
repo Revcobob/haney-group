@@ -138,12 +138,11 @@ export function SessionCountdown() {
             </div>
 
             <div className="session-clock__brief">
-              <p className="session-clock__label">The session window</p>
-              <h2 id="session-clock-heading">The clock is already running.</h2>
+              <p className="session-clock__label">Session countdown</p>
+              <h2 id="session-clock-heading">The clock is running.</h2>
               <p>
                 Bill drafts, sponsors, budget requests, and coalition plans
-                should be underway before members convene. A regular session
-                may last no more than 140 days.
+                should already be underway.
               </p>
             </div>
           </div>
