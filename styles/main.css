@@ -401,23 +401,24 @@ section.tight { padding-block: clamp(48px, 6vw, 72px); }
 .session-clock {
   z-index: 3;
   background: var(--paper);
-  padding-block: 0 clamp(56px, 6vw, 80px);
+  padding-block: 0 clamp(38px, 4vw, 56px);
 }
 .session-clock__panel {
-  margin-top: -72px;
+  width: min(100%, 620px);
+  margin: -52px 0 0 auto;
   overflow: hidden;
   background: var(--paper);
   border: 1px solid var(--line-1);
   border-radius: var(--radius-md);
-  box-shadow: 0 24px 60px -34px rgba(6, 9, 26, 0.48);
+  box-shadow: 0 20px 52px -32px rgba(6, 9, 26, 0.48);
 }
 .session-clock__overview {
   display: grid;
-  grid-template-columns: minmax(260px, 0.7fr) minmax(0, 1.3fr);
+  grid-template-columns: 220px minmax(0, 1fr);
   align-items: stretch;
 }
 .session-clock__countdown {
-  padding: clamp(28px, 4vw, 42px);
+  padding: 24px 26px;
   background: var(--navy-900);
   color: var(--paper);
 }
@@ -431,12 +432,12 @@ section.tight { padding-block: clamp(48px, 6vw, 72px); }
   display: flex;
   align-items: baseline;
   gap: 12px;
-  margin-top: 14px;
+  margin-top: 10px;
   font-variant-numeric: tabular-nums;
 }
 .session-clock__count strong {
   color: var(--paper);
-  font-size: clamp(60px, 7vw, 88px);
+  font-size: 58px;
   font-weight: 700;
   line-height: 0.95;
   letter-spacing: -0.065em;
@@ -449,17 +450,17 @@ section.tight { padding-block: clamp(48px, 6vw, 72px); }
   text-transform: uppercase;
 }
 .session-clock__status {
-  margin: 13px 0 0;
+  margin: 9px 0 0;
   color: rgba(245, 241, 232, 0.82);
-  font-size: 14px;
+  font-size: 12.5px;
   line-height: 1.45;
 }
 .session-clock__convenes {
-  margin: 17px 0 0;
-  padding-top: 15px;
+  margin: 12px 0 0;
+  padding-top: 11px;
   border-top: 1px solid rgba(255, 255, 255, 0.16);
   color: var(--paper);
-  font-size: 13.5px;
+  font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.02em;
 }
@@ -467,22 +468,22 @@ section.tight { padding-block: clamp(48px, 6vw, 72px); }
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: clamp(30px, 5vw, 54px);
+  padding: 24px 28px;
 }
 .session-clock__label {
-  margin: 0 0 13px;
+  margin: 0 0 8px;
   color: var(--amber-700);
-  font-size: 11.5px;
+  font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
 }
 .session-clock__brief h2 {
-  max-width: 20ch;
-  margin: 0 0 14px;
+  max-width: 18ch;
+  margin: 0 0 8px;
   color: var(--text-1);
-  font-size: clamp(26px, 3vw, 38px);
-  line-height: 1.14;
+  font-size: 25px;
+  line-height: 1.12;
   letter-spacing: -0.025em;
   text-wrap: balance;
 }
@@ -490,15 +491,15 @@ section.tight { padding-block: clamp(48px, 6vw, 72px); }
   max-width: 58ch;
   margin: 0;
   color: var(--text-2);
-  font-size: 16px;
-  line-height: 1.65;
+  font-size: 13.5px;
+  line-height: 1.5;
 }
 .session-clock__dates {
   border-top: 1px solid var(--line-1);
 }
 .session-clock__dates summary {
-  min-height: 72px;
-  padding: 16px clamp(24px, 4vw, 42px);
+  min-height: 60px;
+  padding: 12px 24px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -516,7 +517,7 @@ section.tight { padding-block: clamp(48px, 6vw, 72px); }
 .session-clock__dates summary > span:first-child {
   display: flex;
   align-items: baseline;
-  gap: 18px;
+  gap: 12px;
 }
 .session-clock__dates summary small {
   color: var(--amber-700);
@@ -527,13 +528,13 @@ section.tight { padding-block: clamp(48px, 6vw, 72px); }
 }
 .session-clock__dates summary strong {
   color: var(--text-1);
-  font-size: 15px;
+  font-size: 13.5px;
   font-weight: 650;
 }
 .session-clock__toggle {
-  width: 34px;
-  height: 34px;
-  flex: 0 0 34px;
+  width: 32px;
+  height: 32px;
+  flex: 0 0 32px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -551,13 +552,12 @@ section.tight { padding-block: clamp(48px, 6vw, 72px); }
   transform: rotate(45deg);
 }
 .session-clock__date-panel {
-  padding: 4px clamp(24px, 4vw, 42px) 30px;
+  padding: 2px 24px 24px;
   animation: haney-rise-in .45s var(--ease) backwards;
 }
 .session-clock__date-list {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0 clamp(28px, 5vw, 64px);
+  grid-template-columns: 1fr;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -567,7 +567,7 @@ section.tight { padding-block: clamp(48px, 6vw, 72px); }
   display: grid;
   grid-template-columns: 58px minmax(0, 1fr);
   gap: 18px;
-  padding: 24px 0 26px;
+  padding: 20px 0 22px;
   border-bottom: 1px solid var(--line-1);
 }
 .session-clock__date-list time {
@@ -616,23 +616,49 @@ section.tight { padding-block: clamp(48px, 6vw, 72px); }
 
 @media (max-width: 760px) {
   .session-clock {
-    padding-bottom: 52px;
+    padding-bottom: 42px;
   }
   .session-clock__panel {
-    margin-top: -24px;
+    margin-top: -20px;
   }
   .session-clock__overview {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(132px, 0.8fr) minmax(0, 1.2fr);
   }
   .session-clock__countdown,
   .session-clock__brief {
-    padding: 26px 24px 28px;
+    padding: 21px 20px 22px;
+  }
+  .session-clock__countdown .eyebrow {
+    font-size: 10.5px;
+    letter-spacing: 0.1em;
+  }
+  .session-clock__countdown .eyebrow::before {
+    width: 16px;
+    margin-right: 8px;
+  }
+  .session-clock__count {
+    gap: 7px;
+  }
+  .session-clock__count strong {
+    font-size: 48px;
+  }
+  .session-clock__count span {
+    font-size: 10px;
+  }
+  .session-clock__status {
+    font-size: 11px;
+  }
+  .session-clock__convenes {
+    font-size: 10.5px;
   }
   .session-clock__brief h2 {
-    font-size: 27px;
+    font-size: 21px;
+  }
+  .session-clock__brief > p:last-child {
+    font-size: 12.5px;
   }
   .session-clock__dates summary {
-    min-height: 66px;
+    min-height: 58px;
     padding: 14px 20px;
   }
   .session-clock__dates summary > span:first-child {
@@ -645,8 +671,35 @@ section.tight { padding-block: clamp(48px, 6vw, 72px); }
   .session-clock__date-panel {
     padding: 2px 20px 24px;
   }
-  .session-clock__date-list {
+}
+
+@media (max-width: 430px) {
+  .session-clock__overview {
     grid-template-columns: 1fr;
+  }
+  .session-clock__countdown {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    column-gap: 18px;
+    align-items: end;
+  }
+  .session-clock__countdown .eyebrow,
+  .session-clock__count,
+  .session-clock__status {
+    grid-column: 1;
+  }
+  .session-clock__convenes {
+    grid-column: 2;
+    grid-row: 1 / span 3;
+    align-self: center;
+    max-width: 92px;
+    margin: 0;
+    padding: 0 0 0 16px;
+    border-top: 0;
+    border-left: 1px solid rgba(255, 255, 255, 0.16);
+  }
+  .session-clock__brief {
+    padding-block: 20px;
   }
 }
 
