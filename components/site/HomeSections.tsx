@@ -17,6 +17,7 @@ import type { ServiceCard } from "@/content/fallbacks/services";
 import type { IndustryCard } from "@/content/fallbacks/industries";
 import type { InsightArticle } from "@/lib/content/insights";
 import { blurProps } from "@/lib/images";
+import { SessionCountdown } from "./SessionCountdown";
 
 type RenderProps = {
   sections: PageSection[];
@@ -52,60 +53,63 @@ function Region({
 
 function HeroBlock({ s, c }: { s: PageSection; c: HeroContent }) {
   return (
-    <Region sectionKey={s.section_key} sectionLabel={s.section_label}>
-      <section className="hero" aria-labelledby="hero-h1">
-        <Image
-          className="hero__bg"
-          src={c.background_image_url || "/assets/img/capitol-hero-web2.jpg"}
-          {...blurProps(c.background_image_url || "/assets/img/capitol-hero-web2.jpg")}
-          alt=""
-          fill
-          priority
-          quality={82}
-          sizes="100vw"
-          aria-hidden="true"
-        />
-        <div className="container">
-          <div className="hero__inner" data-reveal>
-            <div className="hero__copy">
-              <p className="eyebrow" style={{ marginBottom: 22 }}>
-                {c.eyebrow}
-              </p>
-              <h1 className="h1" id="hero-h1">
-                {c.headline}
-              </h1>
-              <p className="lede hero__sub">{c.lede}</p>
-              <div className="hero__ctas">
-                {c.primary_cta.label ? (
-                  <Link className="btn btn--primary" href={c.primary_cta.href || "#"}>
-                    {c.primary_cta.label}
-                    <span className="arrow" aria-hidden="true">→</span>
-                  </Link>
-                ) : null}
-                {c.secondary_cta.label ? (
-                  <Link className="btn btn--ghost" href={c.secondary_cta.href || "#"}>
-                    {c.secondary_cta.label}
-                    <span className="arrow" aria-hidden="true">→</span>
-                  </Link>
+    <>
+      <Region sectionKey={s.section_key} sectionLabel={s.section_label}>
+        <section className="hero" aria-labelledby="hero-h1">
+          <Image
+            className="hero__bg"
+            src={c.background_image_url || "/assets/img/capitol-hero-web2.jpg"}
+            {...blurProps(c.background_image_url || "/assets/img/capitol-hero-web2.jpg")}
+            alt=""
+            fill
+            priority
+            quality={82}
+            sizes="100vw"
+            aria-hidden="true"
+          />
+          <div className="container">
+            <div className="hero__inner" data-reveal>
+              <div className="hero__copy">
+                <p className="eyebrow" style={{ marginBottom: 22 }}>
+                  {c.eyebrow}
+                </p>
+                <h1 className="h1" id="hero-h1">
+                  {c.headline}
+                </h1>
+                <p className="lede hero__sub">{c.lede}</p>
+                <div className="hero__ctas">
+                  {c.primary_cta.label ? (
+                    <Link className="btn btn--primary" href={c.primary_cta.href || "#"}>
+                      {c.primary_cta.label}
+                      <span className="arrow" aria-hidden="true">→</span>
+                    </Link>
+                  ) : null}
+                  {c.secondary_cta.label ? (
+                    <Link className="btn btn--ghost" href={c.secondary_cta.href || "#"}>
+                      {c.secondary_cta.label}
+                      <span className="arrow" aria-hidden="true">→</span>
+                    </Link>
+                  ) : null}
+                </div>
+
+                {c.meta_text_html ? (
+                  <div className="hero__meta">
+                    <div className="bar" aria-hidden="true"></div>
+                    <p dangerouslySetInnerHTML={{ __html: c.meta_text_html }} />
+                  </div>
                 ) : null}
               </div>
-
-              {c.meta_text_html ? (
-                <div className="hero__meta">
-                  <div className="bar" aria-hidden="true"></div>
-                  <p dangerouslySetInnerHTML={{ __html: c.meta_text_html }} />
-                </div>
-              ) : null}
             </div>
           </div>
-        </div>
-        {c.credit_text ? (
-          <span className="hero__credit" aria-hidden="true">
-            {c.credit_text}
-          </span>
-        ) : null}
-      </section>
-    </Region>
+          {c.credit_text ? (
+            <span className="hero__credit" aria-hidden="true">
+              {c.credit_text}
+            </span>
+          ) : null}
+        </section>
+      </Region>
+      <SessionCountdown />
+    </>
   );
 }
 
