@@ -74,7 +74,7 @@ function sessionPhase(today: number | null) {
     return {
       value: "—",
       unit: "days",
-      description: "until the 90th Legislature convenes",
+      description: "until session begins",
     };
   }
 
@@ -82,7 +82,7 @@ function sessionPhase(today: number | null) {
     return {
       value: String(SESSION_START_DAY - today),
       unit: "days",
-      description: "until the 90th Legislature convenes",
+      description: "until session begins",
     };
   }
 
@@ -90,14 +90,14 @@ function sessionPhase(today: number | null) {
     return {
       value: String(today - SESSION_START_DAY + 1),
       unit: "of 140",
-      description: "session day of the 90th Regular Session",
+      description: "current session day",
     };
   }
 
   return {
     value: "140",
     unit: "days",
-    description: "the 90th Regular Session has concluded",
+    description: "regular session concluded",
   };
 }
 
@@ -115,73 +115,53 @@ export function SessionCountdown() {
   return (
     <section
       className="session-clock"
-      data-reveal
-      aria-labelledby="session-clock-heading"
+      aria-label="90th Texas Legislature countdown"
     >
       <div className="container">
-        <div className="session-clock__panel">
-          <div className="session-clock__overview">
-            <div className="session-clock__countdown">
-              <p className="eyebrow">90th Texas Legislature</p>
-              <div className="session-clock__count">
-                <strong suppressHydrationWarning>{phase.value}</strong>
-                <span>{phase.unit}</span>
-              </div>
-              <p className="session-clock__status" aria-live="polite">
-                {phase.description}
-              </p>
-              <p className="session-clock__convenes">
-                <time dateTime="2027-01-12T12:00:00-06:00">
-                  January 12, 2027 · Noon
-                </time>
-              </p>
-            </div>
-
-            <div className="session-clock__brief">
-              <p className="session-clock__label">Session countdown</p>
-              <h2 id="session-clock-heading">The clock is running.</h2>
-              <p>
-                Bill drafts, sponsors, budget requests, and coalition plans
-                should already be underway.
-              </p>
-            </div>
-          </div>
-
-          <details className="session-clock__dates">
-            <summary>
-              <span>
-                <small>Calendar</small>
-                <strong>View key dates for the 90th Legislature</strong>
-              </span>
-              <span className="session-clock__toggle" aria-hidden="true">
+        <details className="session-rail">
+          <summary className="session-rail__summary">
+            <span className="session-rail__identity">90th Legislature</span>
+            <span className="session-rail__count" aria-live="polite">
+              <strong suppressHydrationWarning>{phase.value}</strong>
+              <span>{phase.unit}</span>
+            </span>
+            <span className="session-rail__status">{phase.description}</span>
+            <span className="session-rail__date">
+              <time dateTime="2027-01-12T12:00:00-06:00">
+                January 12, 2027 · Noon
+              </time>
+            </span>
+            <span className="session-rail__action">
+              <span>View key dates</span>
+              <span className="session-rail__toggle" aria-hidden="true">
                 +
               </span>
-            </summary>
-            <div className="session-clock__date-panel">
-              <ol className="session-clock__date-list">
-                {SESSION_DATES.map((item) => (
-                  <li key={item.dateTime}>
-                    <time dateTime={item.dateTime}>
-                      <span>{item.month}</span>
-                      <strong>{item.day}</strong>
-                      <span>{item.year}</span>
-                    </time>
-                    <div>
-                      <h3>{item.title}</h3>
-                      <p>{item.detail}</p>
-                      <small>{item.authority}</small>
-                    </div>
-                  </li>
-                ))}
-              </ol>
-              <p className="session-clock__source">
-                Dates through convening reflect the current Dates of Interest
-                calendar. Additional chamber deadlines will be added when the
-                official 90th Legislature calendars are issued.
-              </p>
-            </div>
-          </details>
-        </div>
+            </span>
+          </summary>
+          <div className="session-clock__date-panel">
+            <ol className="session-clock__date-list">
+              {SESSION_DATES.map((item) => (
+                <li key={item.dateTime}>
+                  <time dateTime={item.dateTime}>
+                    <span>{item.month}</span>
+                    <strong>{item.day}</strong>
+                    <span>{item.year}</span>
+                  </time>
+                  <div>
+                    <h3>{item.title}</h3>
+                    <p>{item.detail}</p>
+                    <small>{item.authority}</small>
+                  </div>
+                </li>
+              ))}
+            </ol>
+            <p className="session-clock__source">
+              Dates through convening reflect the current Dates of Interest
+              calendar. Additional chamber deadlines will be added when the
+              official 90th Legislature calendars are issued.
+            </p>
+          </div>
+        </details>
       </div>
     </section>
   );
