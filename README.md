@@ -88,7 +88,10 @@ degrade to a "configuration needed" splash. To unlock real admin + CMS,
 copy `.env.example` to `.env.local` and fill in:
 
 - Clerk publishable + secret keys (auth)
-- `ADMIN_EMAILS` — comma-separated allowlist
+- `ADMIN_EMAILS` — comma-separated allowlist, full admin access
+- `ADMIN_EDITORS` — optional, same format; content-only access (no Site
+  Settings, Navigation, page publish status, or deletes). An address on
+  both lists gets full admin. Both lists are matched case-insensitively.
 - Supabase URL + anon key + service-role key (data + storage)
 - Optional: `RESEND_API_KEY` for inquiry email notifications (Phase 6)
 
