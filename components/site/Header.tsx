@@ -19,13 +19,17 @@ export async function Header() {
           />
         </Link>
 
+        {/* One control. The label is shown only where the homepage desktop
+            header replaces the inline links, so navigation is obviously
+            still there; elsewhere this stays the icon-only button it was. */}
         <button
           className="nav__toggle"
           aria-label="Open menu"
           aria-expanded="false"
           aria-controls="primary-nav"
         >
-          <span></span>
+          <span className="nav__toggle-label">Menu</span>
+          <span className="nav__toggle-icon" aria-hidden="true"></span>
         </button>
 
         <nav className="nav" id="primary-nav" aria-label="Primary">
