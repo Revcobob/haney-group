@@ -1,5 +1,6 @@
 import { UtilityBar } from "@/components/site/UtilityBar";
 import { Header } from "@/components/site/Header";
+import { HeaderShell } from "@/components/site/HeaderShell";
 import { Footer } from "@/components/site/Footer";
 import { SiteScripts } from "@/components/site/SiteScripts";
 import { SiteMotion } from "@/components/site/SiteMotion";
@@ -19,7 +20,9 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
         Skip to content
       </a>
       <UtilityBar />
-      <Header />
+      <HeaderShell>
+        <Header />
+      </HeaderShell>
       <main id="main">{children}</main>
       <Footer />
       <SiteScripts />

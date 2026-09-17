@@ -198,6 +198,9 @@ h1, h2, h3, h4 {
 .utility__group .dot { color: var(--line-2); }
 
 /* ---------- Header ---------- */
+/* Route-aware wrapper from HeaderShell. Generates no box on purpose: a real
+   element here would become the containing block for the sticky header. */
+.headerctx { display: contents; }
 .header {
   position: sticky; top: 0;
   background: rgba(255, 255, 255, 0.92);
@@ -238,17 +241,23 @@ h1, h2, h3, h4 {
   border-radius: var(--radius-sm);
   color: var(--navy-900);
   align-items: center; justify-content: center;
+  gap: 10px;
+  cursor: pointer;
 }
 .nav__secondary { display: none; }
-.nav__toggle span,
-.nav__toggle span::before,
-.nav__toggle span::after {
+/* Scoped to the icon span so the MENU label is not drawn as a bar. */
+.nav__toggle-icon,
+.nav__toggle-icon::before,
+.nav__toggle-icon::after {
   content: ""; display: block;
   width: 18px; height: 1.5px; background: currentColor;
   position: relative;
 }
-.nav__toggle span::before { position: absolute; top: -6px; }
-.nav__toggle span::after  { position: absolute; top: 6px; }
+.nav__toggle-icon::before { position: absolute; top: -6px; }
+.nav__toggle-icon::after  { position: absolute; top: 6px; }
+/* Hidden by default: mobile keeps the icon-only 44x44 control it has today.
+   The homepage desktop header opts back in. */
+.nav__toggle-label { display: none; }
 
 @media (max-width: 1024px) {
   .nav__toggle { display: inline-flex; }
@@ -272,6 +281,168 @@ h1, h2, h3, h4 {
     color: var(--navy-900);
   }
   .nav__cta { margin-left: 0; margin-top: 18px; }
+}
+
+/* ---------- Homepage desktop header ----------
+   The homepage is a positioning page: the hero message should not compete
+   with six inline links, so above the mobile breakpoint the same navigation
+   is presented as a brand + MENU control that opens a right-hand drawer.
+   Interior pages keep the inline nav, and nothing here applies at or below
+   1024px, where the existing mobile drawer already owns the behaviour.
+
+   This reuses the existing markup and the existing open/close JS in
+   SiteScripts (.is-open, body.menu-open, Escape, link-close, scroll lock).
+   The only structural requirement is dropping the header's backdrop-filter,
+   which would otherwise become the containing block for the fixed drawer. */
+@media (min-width: 1025px) {
+  .headerctx--home .header {
+    background: var(--paper);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+  /* ~78px: compact enough to tighten the utility-bar-to-hero transition
+     without shrinking the wordmark to something apologetic. */
+  .headerctx--home .header__inner { padding-block: 10px; }
+  .headerctx--home .brand__logo { height: 58px; }
+  .headerctx--home .header.is-scrolled .header__inner { padding-block: 7px; }
+  .headerctx--home .header.is-scrolled .brand__logo { height: 50px; }
+
+  /* MENU + icon read as one control. */
+  .headerctx--home .nav__toggle {
+    display: inline-flex;
+    width: auto;
+    height: auto;
+    padding: 9px 14px;
+    border-color: var(--line-2);
+    transition: border-color .22s var(--ease), color .22s var(--ease);
+  }
+  .headerctx--home .nav__toggle:hover { border-color: var(--navy-900); }
+  .headerctx--home .nav__toggle-label {
+    display: inline-block;
+    font-size: 12.5px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--navy-900);
+    line-height: 1;
+  }
+
+  /* The inline nav becomes a right-hand drawer. */
+  .headerctx--home .nav {
+    position: fixed;
+    top: 0; right: 0; bottom: 0;
+    width: clamp(360px, 37vw, 520px);
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: 0;
+    background: var(--paper);
+    border-left: 1px solid var(--line-1);
+    box-shadow: -24px 0 60px -40px rgba(11, 18, 40, 0.45);
+    transform: translateX(100%);
+    /* visibility keeps the closed drawer out of the tab order -- without it
+       the first Tab past MENU lands on off-screen links and focus appears to
+       vanish. Delaying it by the slide duration preserves the animation. */
+    visibility: hidden;
+    transition: transform .32s var(--ease), visibility 0s linear .32s;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    z-index: 100;
+  }
+  .headerctx--home .nav.is-open {
+    transform: translateX(0);
+    visibility: visible;
+    transition: transform .32s var(--ease), visibility 0s;
+  }
+
+  .headerctx--home .nav__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 28px;
+    border-bottom: 1px solid var(--line-1);
+    flex-shrink: 0;
+  }
+  .headerctx--home .nav__brand { display: inline-flex; align-items: center; color: var(--navy-900); }
+  .headerctx--home .nav__brand img { height: 44px; width: auto; display: block; }
+  .headerctx--home .nav__close { display: inline-flex; position: static; }
+
+  .headerctx--home .nav__list {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    width: 100%;
+    padding: 10px 28px 4px;
+  }
+  .headerctx--home .nav__list li { border-bottom: 1px solid rgba(11, 18, 40, 0.06); }
+  .headerctx--home .nav__list li:last-child { border-bottom: 0; }
+  .headerctx--home .nav__link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 15px 0;
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--navy-900);
+    border-radius: 0;
+    background: transparent;
+  }
+  .headerctx--home .nav__link::after {
+    content: "→";
+    color: var(--amber-500);
+    opacity: 0.34;
+    font-weight: 500;
+    transition: opacity .22s var(--ease), transform .22s var(--ease);
+  }
+  .headerctx--home .nav__link:hover { background: transparent; color: var(--amber-700); }
+  .headerctx--home .nav__link:hover::after,
+  .headerctx--home .nav__link.is-active::after { opacity: 1; transform: translateX(3px); }
+  .headerctx--home .nav__link.is-active { color: var(--amber-700); background: transparent; }
+
+  .headerctx--home .nav__secondary {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 22px;
+    padding: 14px 28px 0;
+  }
+  .headerctx--home .nav__secondary-link {
+    color: var(--text-2);
+    font-size: 13.5px;
+    font-weight: 600;
+    border-bottom: 1px solid var(--line-2);
+    padding-bottom: 2px;
+  }
+  .headerctx--home .nav__secondary-link:hover { color: var(--navy-900); border-color: var(--amber-600); }
+
+  .headerctx--home .nav__cta {
+    margin: 22px 28px 0;
+    justify-content: center;
+  }
+  .headerctx--home .nav__foot {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 26px 28px 30px;
+    margin-top: auto;
+    border-top: 1px solid var(--line-1);
+  }
+  .headerctx--home .nav__foot-link {
+    width: 42px; height: 42px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--line-2);
+    border-radius: 50%;
+    color: var(--navy-900);
+    transition: border-color .22s var(--ease), background .22s var(--ease);
+  }
+  .headerctx--home .nav__foot-link:hover { border-color: var(--navy-900); background: var(--paper-3); }
+}
+
+@media (min-width: 1025px) and (prefers-reduced-motion: reduce) {
+  .headerctx--home .nav,
+  .headerctx--home .nav.is-open { transition: none; }
 }
 
 /* ---------- Section base ---------- */
