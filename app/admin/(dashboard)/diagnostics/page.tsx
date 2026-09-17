@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { serverSupabase } from "@/lib/supabase/server";
 import { supabaseServerConfigured, env, clerkConfigured } from "@/lib/env";
+import { emailConfigured, resolveRecipients, FIRM_INBOX } from "@/lib/email";
+import { TestNotificationButton } from "@/components/admin/TestNotificationButton";
 
 export const metadata: Metadata = { title: "Diagnostics" };
 export const dynamic = "force-dynamic";
@@ -90,6 +92,7 @@ async function probeBucket(bucket: string): Promise<ProbeResult> {
 export default async function AdminDiagnosticsPage() {
   const tables: ProbeResult[] = [];
   const buckets: ProbeResult[] = [];
+  const notificationRecipients = await resolveRecipients();
 
   if (supabaseServerConfigured) {
     const tableNames = [
@@ -202,6 +205,48 @@ export default async function AdminDiagnosticsPage() {
             </div>
           ))
         )}
+      </div>
+
+      <h2 style={{ fontSize: 17, fontWeight: 700, marginTop: 32, marginBottom: 8 }}>
+        Inquiry notifications
+      </h2>
+      <div className="admintable">
+        <div className="admintable__row">
+          <div>
+            <strong>RESEND_API_KEY</strong>
+            <p
+              className="admintable__sub"
+              style={{ color: emailConfigured ? "var(--text-2)" : "#B25C2E" }}
+            >
+              {emailConfigured
+                ? `set — ${maskKey(env.RESEND_API_KEY)}`
+                : "missing — contact-form inquiries are saved but nobody is emailed"}
+            </p>
+          </div>
+        </div>
+        <div className="admintable__row">
+          <div>
+            <strong>Sends from</strong>
+            <p className="admintable__sub">
+              <code>{env.CONTACT_FROM_EMAIL}</code> — the domain must be
+              verified in Resend or every send is rejected.
+            </p>
+          </div>
+        </div>
+        <div className="admintable__row">
+          <div>
+            <strong>Notifies</strong>
+            <p className="admintable__sub">
+              <code>{notificationRecipients.join(", ")}</code>
+            </p>
+            <p className="admintable__sub">
+              {FIRM_INBOX} always receives a copy. Site Settings →
+              “Contact notification email” adds further recipients
+              (comma-separated).
+            </p>
+            <TestNotificationButton />
+          </div>
+        </div>
       </div>
 
       <h2 style={{ fontSize: 17, fontWeight: 700, marginTop: 32, marginBottom: 8 }}>

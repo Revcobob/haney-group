@@ -14,6 +14,13 @@ import type {
 } from "@/lib/sections/types";
 import { blurProps } from "@/lib/images";
 
+const ORIGINAL_HERO_LEDE =
+  "The firm represents associations, public entities, providers, companies, and policy organizations across nine areas of Texas law and regulation.";
+const REVISED_HERO_LEDE =
+  "The firm represents associations, public entities, providers, companies, and policy organizations before the Texas Legislature and state agencies.";
+const ORIGINAL_LOGO_HEADING = "A selection of clients.";
+const REVISED_LOGO_HEADING = "Organizations we have represented.";
+
 export async function generateMetadata(): Promise<Metadata> {
   return resolveMetadata({
     path: "/industries",
@@ -39,49 +46,36 @@ export default async function IndustriesPage() {
   const hero = findSection(sections, "page_hero");
   const logosSection = findSection(sections, "client_logos_strip");
   const closing = findSection(sections, "closing_cta");
+  const heroContent = hero?.content_json as PageHeroContent | undefined;
+  const logoContent = logosSection?.content_json as
+    | ClientLogosStripContent
+    | undefined;
 
-  // The industry tile grid itself isn't an editable section — it's driven
-  // by /admin/industries — but we still wrap it as a non-clickable region
-  // so it visually integrates with the page in the visual editor.
   return (
-    <>
-      {hero ? (
-        <PageHeroBlock s={hero} c={hero.content_json as PageHeroContent} />
+    <div className="clients-page">
+      {hero && heroContent ? (
+        <PageHeroBlock
+          s={hero}
+          c={{
+            ...heroContent,
+            lede:
+              heroContent.lede === ORIGINAL_HERO_LEDE
+                ? REVISED_HERO_LEDE
+                : heroContent.lede,
+          }}
+        />
       ) : null}
 
-      <section data-reveal>
-        <div className="container">
-          <div className="tilegrid">
-            {industries.map((i) => (
-              <article key={i.title} className="tile tile--banner tile--illo">
-                <div className="tile__banner">
-                  <Image
-                    src={i.image}
-                    {...blurProps(i.image)}
-                    alt=""
-                    loading="lazy"
-                    fill
-                    sizes="(max-width: 719px) 100vw, 50vw"
-                  />
-                </div>
-                <div className="tile__body">
-                  <h3>{i.title}</h3>
-                  <p>{i.description}</p>
-                </div>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {logosSection ? (
+      {logosSection && logoContent ? (
         <ClientLogosStripBlock
           s={logosSection}
           c={{
-            ...(logosSection.content_json as ClientLogosStripContent),
-            disclaimer:
-              (logosSection.content_json as ClientLogosStripContent)
-                .disclaimer || disclaimer,
+            ...logoContent,
+            heading:
+              logoContent.heading === ORIGINAL_LOGO_HEADING
+                ? REVISED_LOGO_HEADING
+                : logoContent.heading,
+            disclaimer: logoContent.disclaimer || disclaimer,
           }}
           logos={logos.map((l) => ({
             client_name: l.client_name,
@@ -92,7 +86,49 @@ export default async function IndustriesPage() {
         />
       ) : null}
 
+      <section
+        className="client-sectors"
+        data-reveal
+        aria-labelledby="client-sectors-heading"
+      >
+        <div className="container client-sectors__layout">
+          <div className="client-sectors__intro">
+            <div>
+              <p className="eyebrow">Subject matter</p>
+              <h2 className="h2" id="client-sectors-heading">
+                Work across nine areas of Texas policy.
+              </h2>
+            </div>
+            <p>
+              Our work covers legislation, appropriations, agency action, and
+              procedure in the areas below.
+            </p>
+          </div>
+
+          <div className="client-sectors__list">
+            {industries.map((industry) => (
+              <article className="client-sector" key={industry.title}>
+                <div className="client-sector__mark" aria-hidden="true">
+                  <Image
+                    src={industry.image}
+                    {...blurProps(industry.image)}
+                    alt=""
+                    loading="lazy"
+                    fill
+                    sizes="(max-width: 640px) 110px, (max-width: 980px) 50vw, 33vw"
+                  />
+                </div>
+                <div className="client-sector__copy">
+                  <h3>{industry.title}</h3>
+                  <p>{industry.description}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {closing ? <ClosingCTA section={closing} /> : <ClosingCTA />}
-    </>
+    </div>
   );
 }
